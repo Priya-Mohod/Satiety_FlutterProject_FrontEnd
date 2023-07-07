@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        home: LoginPage(),
-        //ListViewPage(),
+        home: ListViewPage(),
+        //LoginPage()
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),
