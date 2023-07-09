@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:satietyfrontend/pages/ListView.dart';
+import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/service.dart';
 
 class AddFreeFood extends StatelessWidget {
@@ -14,6 +16,7 @@ class AddFreeFood extends StatelessWidget {
   final freeFoodAddressController = TextEditingController();
 
   Service service = Service();
+  Data data = Data();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +119,7 @@ class AddFreeFood extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddFreeFood(),
+                          builder: (context) => ListViewPage(),
                         ));
                   },
                   child: const Text('Add Food', style: TextStyle(fontSize: 30)),
