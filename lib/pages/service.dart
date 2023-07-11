@@ -4,17 +4,20 @@ import 'dart:async';
 
 class Service {
   Future<http.Response> saveFoodDetails(
-      String freeFoodName,
-      String freeFoodDescription,
-      int freeFoodQuantity,
-      String freeFoodAddress) async {
+    String freeFoodName,
+    String freeFoodDescription,
+    int freeFoodQuantity,
+    String freeFoodAddress,
+    String freeFoodImageUrl,
+  ) async {
     var url = Uri.parse('http://192.168.0.70:8080/addfood');
     Map<String, String> headers = {"Content-type": "application/json"};
     Map data = {
       'freeFoodName': '$freeFoodName',
       'freeFoodDescription': '$freeFoodDescription',
       'freeFoodQuantity': '$freeFoodQuantity',
-      'freeFoodAddress': '$freeFoodAddress'
+      'freeFoodAddress': '$freeFoodAddress',
+      'freeFoodImageUrl': '$freeFoodImageUrl',
     };
 
     var body = json.encode(data);

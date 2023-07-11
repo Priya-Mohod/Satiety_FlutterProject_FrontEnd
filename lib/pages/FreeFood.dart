@@ -14,6 +14,7 @@ class AddFreeFood extends StatelessWidget {
   final freeFoodDescriptionController = TextEditingController();
   final freeFoodQuantityController = TextEditingController();
   final freeFoodAddressController = TextEditingController();
+  final freeFoodImageUrlController = TextEditingController();
 
   Service service = Service();
   Data data = Data();
@@ -54,6 +55,9 @@ class AddFreeFood extends StatelessWidget {
                   controller: freeFoodNameController,
                   decoration: const InputDecoration(
                     labelText: "Food Name",
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.cyan),
+                    ),
                     prefixIcon: Icon(Icons.food_bank),
                   ),
                 ),
@@ -87,7 +91,8 @@ class AddFreeFood extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  keyboardType: TextInputType.none,
+                  keyboardType: TextInputType.text,
+                  controller: freeFoodImageUrlController,
                   decoration: const InputDecoration(
                     labelText: "Add up to 10 images",
                     prefixIcon: Icon(Icons.add_a_photo),
@@ -105,17 +110,18 @@ class AddFreeFood extends StatelessWidget {
                   ),
                   onPressed: () {
                     service.saveFoodDetails(
-                        freeFoodNameController.text,
-                        freeFoodDescriptionController.text,
-                        int.parse(freeFoodQuantityController.text),
-                        freeFoodAddressController.text);
-
+                      freeFoodNameController.text,
+                      freeFoodDescriptionController.text,
+                      int.parse(freeFoodQuantityController.text),
+                      freeFoodAddressController.text,
+                      freeFoodImageUrlController.text,
+                    );
                     print("Food Name: ${freeFoodNameController.text}");
                     print(
                         "Food Description: ${freeFoodDescriptionController.text}");
                     print("Food Quantity: ${freeFoodQuantityController.text}");
                     print("Food Address: ${freeFoodAddressController.text}");
-
+                    print("Image Url: ${freeFoodImageUrlController.text}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(

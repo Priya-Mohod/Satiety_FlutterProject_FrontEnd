@@ -18,20 +18,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.cyan,
-          brightness: Brightness.light,
-        ),
-        home: LoginPage(),
-        //ListViewPage()
-        routes: {
-          '/ListViewPage': (context) => ListViewPage(),
-          '/OptionPage': (context) => OptionPage(),
-          '/AddFreeFood': (context) => AddFreeFood(),
-          '/ForumPage': (context) => ForumPage(),
-          '/MessegePage': (context) => MessegePage(),
-          '/ChargeableFood': (context) => ChargeableFood(),
-        });
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
+        brightness: Brightness.light,
+      ),
+      home: ListViewPage(),
+      //LoginPage(),
+      routes: {
+        '/ListViewPage': (context) => ListViewPage(),
+        '/OptionPage': (context) => OptionPage(),
+        '/AddFreeFood': (context) => AddFreeFood(),
+        '/ForumPage': (context) => ForumPage(),
+        '/MessegePage': (context) => MessegePage(),
+        '/ChargeableFood': (context) => ChargeableFood(),
+      },
+    );
   }
 }

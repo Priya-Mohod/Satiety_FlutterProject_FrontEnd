@@ -122,8 +122,8 @@ class _ListViewPageState extends State<ListViewPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'images/a.png',
+                      Image.network(
+                        allData[index]['freeFoodImageUrl'],
                         height: 100,
                         width: 100,
                       ),
@@ -146,6 +146,7 @@ class _ListViewPageState extends State<ListViewPage> {
                             ),
                           ),
                           Container(
+                            margin: const EdgeInsets.only(left: 10),
                             color: Color.fromARGB(255, 104, 213, 219),
                             height: 100,
                             width: 280,
