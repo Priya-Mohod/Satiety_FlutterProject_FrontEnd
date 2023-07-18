@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1023007381747-ahvolvc0e040la04i8blabso4a8kdp18.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1023007381747-ahvolvc0e040la04i8blabso4a8kdp18</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCK9dhgh0NNMui_aQdY6QMqlDKkjCeygGs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1023007381747</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.satietyfrontend</string>
+	<key>PROJECT_ID</key>
+	<string>satietyapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>satietyapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1023007381747:ios:4d2997d9c0e156c9c3bf86</string>
+</dict>
+</plist>

@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photos will be accessed to send it to server</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photos will be accessed to send it to server for Satiety App</string>
 </dict>
 </plist>

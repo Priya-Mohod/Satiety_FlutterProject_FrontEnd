@@ -6,8 +6,16 @@ import 'package:satietyfrontend/pages/Loginpage.dart';
 import 'package:satietyfrontend/pages/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/OptionPage.dart';
+import 'package:satietyfrontend/pages/Register.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -18,21 +26,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-        brightness: Brightness.light,
-      ),
-      home: ListViewPage(),
-      //LoginPage(),
-      routes: {
-        '/ListViewPage': (context) => ListViewPage(),
-        '/OptionPage': (context) => OptionPage(),
-        '/AddFreeFood': (context) => AddFreeFood(),
-        '/ForumPage': (context) => ForumPage(),
-        '/MessegePage': (context) => MessegePage(),
-        '/ChargeableFood': (context) => ChargeableFood(),
-      },
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.cyan,
+          brightness: Brightness.light,
+        ),
+        //home: const Register(),
+        //home: ListViewPage(),
+        home: AddFreeFood(),
+        routes: {
+          '/ListViewPage': (context) => ListViewPage(),
+          '/OptionPage': (context) => OptionPage(),
+          '/AddFreeFood': (context) => AddFreeFood(),
+          '/ForumPage': (context) => ForumPage(),
+          '/MessegePage': (context) => MessegePage(),
+          '/ChargeableFood': (context) => ChargeableFood(),
+        });
   }
 }

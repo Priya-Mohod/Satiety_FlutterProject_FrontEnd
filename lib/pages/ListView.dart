@@ -20,7 +20,7 @@ List allData = [];
 
 class _ListViewPageState extends State<ListViewPage> {
   Future getData() async {
-    var url = Uri.parse('http://192.168.0.70:8080/getall');
+    var url = Uri.parse('http://192.168.0.89:8080/getall');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
