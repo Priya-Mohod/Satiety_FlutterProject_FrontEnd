@@ -100,16 +100,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   style: TextStyle(fontSize: 20),
-                  controller: foodAddressController,
-                  decoration: const InputDecoration(
-                    labelText: "Enter Pickup Location and",
-                    prefixIcon: Icon(Icons.location_on),
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(fontSize: 20),
                   controller: foodTypeController,
                   decoration: const InputDecoration(
                     labelText: "Food Type - Veg/Non-Veg",
@@ -117,6 +107,28 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                   ),
                 ),
                 SizedBox(height: 10),
+                // show map here to select address
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(fontSize: 20),
+                  controller: foodAddressController,
+                  decoration: const InputDecoration(
+                    labelText: "Enter Address",
+                    prefixIcon: Icon(Icons.add_location),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // Container(
+                //   height: 300,
+                //   width: 300,
+                //   child: const GoogleMap(
+                //     initialCameraPosition: CameraPosition(
+                //       target: LatLng(20.5937, 78.9629),
+                //       zoom: 14,
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(height: 10),
 
                 // show image here if image is selected
                 if (image != null)
@@ -167,7 +179,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                     elevation: 15,
                     minimumSize: const Size(200, 50),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (image == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -176,7 +188,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                       );
                       return;
                     }
-                    service.sendFoodDetailsWithFile(
+                    var response = await service.sendFoodDetailsWithFile(
                         foodNameController.text,
                         foodDescriptionController.text,
                         int.parse(foodQuantityController.text),
@@ -185,19 +197,46 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                         foodTypeController.text,
                         image);
 
-                    print("Food Name: ${foodNameController.text}");
-                    print(
-                        "Food Description: ${foodDescriptionController.text}");
-                    print("Food Quantity: ${foodQuantityController.text}");
-                    print("Food Address: ${foodAddressController.text}");
-                    print("Food Image Uri: ${foodImageUriController.text}");
-                    print("Food Type: ${foodTypeController.text}");
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ListViewPage(),
-                        ));
+                    // show alert dialog on condition
+                    if (response) {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Add Food'),
+                          content: const Text('Food added successfully'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ListViewPage(),
+                                    ));
+                                // TODO:- clear the form fields
+                                // TODO:- clear the image
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Add Food'),
+                          content: const Text('Food not added successfully'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Add Food', style: TextStyle(fontSize: 30)),
                 ),

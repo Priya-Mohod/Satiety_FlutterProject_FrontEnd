@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 
 class Service {
-  Future<void> sendFoodDetailsWithFile(
+  Future<bool> sendFoodDetailsWithFile(
       String foodName,
       String foodDescription,
       int foodQuantity,
@@ -45,10 +45,13 @@ class Service {
     // Handle the response
     if (response.statusCode == 200) {
       // File upload successful
-      print('File uploaded successfully');
+      print('Food data uploaded successfully');
+      return true;
+      // send response back to caller function
     } else {
       // File upload failed
-      print('File upload failed with status code ${response.statusCode}');
+      print('Food data failed with status code ${response.statusCode}');
+      return false;
     }
   }
 }
