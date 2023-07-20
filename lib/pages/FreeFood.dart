@@ -3,11 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/ListView.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/service.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AddFreeFood extends StatefulWidget {
   const AddFreeFood({super.key});
@@ -31,6 +36,22 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   File? image;
   final picker = ImagePicker();
   bool showSpinner = false;
+  var locationData;
+
+  GoogleMapController? _mapController;
+  Set<Marker> _markers = {};
+  String userAddress = '';
+  final TextEditingController _controller = TextEditingController();
+  LatLng userCoordinates = LatLng(0.0, 0.0);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // locationData = _requestLocationPermission();
+    _controller.text = userAddress;
+    _determinePosition();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,24 +132,39 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   style: TextStyle(fontSize: 20),
-                  controller: foodAddressController,
+                  controller: _controller,
                   decoration: const InputDecoration(
-                    labelText: "Enter Address",
+                    labelText: "Show user Address",
                     prefixIcon: Icon(Icons.add_location),
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Container(
-                //   height: 300,
-                //   width: 300,
-                //   child: const GoogleMap(
-                //     initialCameraPosition: CameraPosition(
-                //       target: LatLng(20.5937, 78.9629),
-                //       zoom: 14,
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(height: 10),
+                // Ask user to turn on location if not turned on
+
+                // Add Apple Maps here
+
+                SizedBox(
+                  height: 200,
+                  child: GoogleMap(
+                    // if locationData is null then show placeholder
+                    initialCameraPosition: CameraPosition(
+                      target: userCoordinates,
+                      zoom: 26,
+                    ),
+                    // how to get current controller
+                    // markers: _markers,
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId("demo"),
+                        position: userCoordinates,
+                        draggable: true,
+                        infoWindow: const InfoWindow(
+                          title: "User Location",
+                        ),
+                      )
+                    },
+                  ),
+                ),
 
                 // show image here if image is selected
                 if (image != null)
@@ -246,5 +282,129 @@ class _AddFreeFoodState extends State<AddFreeFood> {
         ),
       ),
     );
+    // Function to add a marker on the map and animate the camera to the marker's position
+  }
+
+  void _addMarker(double lat, double lng) {
+    setState(() {
+      final marker = Marker(
+        markerId: MarkerId('marker_id'),
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(
+          title: 'Marker Title',
+          snippet: 'Marker Snippet',
+        ),
+      );
+
+      _markers.add(marker);
+      _mapController?.animateCamera(CameraUpdate.newLatLng(marker.position));
+    });
+  }
+
+  // Future<LocationData?> _requestLocationPermission() async {
+  //   final location = Location();
+
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+
+  //   // Check if location services are enabled
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       // Location services are not enabled, handle the scenario
+  //       return null;
+  //     }
+  //   }
+
+  //   // Check if the app has location permission
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       // Location permission not granted, handle the scenario
+  //       return null;
+  //     }
+  //   }
+
+  //   // Location services and permission are now enabled
+  //   // You can proceed with using the location
+  //   // get location here
+  //   final locationData = await location.getLocation();
+  //   print(locationData.latitude);
+  //   print(locationData.longitude);
+  //   print(locationData.accuracy);
+  //   print(locationData.altitude);
+  //   print(locationData.speed);
+  //   print(locationData.speedAccuracy);
+  //   print(locationData.heading);
+  //   print(locationData.time);
+  //   print(locationData.toString());
+
+  //   return locationData;
+  // }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled, handle the
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    // Check if the app has location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      // Location permissions are permanently denied, handle the scenario
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Check if the app has location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      // Location permissions are denied, ask user for permission
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Location permissions are denied
+        return Future.error(
+            'Location permissions are denied, we cannot request permissions.');
+      }
+    }
+
+    // Location permissions are granted
+    // get location here
+    final locationData = await Geolocator.getCurrentPosition();
+    print(locationData.latitude);
+    print(locationData.longitude);
+    print(locationData.accuracy);
+
+    // get address here
+    List<Placemark> placemark = await placemarkFromCoordinates(
+        locationData.latitude, locationData.longitude);
+    print(placemark[0].name);
+    Placemark place = placemark[0];
+
+    print(userAddress);
+
+    setState(() {
+      //_addMarker(locationData.latitude, locationData.longitude);
+      userCoordinates = LatLng(locationData.latitude, locationData.longitude);
+      userAddress =
+          "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+      _controller.text = userAddress;
+      // show toast here
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("User Address Updated!"),
+        ),
+      );
+    });
+
+    return locationData;
   }
 }

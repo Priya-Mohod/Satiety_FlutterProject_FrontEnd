@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.satietyfrontend">
+
    <application
         android:label="satietyfrontend"
         android:name="${applicationName}"
@@ -30,5 +31,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCK9dhgh0NNMui_aQdY6QMqlDKkjCeygGs" />
+
+
     </application>
 </manifest>

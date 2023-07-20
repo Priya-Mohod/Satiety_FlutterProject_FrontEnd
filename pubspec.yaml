@@ -42,7 +42,9 @@ dependencies:
   firebase_core: ^2.15.0
   path_provider: ^2.0.15
   image_picker: ^0.8.4+4
-
+  location: ^5.0.0
+  geolocator: 
+  geocoding:
 
 dev_dependencies:
   flutter_test:

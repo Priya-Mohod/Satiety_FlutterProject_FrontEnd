@@ -51,5 +51,11 @@
 	<string>Photos will be accessed to send it to server</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Photos will be accessed to send it to server for Satiety App</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location will be used to get current coordinates</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location will be used to get current coordinates</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location will be used to get current coordinates</string>
 </dict>
 </plist>
