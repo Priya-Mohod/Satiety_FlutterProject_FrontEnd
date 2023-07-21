@@ -43,6 +43,8 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   String userAddress = '';
   final TextEditingController _controller = TextEditingController();
   LatLng userCoordinates = LatLng(0.0, 0.0);
+  int selectedQuantity = 1;
+  String selectedFoodType = "Both";
 
   @override
   void initState() {
@@ -107,26 +109,41 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                   ),
                 ),
                 SizedBox(height: 10),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(fontSize: 20),
-                  controller: foodQuantityController,
-                  decoration: const InputDecoration(
-                    labelText: "Enter number",
-                    prefixIcon: Icon(Icons.production_quantity_limits),
-                    border: OutlineInputBorder(),
+
+                // show drop down here
+                Text(
+                  'Select Serving Quantity : ${selectedQuantity != 0 ? selectedQuantity : "None"}',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Wrap(
+                  spacing: 8.0,
+                  children: List.generate(
+                    5,
+                    (index) => ChoiceChip(
+                      label: Text('${index + 1}'),
+                      selected: selectedQuantity == index + 1,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          selectedQuantity = isSelected ? index + 1 : 0;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(fontSize: 20),
-                  controller: foodTypeController,
-                  decoration: const InputDecoration(
-                    labelText: "Food Type - Veg/Non-Veg",
-                    prefixIcon: Icon(Icons.add_a_photo),
-                  ),
+                Text(
+                  'Selected Food Type: $selectedFoodType',
+                  style: TextStyle(fontSize: 18),
                 ),
+                Wrap(
+                  spacing: 8.0,
+                  children: [
+                    buildChoiceChip('Veg'),
+                    buildChoiceChip('Non-Veg'),
+                    buildChoiceChip('Both'),
+                  ],
+                ),
+
                 SizedBox(height: 10),
                 // show map here to select address
                 TextFormField(
@@ -196,16 +213,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                       style: TextStyle(fontSize: 30)),
                 ),
 
-                // TextFormField(
-                //   keyboardType: TextInputType.text,
-                //   style: TextStyle(fontSize: 20),
-                //   controller: foodImageUriController,
-                //   decoration: const InputDecoration(
-                //     labelText: "paste image url here",
-                //     prefixIcon: Icon(Icons.add_a_photo),
-                //   ),
-                // ),
-                // SizedBox(height: 20),
                 SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -301,49 +308,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     });
   }
 
-  // Future<LocationData?> _requestLocationPermission() async {
-  //   final location = Location();
-
-  //   bool _serviceEnabled;
-  //   PermissionStatus _permissionGranted;
-
-  //   // Check if location services are enabled
-  //   _serviceEnabled = await location.serviceEnabled();
-  //   if (!_serviceEnabled) {
-  //     _serviceEnabled = await location.requestService();
-  //     if (!_serviceEnabled) {
-  //       // Location services are not enabled, handle the scenario
-  //       return null;
-  //     }
-  //   }
-
-  //   // Check if the app has location permission
-  //   _permissionGranted = await location.hasPermission();
-  //   if (_permissionGranted == PermissionStatus.denied) {
-  //     _permissionGranted = await location.requestPermission();
-  //     if (_permissionGranted != PermissionStatus.granted) {
-  //       // Location permission not granted, handle the scenario
-  //       return null;
-  //     }
-  //   }
-
-  //   // Location services and permission are now enabled
-  //   // You can proceed with using the location
-  //   // get location here
-  //   final locationData = await location.getLocation();
-  //   print(locationData.latitude);
-  //   print(locationData.longitude);
-  //   print(locationData.accuracy);
-  //   print(locationData.altitude);
-  //   print(locationData.speed);
-  //   print(locationData.speedAccuracy);
-  //   print(locationData.heading);
-  //   print(locationData.time);
-  //   print(locationData.toString());
-
-  //   return locationData;
-  // }
-
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -386,7 +350,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     // get address here
     List<Placemark> placemark = await placemarkFromCoordinates(
         locationData.latitude, locationData.longitude);
-    print(placemark[0].name);
+    print(placemark);
     Placemark place = placemark[0];
 
     print(userAddress);
@@ -397,6 +361,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       userAddress =
           "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
       _controller.text = userAddress;
+      print(userAddress);
       // show toast here
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -406,5 +371,17 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     });
 
     return locationData;
+  }
+
+  Widget buildChoiceChip(String label) {
+    return ChoiceChip(
+      label: Text(label),
+      selected: selectedFoodType == label,
+      onSelected: (isSelected) {
+        setState(() {
+          selectedFoodType = isSelected ? label : '';
+        });
+      },
+    );
   }
 }
