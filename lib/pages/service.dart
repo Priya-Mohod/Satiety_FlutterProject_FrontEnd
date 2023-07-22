@@ -17,23 +17,37 @@ class Service {
       String foodAddress,
       String foodImageUri,
       String foodType,
-      File? image) async {
+      File? image,
+      double latitude,
+      double longitude) async {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://192.168.0.89:8080/addfood'));
 
-    // Add other form fields if needed
-    request.fields['foodName'] = foodName;
-    request.fields['foodDescription'] = foodDescription;
-    request.fields['foodQuantity'] = '$foodQuantity';
-    request.fields['foodAddress'] = foodAddress;
-    request.fields['foodType'] = foodType;
-
     // Create a MultipartFile from the file you want to upload
+    // Food Image - sent using multipart request
     File file = image!;
     var fileStream = http.ByteStream(file.openRead());
     var length = await file.length();
     var multipartFile = http.MultipartFile('file', fileStream, length,
         filename: path.basename(file.path));
+    // Food Name -
+    request.fields['foodName'] = foodName;
+    // Food Description -
+    request.fields['foodDescription'] = foodDescription;
+    // Food Quantity -
+    request.fields['foodQuantity'] = '$foodQuantity';
+    // Food Address -
+    request.fields['foodAddress'] = foodAddress;
+    // Food Food Type -
+    request.fields['foodType'] = foodType;
+    // Food Amount - Free / Chargeable
+    request.fields['foodAmount'] = '0.0';
+    // Veggies - Veg / Non-Veg / Vegan /  Both - TODO : Change the name of the field
+    request.fields['veggies'] = foodType;
+    // latitude -
+    request.fields['latitude'] = '$latitude';
+    // longitude -
+    request.fields['longitude'] = '$longitude';
 
     // Add the MultipartFile to the request
     request.files.add(multipartFile);
