@@ -9,23 +9,28 @@ import 'package:satietyfrontend/pages/OptionPage.dart';
 import 'package:satietyfrontend/pages/Register.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  // var firebaseApp = await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
+        ],
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.cyan,

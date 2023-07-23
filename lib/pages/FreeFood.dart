@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AddFreeFood extends StatefulWidget {
   const AddFreeFood({super.key});
@@ -25,19 +26,20 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   final _free_food_formfield = GlobalKey<FormState>();
   final foodNameController = TextEditingController();
   final foodDescriptionController = TextEditingController();
-  final foodQuantityController = TextEditingController();
-  final foodAddressController = TextEditingController();
-  final foodImageUriController = TextEditingController();
-  final foodTypeController = TextEditingController();
+  final foodAddressController =
+      TextEditingController(); // Just declared not used
+  final foodImageUriController =
+      TextEditingController(); // Just declared not used
   final customAllergyController = TextEditingController();
-
+  final foodAmountController = TextEditingController();
+  final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
   Service service = Service();
   Data data = Data();
 
   File? image;
   final picker = ImagePicker();
   bool showSpinner = false;
-  var locationData;
+  //var locationData;
 
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
@@ -45,7 +47,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   final TextEditingController _controller = TextEditingController();
   LatLng userCoordinates = LatLng(0.0, 0.0);
   int selectedFoodQuantity = 1;
-  String selectedFoodType = "Both";
+  String selectedFoodType = "Both"; // TODO:- Create enum for food type
   bool hasAllergyContent = false; // Variable to track Yes/No selection
   String selectedAllergy = ''; // Variable to store selected allergy content
   // List of allergy options for the dropdown
@@ -59,12 +61,14 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     'Others'
     // Add more unique allergy options as needed
   ];
+  bool applyChargesOnFood = false;
 
   // Set to store selected food allergies
   Set<String> selectedAllergies = {};
 
   // Variable to store user's custom allergy text
   String customAllergyText = '';
+  String allergyContentString = '';
 
   // Key to identify the allergy options area
   final _allergyOptionsKey = GlobalKey();
@@ -93,7 +97,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
             },
           ),
           title: const Text(
-            'Free Food',
+            'Add Food',
             style: TextStyle(
               color: Colors.black,
               fontSize: 40,
@@ -256,9 +260,17 @@ class _AddFreeFoodState extends State<AddFreeFood> {
 
                     SizedBox(height: 10),
 
+                    // Show Allergy option here - Yes/No
+                    // TODO :- devide this into a separate widget
                     Row(
                       children: [
-                        Text('Has Allergy Content?'),
+                        const Text(
+                          'Has Allergy Content?',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
                         SizedBox(width: 10),
                         DropdownButton<bool>(
                           value: hasAllergyContent,
@@ -272,7 +284,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                     ''; // Clear custom allergy text
                               } else {
                                 // Show allergy options when user selects 'Yes'
-                                _showAllergyOptions();
+                                _allergyOptionsKey;
                               }
                             });
                           },
@@ -324,9 +336,10 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                     controller: customAllergyController,
                                     decoration: const InputDecoration(
                                         labelText: 'Enter Custom Allergy'),
-                                    onChanged: (value) {
+                                    onChanged: (customAllergyText) {
                                       setState(() {
-                                        customAllergyText = value;
+                                        customAllergyText =
+                                            customAllergyController.text;
                                       });
                                     },
                                     onEditingComplete: () {
@@ -346,10 +359,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                 setState(() {
                                   if (value == true) {
                                     selectedAllergies.add(allergy);
-                                    // If "Others" was previously selected, remove it when another option is selected
-                                    selectedAllergies.remove('Others');
-                                    customAllergyText = '';
-                                    // Clear custom allergy text when other options are selected
                                   } else {
                                     selectedAllergies.remove(allergy);
                                   }
@@ -358,6 +367,61 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                             );
                           }
                         }).toList(),
+                      ),
+
+                    // Show Food Cost - Free of Cost / Chargeable
+                    // TODO :- devide this into a separate widget
+                    Row(
+                      children: [
+                        const Text(
+                          'Do you want to charge for the food?',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        DropdownButton<bool>(
+                          value: applyChargesOnFood,
+                          onChanged: (value) {
+                            setState(() {
+                              applyChargesOnFood = value!;
+                            });
+                          },
+                          items: const [
+                            DropdownMenuItem<bool>(
+                              value: true,
+                              child: Text('Yes'),
+                            ),
+                            DropdownMenuItem<bool>(
+                              value: false,
+                              child: Text('No'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    if (applyChargesOnFood == true)
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(fontSize: 20),
+                        controller: foodAmountController,
+                        decoration: const InputDecoration(
+                          labelText: "Food Amount",
+                          prefixIcon: Icon(
+                            Icons.attach_money,
+                            size: 30,
+                            color: Colors.cyan,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the food amount';
+                          }
+                          // You can add additional validation for the entered amount if needed.
+                          return null;
+                        },
                       ),
 
                     SizedBox(height: 10),
@@ -410,6 +474,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                           minimumSize: const Size(200, 50),
                         ),
                         onPressed: () async {
+                          // Check if user has selected an image
                           if (image == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -419,18 +484,63 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                             return;
                           }
 
-                          print(selectedAllergies);
+                          // Check if user has entered food name
+                          if (foodNameController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please enter food name'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Check if user has entered food description
+                          if (foodDescriptionController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please enter food description'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Check if user has selected food amount
+                          if (applyChargesOnFood == true &&
+                              foodAmountController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please enter food amount'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          allergyContentString = selectedAllergies.join(', ');
+                          if (selectedAllergies.contains('Others')) {
+                            // Add custom allergy text to the string if it is not empty
+                            print(customAllergyController.text);
+                            String customAllergyText_inController =
+                                customAllergyController.text;
+                            allergyContentString +=
+                                customAllergyText_inController;
+                            print(allergyContentString);
+                          }
+
+                          print(allergyContentString);
                           var response = await service.sendFoodDetailsWithFile(
-                            foodNameController.text,
-                            foodDescriptionController.text,
-                            selectedFoodQuantity,
-                            foodAddressController.text,
-                            foodImageUriController.text,
-                            foodTypeController.text,
-                            image,
-                            userCoordinates.latitude,
-                            userCoordinates.longitude,
-                          );
+                              foodNameController.text,
+                              foodDescriptionController.text,
+                              selectedFoodQuantity,
+                              foodAddressController.text,
+                              foodImageUriController.text,
+                              selectedFoodType,
+                              image,
+                              userCoordinates.latitude,
+                              userCoordinates.longitude,
+                              allergyContentString);
+
+                          // log event add food
+                          await logAddFoodEvent(foodNameController.text);
 
                           // show alert dialog on condition
                           if (response) {
@@ -597,77 +707,10 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     }
   }
 
-  // Function to show the allergy options
-  void _showAllergyOptions() {
-    final RenderBox? allergyOptionsBox =
-        _allergyOptionsKey.currentContext?.findRenderObject() as RenderBox?;
-
-    if (allergyOptionsBox != null) {
-      final overlay = Overlay.of(context);
-      _allergyOptionsOverlay = OverlayEntry(
-        builder: (context) => Positioned(
-          top: allergyOptionsBox.size.height,
-          right: 0,
-          child: Material(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: allergyOptions.map((allergy) {
-                  if (allergy == 'Others') {
-                    return Column(
-                      children: [
-                        CheckboxListTile(
-                          title: Text(allergy),
-                          value: selectedAllergies.contains(allergy),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value == true) {
-                                selectedAllergies.add(allergy);
-                              } else {
-                                selectedAllergies.remove(allergy);
-                              }
-                            });
-                          },
-                        ),
-                        if (selectedAllergies.contains(allergy))
-                          // Show text box only when "Others" is selected
-                          TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Enter Custom Allergy'),
-                            onChanged: (value) {
-                              setState(() {
-                                customAllergyText = value;
-                              });
-                            },
-                          ),
-                      ],
-                    );
-                  } else {
-                    return CheckboxListTile(
-                      title: Text(allergy),
-                      value: selectedAllergies.contains(allergy),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value == true) {
-                            selectedAllergies.add(allergy);
-                            // If "Others" was previously selected, remove it when another option is selected
-                            selectedAllergies.remove('Others');
-                            customAllergyText = '';
-                            // Clear custom allergy text when other options are selected
-                          } else {
-                            selectedAllergies.remove(allergy);
-                          }
-                        });
-                      },
-                    );
-                  }
-                }).toList(),
-              ),
-            ),
-          ),
-        ),
-      );
-      overlay.insert(_allergyOptionsOverlay!);
-    }
+  Future<void> logAddFoodEvent(String foodName) async {
+    await _firebaseAnalytics.logEvent(
+      name: 'add_food', // Event name, you can use any name you want
+      parameters: {'food_name': foodName},
+    );
   }
 }

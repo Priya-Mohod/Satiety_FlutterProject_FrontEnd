@@ -11,15 +11,17 @@ import 'dart:io';
 
 class Service {
   Future<bool> sendFoodDetailsWithFile(
-      String foodName,
-      String foodDescription,
-      int foodQuantity,
-      String foodAddress,
-      String foodImageUri,
-      String foodType,
-      File? image,
-      double latitude,
-      double longitude) async {
+    String foodName,
+    String foodDescription,
+    int foodQuantity,
+    String foodAddress, // Not Provided in code Yet
+    String foodImageUri, // Not Provided in code Yet
+    String foodType,
+    File? image,
+    double latitude,
+    double longitude,
+    String allergyString,
+  ) async {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://192.168.0.89:8080/addfood'));
 
@@ -38,16 +40,16 @@ class Service {
     request.fields['foodQuantity'] = '$foodQuantity';
     // Food Address -
     request.fields['foodAddress'] = foodAddress;
-    // Food Food Type -
+    // Food Food Type - // Veggies - Veg / Non-Veg / Vegan /
     request.fields['foodType'] = foodType;
     // Food Amount - Free / Chargeable
     request.fields['foodAmount'] = '0.0';
-    // Veggies - Veg / Non-Veg / Vegan /  Both - TODO : Change the name of the field
-    request.fields['veggies'] = foodType;
     // latitude -
     request.fields['latitude'] = '$latitude';
     // longitude -
     request.fields['longitude'] = '$longitude';
+    // Allergy -
+    request.fields['allergies'] = allergyString;
 
     // Add the MultipartFile to the request
     request.files.add(multipartFile);

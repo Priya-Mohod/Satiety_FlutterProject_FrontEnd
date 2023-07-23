@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1023007381747",
+    "firebase_url": "https://satietyapp-default-rtdb.firebaseio.com",
     "project_id": "satietyapp",
     "storage_bucket": "satietyapp.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "1023007381747-mp0oirpgmht1qgsoda6m9m7v0n2afg4l.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1023007381747-ahvolvc0e040la04i8blabso4a8kdp18.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.satietyfrontend"
+              }
             }
           ]
         }
