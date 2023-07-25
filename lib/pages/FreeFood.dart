@@ -133,16 +133,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                         IconButton(
                           color: Colors.cyan,
                           onPressed: _showImagePickerOptions,
-                          // () async {
-                          //   final pickedFile = await picker.pickImage(
-                          //     source: ImageSource.gallery,
-                          //     imageQuality: 80,
-                          //   );
-                          //   if (pickedFile != null) {
-                          //     image = File(pickedFile.path);
-                          //     setState(() {});
-                          //   }
-                          // },
                           icon: const Icon(Icons.add_a_photo, size: 50),
                         )
                       ],
