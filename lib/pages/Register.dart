@@ -4,7 +4,12 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Loginpage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:satietyfrontend/pages/service.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'ListView.dart';
 
 //create stateful widget called Register
 class Register extends StatefulWidget {
@@ -17,12 +22,23 @@ class Register extends StatefulWidget {
 // create state for Register
 class _RegisterState extends State<Register> {
   final _formfield = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
+  File? userImage; // User Image
+  final firstNameController = TextEditingController(); // First Name
+  final lastNameController = TextEditingController(); // Last Name
+  final passwordController = TextEditingController(); // Password
+  final confirmPasswordController = TextEditingController(); // Password
+  final phoneController = TextEditingController(); // Phone Number
+  TextEditingController emailController = TextEditingController(); // Email
+  final pincodeController = TextEditingController(); // Pincode
+  final addressController = TextEditingController(); // Address
+
   bool passwordVisible = true;
   bool isChecked = false;
+  bool isEmailValid = true; // Email Validation
+
+  Service service = Service();
+
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -41,26 +57,49 @@ class _RegisterState extends State<Register> {
       // create body for Register
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Form(
             key: _formfield,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Image.asset(
-                //   "images/a.png",
-                //   height: 150,
-                //   width: 150,
-                // ),
-                // const SizedBox(height: 50),
+                if (userImage != null)
+                  CircleAvatar(
+                    radius: 100,
+                    backgroundImage: FileImage(userImage!),
+                  ),
+                //  SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _showImagePickerOptions,
+                  child: Text('Select Image'),
+                ),
+                const SizedBox(height: 10),
+                // -- Last Name --
+                TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your name',
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your name";
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                // -- Email --
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Email",
                     prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
+                    errorText: isEmailValid
+                        ? null
+                        : 'Please enter a valid email address.',
+                    errorStyle: TextStyle(color: Colors.red),
                   ),
                   validator: (value) {
                     bool emailValidator =
@@ -74,38 +113,17 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: "Name",
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your name";
-                    }
-                  },
-                ),
-                const SizedBox(height: 10),
-                // show phone number as optional field
-
+                // -- Phone --
                 TextFormField(
                   keyboardType: TextInputType.phone,
                   controller: phoneController,
                   decoration: const InputDecoration(
                     labelText: "Phone",
                     prefixIcon: Icon(Icons.phone),
-                    border: OutlineInputBorder(),
                   ),
-                  // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return "Please enter your phone";
-                  //   }
-                  // },
                 ),
                 const SizedBox(height: 10),
+                // -- Password --
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
                   controller: passwordController,
@@ -125,7 +143,6 @@ class _RegisterState extends State<Register> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -134,7 +151,9 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 const SizedBox(height: 10),
+                // -- Confirm Password --
                 TextFormField(
+                  controller: confirmPasswordController,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -152,7 +171,6 @@ class _RegisterState extends State<Register> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -160,66 +178,137 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                // show check box for terms and conditions and privacy policy
-                // check box for terms and conditions
-                // show check box selected when user click on it
-                Row(
-                  children: const [
-                    Expanded(
-                      child: CheckBox(isChecked: false),
-                    ),
-                    // validator: (value) {
-                    //   if (value == false) {
-                    //     return "Please agree to the terms and conditions";
-                    //   }
-                    // },
-                    // ),
-                    // const Text("I agree to the "),
-                    // TextButton(
-                    //   onPressed: () {},
-                    //   child: const Text("Terms and Conditions"),
-                    // ),
-                  ],
+                const SizedBox(height: 10),
+                // -- Terms & condition --
+                CheckboxListTile(
+                  value: isChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  },
+                  title: Text('I agree to the terms and conditions'),
+                  controlAffinity: ListTileControlAffinity.leading,
                 ),
                 const SizedBox(height: 10),
+                // -- Register Button --
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formfield.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Processing Data'),
                         ),
                       );
+
+                      // check if password and confirm password are same
+                      if (passwordController.text !=
+                          confirmPasswordController.text) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Password and Confirm Password are not same'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      // check if user has selected terms and conditions
+                      if (isChecked == false) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Please agree to the terms and conditions'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      var response = await service.registerUser(
+                        userImage,
+                        firstNameController.text,
+                        lastNameController.text,
+                        passwordController.text,
+                        phoneController.text,
+                        emailController.text,
+                        pincodeController.text,
+                        addressController.text,
+                      );
+                      print(response);
+
+                      // show alert dialog on condition
+                      if (response) {
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Register'),
+                            content: const Text(
+                                'Registration Completed successfully'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginPage(),
+                                      ));
+                                  // TODO:- clear the form fields
+                                  // TODO:- clear the image
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Register'),
+                            content: const Text(
+                                'There was an error, please try again!'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // hide the alert dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
-                    final url = Uri.https(
-                        'satietyapp-default-rtdb.firebaseio.com',
-                        'registeredUser.json');
-                    http.post(
-                      url,
-                      headers: {'ContentType': 'application/json'},
-                      body: json.encode(
-                        {
-                          'email': emailController.text,
-                          'password': passwordController.text,
-                          'name': nameController.text,
-                          'phone': phoneController.text,
-                        },
-                      ),
-                    );
                   },
-                  autofocus: const CheckBox(isChecked: false).getIsChecked(),
+                  // autofocus: const CheckBox(isChecked: false).isChecked(),
                   child: const Text('Register'),
                 ),
                 const SizedBox(height: 10),
+                // -- Redirecting to Login Page --
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account?"),
+                    const Text("Already a part of Satiety family?",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        )),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/LoginPage');
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
                       },
-                      child: const Text("Login"),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                   ],
                 ),
@@ -230,50 +319,47 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-}
 
-// create checkbox from formfield to show terms and conditions and privacy policy
-class CheckBox extends StatefulWidget {
-  const CheckBox({super.key, required isChecked});
-  // provide status of checkbox to be selected or not
-
-  @override
-  State<CheckBox> createState() => _CheckBoxState();
-
-  // create function to get status of checkbox
-  bool getIsChecked() {
-    return _CheckBoxState().getIsChecked();
-  }
-}
-
-// create state for checkbox
-class _CheckBoxState extends State<CheckBox> {
-  bool isChecked = false;
-
-  @override
-  // make terms and conditions as link to open in browser
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: const Text("I agree to the "),
-      value: isChecked,
-      onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
-      },
-      controlAffinity: ListTileControlAffinity.leading,
-      // how to make Text as link to open in browser
-
-      subtitle: InkWell(
-          child: const Text(
-            "Terms and Conditions",
-            style: TextStyle(color: Color.fromARGB(255, 63, 75, 236)),
+  void _showImagePickerOptions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Gallery'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Camera'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          onTap: () => {
-                _launchURL(),
-              }),
-      activeColor: Colors.blue,
-      checkColor: Colors.white,
+        );
+      },
     );
   }
 
@@ -284,8 +370,35 @@ class _CheckBoxState extends State<CheckBox> {
     }
   }
 
-  // get isChecked value to be selected or not
-  bool getIsChecked() {
-    return isChecked;
+  void _validateEmail() {
+    // Get the entered email from the controller
+    String enteredEmail = emailController.text.trim();
+
+    // Check if the entered email is valid
+    isEmailValid = _isValidEmail(enteredEmail);
+
+    // Force the state to update and show the error message if needed
+    setState(() {});
+  }
+
+  bool _isValidEmail(String email) {
+    // Use a regular expression to check the email pattern
+    // This pattern allows most valid email formats
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    return emailRegex.hasMatch(email);
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 80,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        userImage = File(pickedFile.path);
+      });
+    }
   }
 }

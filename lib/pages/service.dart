@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 
 class Service {
+  String url = "http://192.168.0.89:8080";
+
   Future<bool> sendFoodDetailsWithFile(
     String foodName,
     String foodDescription,
@@ -22,8 +24,7 @@ class Service {
     double longitude,
     String allergyString,
   ) async {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('http://192.168.0.89:8080/addfood'));
+    var request = http.MultipartRequest('POST', Uri.parse('$url/addfood'));
 
     // Create a MultipartFile from the file you want to upload
     // Food Image - sent using multipart request
@@ -53,6 +54,62 @@ class Service {
 
     // Add the MultipartFile to the request
     request.files.add(multipartFile);
+
+    // Send the form data request
+    print(request);
+    var response = await request.send();
+
+    // Handle the response
+    if (response.statusCode == 200) {
+      // File upload successful
+      print('Food data uploaded successfully');
+      return true;
+      // send response back to caller function
+    } else {
+      // File upload failed
+      print('Food data failed with status code ${response.statusCode}');
+      return false;
+    }
+  }
+
+  Future<bool> registerUser(
+      File? userImage,
+      String firstName,
+      String lastName,
+      String password,
+      String mobile,
+      String email,
+      String pincode,
+      String address) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$url/registerUser'));
+    var multipartFile;
+    // User Image - sent using multipart request
+    if (userImage != null) {
+      File file = userImage!;
+      var fileStream = http.ByteStream(file.openRead());
+      var length = await file.length();
+      multipartFile = http.MultipartFile('file', fileStream, length,
+          filename: path.basename(file.path));
+    }
+    // User Firstname -
+    request.fields['firstName'] = firstName;
+    // User Lastname -
+    request.fields['lastName'] = lastName;
+    // User Password -
+    request.fields['password'] = password;
+    // User Mobile -
+    request.fields['mobile'] = mobile;
+    // User Email -
+    request.fields['email'] = email;
+    // User Pincode -
+    request.fields['pincode'] = pincode;
+    // User Address -
+    request.fields['address'] = address;
+
+    // Add the MultipartFile to the request
+    if (multipartFile != null) {
+      request.files.add(multipartFile);
+    }
 
     // Send the form data request
     print(request);

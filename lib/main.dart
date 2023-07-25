@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         //home: const Register(),
         //home: ListViewPage(),
-        home: AddFreeFood(),
+        home: LoginPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),
@@ -46,6 +46,8 @@ class MyApp extends StatelessWidget {
           '/ForumPage': (context) => ForumPage(),
           '/MessegePage': (context) => MessegePage(),
           '/ChargeableFood': (context) => ChargeableFood(),
+          '/Register': (context) => Register(),
+          '/Login': (context) => LoginPage(),
         });
   }
 }

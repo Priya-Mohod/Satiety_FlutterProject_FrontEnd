@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/ListView.dart';
+import 'package:satietyfrontend/pages/Register.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,19 +40,12 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  "images/a.png",
-                  height: 150,
-                  width: 150,
-                ),
-                SizedBox(height: 50),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   decoration: const InputDecoration(
                     labelText: "Email",
                     prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
                   ),
                   validator: (value) {
                     bool emailValidator =
@@ -73,7 +67,6 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
                     suffix: InkWell(
                       onTap: () {
                         setState(() {
@@ -156,17 +149,24 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account?",
+                    const Text("Not a part of Satiety family yet?",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
                         )),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Register(),
+                          ),
+                        );
+                      },
                       child: const Text(
-                        "Sign Up",
+                        "Join here",
                         style: TextStyle(
-                          color: Colors.purple,
+                          color: Colors.cyan,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
