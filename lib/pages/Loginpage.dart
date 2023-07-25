@@ -105,26 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Column(
                     children: [
-                      /*ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.cyan,
-                          foregroundColor: Colors.black,
-                          shadowColor: Colors.red,
-                          elevation: 15,
-                          minimumSize: const Size(350, 100),
-                        ),
-                        onPressed: () {
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListViewPage(),
-                              ));*/
-                        },
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(fontSize: 40),
-                        ),
-                      ),*/
                       Container(
                         height: 50,
                         decoration: BoxDecoration(

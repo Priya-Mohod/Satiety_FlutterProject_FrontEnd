@@ -132,16 +132,17 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                         // SizedBox(height: 10),
                         IconButton(
                           color: Colors.cyan,
-                          onPressed: () async {
-                            final pickedFile = await picker.pickImage(
-                              source: ImageSource.gallery,
-                              imageQuality: 80,
-                            );
-                            if (pickedFile != null) {
-                              image = File(pickedFile.path);
-                              setState(() {});
-                            }
-                          },
+                          onPressed: _showImagePickerOptions,
+                          // () async {
+                          //   final pickedFile = await picker.pickImage(
+                          //     source: ImageSource.gallery,
+                          //     imageQuality: 80,
+                          //   );
+                          //   if (pickedFile != null) {
+                          //     image = File(pickedFile.path);
+                          //     setState(() {});
+                          //   }
+                          // },
                           icon: const Icon(Icons.add_a_photo, size: 50),
                         )
                       ],
@@ -712,5 +713,61 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       name: 'add_food', // Event name, you can use any name you want
       parameters: {'food_name': foodName},
     );
+  }
+
+  void _showImagePickerOptions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Gallery'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Camera'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 80,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
   }
 }

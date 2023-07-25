@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         //home: const Register(),
         //home: ListViewPage(),
-        home: LoginPage(),
+        home: AddFreeFood(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),
