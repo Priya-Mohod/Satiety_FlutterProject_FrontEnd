@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
@@ -126,5 +127,19 @@ class Service {
       print('Food data failed with status code ${response.statusCode}');
       return false;
     }
+  }
+
+  Future<Response?> fetchFoodData() async {
+    try {
+      // Replace this URL with the actual URL of your server
+      final response =
+          await http.get(Uri.parse('http://192.168.0.89:8080/getAllFood'));
+      return response;
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+    }
+
+    return null;
   }
 }

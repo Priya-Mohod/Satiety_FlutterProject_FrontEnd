@@ -4,7 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-
+import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 
 class ListViewPage extends StatefulWidget {
@@ -19,21 +20,19 @@ Map mapData = {};
 List allData = [];
 
 class _ListViewPageState extends State<ListViewPage> {
-  Future getData() async {
-    var url = Uri.parse('http://192.168.0.89:8080/getall');
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      setState(() {
-        //getdata = response.body;
-        allData = json.decode(response.body);
-      });
-    }
-  }
-
   @override
   void initState() {
-    getData();
     super.initState();
+    var result =
+        Provider.of<FoodListViewModel>(context, listen: false).fetchFoodData();
+    if (result == false) {
+      // show snackbar
+      var showSnackBar = ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to fetch data'),
+        ),
+      );
+    }
   }
 
   void _onItemTapped(int index) {
@@ -47,6 +46,8 @@ class _ListViewPageState extends State<ListViewPage> {
   //Data data = Data();
   @override
   Widget build(BuildContext context) {
+    // Get the foodList from the FoodListViewModel
+    final foodList = Provider.of<FoodListViewModel>(context).foodList;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -101,95 +102,128 @@ class _ListViewPageState extends State<ListViewPage> {
           }
         },
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Container(
-                  height: 150,
-                  width: 400,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.cyan[100],
+      body: Consumer<FoodListViewModel>(
+        builder: (context, foodListViewModel, child) {
+          final foodList = foodListViewModel.foodList;
+
+          return ListView.builder(
+            itemCount: foodList.length,
+            itemBuilder: (context, index) {
+              final foodItem = foodList[index];
+              return Padding(
+                padding: const EdgeInsets.all(
+                    4.0), // Add padding here as per your requirement
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        15.0), // Adjust the value as needed
+                    side: const BorderSide(
+                        color: Colors.grey,
+                        width: 1.0), // Add border color and width
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.network(
-                        allData[index]['freeFoodImageUrl'],
-                        height: 100,
-                        width: 100,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            color: Colors.cyanAccent[400],
-                            height: 35,
-                            width: 280,
-                            child: Text(
-                              allData[index]['freeFoodName'].toString(),
-                              textDirection: TextDirection.rtl,
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            color: Color.fromARGB(255, 104, 213, 219),
-                            height: 100,
-                            width: 280,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  allData[index]['freeFoodDescription']
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Quantity: ${allData[index]['freeFoodQuantity'].toString()}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Address: ${allData[index]['freeFoodAddress'].toString()}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  elevation: 5,
+                  child: ListTile(
+                    leading: Icon(Icons.fastfood),
+                    title: Text(foodItem.foodName),
+                    subtitle: Text('${foodItem.foodDescription}'),
+                    trailing: Text('Quantity: ${foodItem.foodQuantity}'),
+                    // Add more widgets for other food details
                   ),
-                )
-              ],
-            ),
+                ),
+              );
+            },
           );
         },
-        itemCount: allData.length,
       ),
+      // body: ListView.builder(
+      //   itemBuilder: (context, index) {
+      //     return Container(
+      //       child: Column(
+      //         mainAxisAlignment: MainAxisAlignment.start,
+      //         children: [
+      //           SizedBox(height: 10),
+      //           Container(
+      //             height: 150,
+      //             width: 400,
+      //             decoration: BoxDecoration(
+      //               border: Border.all(
+      //                 color: Colors.black,
+      //                 width: 2,
+      //               ),
+      //               borderRadius: BorderRadius.circular(20),
+      //               color: Colors.cyan[100],
+      //             ),
+      //             child: Row(
+      //               mainAxisAlignment: MainAxisAlignment.start,
+      //               children: [
+      //                 Image.network(
+      //                   allData[index]['foodImageUri'],
+      //                   height: 100,
+      //                   width: 100,
+      //                 ),
+      //                 Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.end,
+      //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                   children: [
+      //                     Container(
+      //                       alignment: Alignment.centerLeft,
+      //                       color: Colors.cyanAccent[400],
+      //                       height: 35,
+      //                       width: 280,
+      //                       child: Text(
+      //                         allData[index]['freeFoodName'].toString(),
+      //                         textDirection: TextDirection.rtl,
+      //                         style: const TextStyle(
+      //                           fontSize: 30,
+      //                           fontWeight: FontWeight.bold,
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     Container(
+      //                       margin: const EdgeInsets.only(left: 10),
+      //                       color: Color.fromARGB(255, 104, 213, 219),
+      //                       height: 100,
+      //                       width: 280,
+      //                       child: Column(
+      //                         crossAxisAlignment: CrossAxisAlignment.start,
+      //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                         children: [
+      //                           Text(
+      //                             allData[index]['freeFoodDescription']
+      //                                 .toString(),
+      //                             style: const TextStyle(
+      //                               fontSize: 20,
+      //                               fontWeight: FontWeight.bold,
+      //                             ),
+      //                           ),
+      //                           Text(
+      //                             'Quantity: ${allData[index]['freeFoodQuantity'].toString()}',
+      //                             style: const TextStyle(
+      //                               fontSize: 20,
+      //                               fontWeight: FontWeight.bold,
+      //                             ),
+      //                           ),
+      //                           Text(
+      //                             'Address: ${allData[index]['freeFoodAddress'].toString()}',
+      //                             style: const TextStyle(
+      //                               fontSize: 20,
+      //                               fontWeight: FontWeight.bold,
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ],
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     );
+      //   },
+      //   itemCount: allData.length,
+      // ),
     );
   }
 }

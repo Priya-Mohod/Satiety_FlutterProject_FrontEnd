@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Chargeablefood.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
-import 'package:satietyfrontend/pages/FreeFood.dart';
-import 'package:satietyfrontend/pages/Loginpage.dart';
-import 'package:satietyfrontend/pages/ListView.dart';
+import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/Loginpage.dart';
+import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/OptionPage.dart';
-import 'package:satietyfrontend/pages/Register.dart';
+import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:provider/provider.dart';
+import 'pages/ViewModels/FoodListViewModel.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +21,13 @@ void main() async {
   // var firebaseApp = await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
-  runApp(MyApp());
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => FoodListViewModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +47,7 @@ class MyApp extends StatelessWidget {
         ),
         //home: const Register(),
         //home: ListViewPage(),
-        home: AddFreeFood(),
+        home: ListViewPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),

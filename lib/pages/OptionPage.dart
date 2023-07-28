@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Chargeablefood.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
-import 'package:satietyfrontend/pages/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 
 class OptionPage extends StatefulWidget {
   const OptionPage({super.key});

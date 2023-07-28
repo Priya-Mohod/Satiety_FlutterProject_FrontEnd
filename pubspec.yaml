@@ -46,6 +46,8 @@ dependencies:
   geocoding:
   firebase_core: 
   firebase_analytics: ^10.4.4 
+  firebase_crashlytics: 
+  provider: 
 
 dev_dependencies:
   flutter_test:

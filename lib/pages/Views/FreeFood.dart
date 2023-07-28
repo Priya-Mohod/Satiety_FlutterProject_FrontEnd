@@ -5,9 +5,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:satietyfrontend/pages/ListView.dart';
+import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/getData.dart';
-import 'package:satietyfrontend/pages/service.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -430,7 +430,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                     // Ask user to turn on location if not turned on
 
                     // Add Apple Maps here
-
                     SizedBox(
                       height: 200,
                       child: GoogleMap(
@@ -544,7 +543,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                 actions: [
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>

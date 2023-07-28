@@ -4,9 +4,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:satietyfrontend/pages/Loginpage.dart';
+import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:satietyfrontend/pages/service.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'ListView.dart';
@@ -147,6 +147,8 @@ class _RegisterState extends State<Register> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter your password";
+                    } else if (value.length < 6) {
+                      return "Password must be at least 6 characters";
                     }
                   },
                 ),
