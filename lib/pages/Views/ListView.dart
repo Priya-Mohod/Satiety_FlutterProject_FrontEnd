@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -6,6 +8,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
+import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 
 class ListViewPage extends StatefulWidget {
@@ -111,23 +114,73 @@ class _ListViewPageState extends State<ListViewPage> {
             itemBuilder: (context, index) {
               final foodItem = foodList[index];
               return Padding(
-                padding: const EdgeInsets.all(
-                    4.0), // Add padding here as per your requirement
+                padding: const EdgeInsets.only(top: 10),
+                // Add padding here as per your requirement
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        15.0), // Adjust the value as needed
+                        10.0), // Adjust the value as needed
                     side: const BorderSide(
-                        color: Colors.grey,
+                        color: Color.fromARGB(255, 128, 172, 177),
                         width: 1.0), // Add border color and width
                   ),
                   elevation: 5,
-                  child: ListTile(
-                    leading: Icon(Icons.fastfood),
-                    title: Text(foodItem.foodName),
-                    subtitle: Text('${foodItem.foodDescription}'),
-                    trailing: Text('Quantity: ${foodItem.foodQuantity}'),
-                    // Add more widgets for other food details
+                  child: Container(
+                    height: 130,
+                    child: ListTile(
+                      leading: Image.network(
+                        foodItem.foodSignedUrl,
+                        height: 50,
+                        width: 50,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'images/a.png',
+                            height: 50,
+                            width: 50,
+                          );
+                        },
+                      ),
+                      title: Text(foodItem.foodName,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          )),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(children: const [
+                          Icon(Icons.account_circle, size: 40),
+                          Text('username',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ]),
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Icon(Icons.location_on_outlined, size: 30),
+                          Text('1.5 km',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ],
+                      ),
+
+                      // Add more widgets for other food details
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FoodDetails(foodItem: foodList[index]),
+                            ));
+                      },
+                    ),
                   ),
                 ),
               );
@@ -135,6 +188,14 @@ class _ListViewPageState extends State<ListViewPage> {
           );
         },
       ),
+    );
+  }
+}
+
+
+
+
+/*
       // body: ListView.builder(
       //   itemBuilder: (context, index) {
       //     return Container(
@@ -228,7 +289,7 @@ class _ListViewPageState extends State<ListViewPage> {
   }
 }
 
-/*
+
               Padding(
                   padding: EdgeInsets.all(4),
                   child: Image.asset('images/a.png'),

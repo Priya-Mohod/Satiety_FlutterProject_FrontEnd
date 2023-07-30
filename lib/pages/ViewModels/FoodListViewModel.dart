@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +30,7 @@ class FoodListViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       // Handle any exceptions
-      // print('Exception: $e',StackTrace);
+      print('Exception: $e');
       // FirebaseCrashlytics.instance.recordError(e, stackTrace);
       return false;
     }
