@@ -166,54 +166,31 @@ class Service {
   }
 
   // TODO - Check Email Exists
-  Future<Response?> checkUserEmailExist(String email) async {
-    // Make server call to check if email exists
-    // If email exists return true
-    // else return false
+  Future<bool> checkUserEmailExist(String email) async {
     try {
-      // Replace this URL with the actual URL of your server
-      final response = await http.post(
-        Uri.parse('$url/getUserByEmail'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, String>{'email': email},
-        ),
-      );
-      print(response.body);
-      return response;
+      var request =
+          http.MultipartRequest('POST', Uri.parse('$url/getUserByEmail'));
+      request.fields['email'] = email;
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       // Handle any exceptions
       print('Exception: $e');
+      return false;
     }
-
-    return null;
   }
 
   // Verify User OTP using Email
   Future<bool> verifyUserOTP(String email, int otp) async {
-    // Make server call to check if email exists
-    // If email exists return true
-    // else return false
-    // Replace this URL with the actual URL of your server
-    // var requestBody = jsonEncode({
-    //   'email': email,
-    //   'emailOtp': otp,
-    // });
     try {
-      // final response = await http.post(Uri.parse('$url/verifyUserEmail'),
-      //     headers: {'Content-Type': 'application/json'}, body: requestBody);
-      // Create the request body
       var request =
           http.MultipartRequest('POST', Uri.parse('$url/verifyUserEmail'));
-      // Add the string parameter 'email' to the request
       request.fields['email'] = email;
-
-      // Add the integer parameter 'emailOtp' to the request
       request.fields['emailOtp'] = otp.toString();
-
-      // Send the request and get the response
       var response = await request.send();
       print(response.statusCode);
       if (response.statusCode == 200) {

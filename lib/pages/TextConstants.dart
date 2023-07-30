@@ -8,4 +8,7 @@ class TextConstants {
   static String otp_validation_submit_button = 'Submit OTP';
   static String otp_validation_error_message =
       'Error occurred while verifying OTP, please try again.';
+  static String exception_error = 'Error connecting server, please try again';
+  static String email_exists_message =
+      'Email already exists, please try again with different email';
 }
