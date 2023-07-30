@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
+import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -109,6 +110,14 @@ class _RegisterState extends State<Register> {
                       return "Please enter your email";
                     } else if (!emailValidator) {
                       return "Please enter a valid email";
+                    }
+                  },
+                  onEditingComplete: () {
+                    // -- TODO: Check if email already exists
+                    if (checkForEmailExist(emailController.text) == true) {
+                      setState(() {
+                        isEmailValid = false;
+                      });
                     }
                   },
                 ),
@@ -250,10 +259,11 @@ class _RegisterState extends State<Register> {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => LoginPage(),
+                                        builder: (context) => ValidateOTP(
+                                            userEmail: emailController.text),
                                       ));
                                   // TODO:- clear the form fields
                                   // TODO:- clear the image
@@ -372,15 +382,15 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  void _validateEmail() {
-    // Get the entered email from the controller
-    String enteredEmail = emailController.text.trim();
-
-    // Check if the entered email is valid
-    isEmailValid = _isValidEmail(enteredEmail);
-
-    // Force the state to update and show the error message if needed
-    setState(() {});
+  bool checkForEmailExist(String email) {
+    // Make server call to check if email already exists
+    var result = service.checkUserEmailExist(email);
+    if (result == true) {
+      return true;
+    } else {
+      return false;
+    }
+    print(result);
   }
 
   bool _isValidEmail(String email) {

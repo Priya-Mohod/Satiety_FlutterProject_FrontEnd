@@ -7,6 +7,7 @@ import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/OptionPage.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
+import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         //home: const Register(),
         //home: ListViewPage(),
-        home: ListViewPage(),
+        home: Register(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
           '/ChargeableFood': (context) => ChargeableFood(),
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
+          '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
         });
   }
 }
