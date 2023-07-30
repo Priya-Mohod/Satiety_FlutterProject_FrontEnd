@@ -13,6 +13,28 @@ import 'dart:io';
 class Service {
   String url = "http://192.168.0.89:8080";
 
+  // -- Login User
+  Future<Response?> loginUser(String email, String password) async {
+    try {
+      // Replace this URL with the actual URL of your server
+      final response = await http.post(
+        Uri.parse('$url/loginUser'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{'email': email, 'password': password},
+        ),
+      );
+      return response;
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+    }
+
+    return null;
+  }
+
   Future<bool> sendFoodDetailsWithFile(
     String foodName,
     String foodDescription,
@@ -141,5 +163,46 @@ class Service {
     }
 
     return null;
+  }
+
+  // TODO - Check Email Exists
+  Future<bool> checkUserEmailExist(String email) async {
+    try {
+      var request =
+          http.MultipartRequest('POST', Uri.parse('$url/getUserByEmail'));
+      request.fields['email'] = email;
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+      return false;
+    }
+  }
+
+  // Verify User OTP using Email
+  Future<bool> verifyUserOTP(String email, int otp) async {
+    try {
+      var request =
+          http.MultipartRequest('POST', Uri.parse('$url/verifyUserEmail'));
+      request.fields['email'] = email;
+      request.fields['emailOtp'] = otp.toString();
+      var response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
   }
 }

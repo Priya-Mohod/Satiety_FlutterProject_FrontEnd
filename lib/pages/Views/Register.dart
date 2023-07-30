@@ -4,12 +4,16 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
+import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../TextConstants.dart';
 import 'ListView.dart';
+import 'SnackbarHelper.dart';
 
 //create stateful widget called Register
 class Register extends StatefulWidget {
@@ -22,6 +26,8 @@ class Register extends StatefulWidget {
 // create state for Register
 class _RegisterState extends State<Register> {
   final _formfield = GlobalKey<FormState>();
+  GlobalKey<FormFieldState<String>> _emailField =
+      GlobalKey<FormFieldState<String>>();
   File? userImage; // User Image
   final firstNameController = TextEditingController(); // First Name
   final lastNameController = TextEditingController(); // Last Name
@@ -34,6 +40,7 @@ class _RegisterState extends State<Register> {
 
   bool passwordVisible = true;
   bool isChecked = false;
+  bool isEmailExists = true; // Email Validation
   bool isEmailValid = true; // Email Validation
 
   Service service = Service();
@@ -92,6 +99,7 @@ class _RegisterState extends State<Register> {
                 // -- Email --
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  key: _emailField,
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
@@ -102,6 +110,10 @@ class _RegisterState extends State<Register> {
                     errorStyle: TextStyle(color: Colors.red),
                   ),
                   validator: (value) {
+                    if (isEmailExists) {
+                      return TextConstants.email_exists_message;
+                    }
+
                     bool emailValidator =
                         RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                             .hasMatch(value!);
@@ -109,6 +121,21 @@ class _RegisterState extends State<Register> {
                       return "Please enter your email";
                     } else if (!emailValidator) {
                       return "Please enter a valid email";
+                    }
+                  },
+                  onChanged: (value) => {
+                    isEmailExists = false,
+                    setState(() {
+                      _emailField.currentState!.validate();
+                    })
+                  },
+                  onEditingComplete: () async {
+                    // -- TODO: Check if email already exists
+                    if (await _isEmailExists(emailController.text)) {
+                      isEmailExists = true;
+                      setState(() {
+                        _emailField.currentState!.validate();
+                      });
                     }
                   },
                 ),
@@ -250,10 +277,11 @@ class _RegisterState extends State<Register> {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => LoginPage(),
+                                        builder: (context) => ValidateOTP(
+                                            userEmail: emailController.text),
                                       ));
                                   // TODO:- clear the form fields
                                   // TODO:- clear the image
@@ -372,15 +400,21 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  void _validateEmail() {
-    // Get the entered email from the controller
-    String enteredEmail = emailController.text.trim();
-
-    // Check if the entered email is valid
-    isEmailValid = _isValidEmail(enteredEmail);
-
-    // Force the state to update and show the error message if needed
-    setState(() {});
+  Future<bool> _isEmailExists(String email) async {
+    // Make server call to check if email already exists
+    /* TODO : - Check for response 
+    var response = await service.checkUserEmailExist(email);
+    if (response != null && response.statusCode == 200) {
+      return true;
+    } else if (response != null && response.statusCode != 200) {
+      return false;
+    } else {
+      // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, TextConstants.exception_error);
+      return false;
+    }*/
+    var response = await service.checkUserEmailExist(email);
+    return response;
   }
 
   bool _isValidEmail(String email) {
