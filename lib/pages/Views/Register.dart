@@ -55,10 +55,10 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Join Satiety',
-          style: TextStyle(
-            color: Colors.black,
+        title: Text(
+          TextConstants.register_screen_title,
+          style: const TextStyle(
+            color: Colors.white,
             fontSize: 40,
             fontWeight: FontWeight.bold,
           ),
@@ -81,19 +81,9 @@ class _RegisterState extends State<Register> {
                     backgroundImage: FileImage(userImage!),
                   ),
                 //  SizedBox(height: 20),
-                CircleAvatar(
-                  radius: 30.0, // Adjust the radius to your desired size
-                  backgroundColor:
-                      Colors.cyan, // Customize the background color
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add_a_photo,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    onPressed: _showImagePickerOptions,
-                    //child: Text('Select Image'),
-                  ),
+                ElevatedButton(
+                  onPressed: _showImagePickerOptions,
+                  child: Text('Select Image'),
                 ),
                 const SizedBox(height: 10),
                 // -- Last Name --
