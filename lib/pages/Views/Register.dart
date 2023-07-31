@@ -86,7 +86,7 @@ class _RegisterState extends State<Register> {
                   backgroundColor:
                       Colors.cyan, // Customize the background color
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add_a_photo,
                       color: Colors.white,
                       size: 30,
@@ -99,6 +99,7 @@ class _RegisterState extends State<Register> {
                 // -- Last Name --
                 TextFormField(
                   controller: lastNameController,
+                  style: TextStyle(fontSize: 20),
                   decoration: const InputDecoration(
                     hintText: 'Enter your name',
                     prefixIcon: Icon(Icons.person),
@@ -113,11 +114,20 @@ class _RegisterState extends State<Register> {
                 // -- Email --
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(fontSize: 20),
                   key: _emailField,
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    prefixIcon: const Icon(Icons.email),
+                    suffixText: '@gmail.com',
+                    suffixStyle: const TextStyle(
+                        color: Colors.black,
+                        //fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                    prefixIcon: const Icon(
+                      Icons.email,
+                      size: 30,
+                    ),
                     errorText: isEmailValid
                         ? null
                         : TextConstants.register_email_invalid,
@@ -153,10 +163,12 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 //devide
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 5),
                 // -- Phone --
                 TextFormField(
                   keyboardType: TextInputType.phone,
+                  style: TextStyle(fontSize: 20),
                   controller: phoneController,
                   key: _phoneField,
                   maxLength: 10,
@@ -199,10 +211,10 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                const SizedBox(height: 10),
                 // -- Password --
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
+                  style: TextStyle(fontSize: 20),
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -233,6 +245,7 @@ class _RegisterState extends State<Register> {
                 // -- Confirm Password --
                 TextFormField(
                   controller: confirmPasswordController,
+                  style: TextStyle(fontSize: 20),
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -257,7 +270,7 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 // -- Terms & condition --
                 CheckboxListTile(
                   value: isChecked,
@@ -266,17 +279,31 @@ class _RegisterState extends State<Register> {
                       isChecked = value!;
                     });
                   },
-                  title: Text('I agree to the terms and conditions'),
+                  title: const Text(
+                    'I agree to the terms and conditions',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
                 const SizedBox(height: 10),
                 // -- Register Button --
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 60, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
                   onPressed: () async {
                     if (_formfield.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Processing Data'),
+                          content: Text('Processing Data',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              )),
                         ),
                       );
 
@@ -321,7 +348,12 @@ class _RegisterState extends State<Register> {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: const Text('Register'),
+                            title: const Text('Register',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                )),
                             content: const Text(
                                 'Registration Completed successfully'),
                             actions: [
@@ -364,7 +396,12 @@ class _RegisterState extends State<Register> {
                     }
                   },
                   // autofocus: const CheckBox(isChecked: false).isChecked(),
-                  child: const Text('Register'),
+                  child: const Text('Register',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      )),
                 ),
                 const SizedBox(height: 10),
                 // -- Redirecting to Login Page --
@@ -374,7 +411,7 @@ class _RegisterState extends State<Register> {
                     const Text("Already a part of Satiety family?",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 20,
                         )),
                     TextButton(
                       onPressed: () {
@@ -387,7 +424,7 @@ class _RegisterState extends State<Register> {
                       },
                       child: const Text(
                         "Login",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
                   ],
