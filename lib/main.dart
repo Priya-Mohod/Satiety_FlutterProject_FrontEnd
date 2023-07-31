@@ -7,6 +7,7 @@ import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/OptionPage.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
+import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:provider/provider.dart';
 import 'pages/ViewModels/FoodListViewModel.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,10 @@ void main() async {
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  await Future.delayed(const Duration(seconds: 2));
+  FlutterNativeSplash.remove();
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => FoodListViewModel(),
@@ -41,14 +47,14 @@ class MyApp extends StatelessWidget {
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
         ],
-        title: 'Flutter Demo',
+        title: 'Satiety',
         theme: ThemeData(
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        //home: const Register(),
+        home: LoginPage(),
         //home: ListViewPage(),
-        home: Register(),
+        //home: SplashScreen(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),
