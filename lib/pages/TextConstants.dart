@@ -14,6 +14,7 @@ class TextConstants {
       'Error occurred while verifying OTP, please try again.';
 
   // -- Register Screen
+  static String register_screen_title = 'Join Satiety';
   static String register_email_exists_message =
       'Email already exists, please try again with different email';
   static String register_email_invalid = 'Please enter a valid email address';
