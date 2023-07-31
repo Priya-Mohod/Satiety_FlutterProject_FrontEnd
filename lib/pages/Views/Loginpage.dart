@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.black,
             fontSize: 40,
             fontWeight: FontWeight.bold,
+            fontFamily: 'Pacifico',
           ),
         ),
         centerTitle: true,
@@ -126,13 +127,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text("Not a part of Satiety family yet?",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 22,
                         )),
                     TextButton(
                       onPressed: () {
@@ -146,8 +147,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         "Join here",
                         style: TextStyle(
-                          color: Colors.cyan,
-                          fontSize: 20,
+                          color: Color.fromARGB(255, 32, 89, 93),
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

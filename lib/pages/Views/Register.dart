@@ -81,10 +81,10 @@ class _RegisterState extends State<Register> {
                     backgroundImage: FileImage(userImage!),
                   ),
                 //  SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _showImagePickerOptions,
-                  child: Text('Select Image'),
-                ),
+                // ElevatedButton(
+                //   onPressed: _showImagePickerOptions,
+                //   child: Text('Select Image'),
+                // ),
                 const SizedBox(height: 10),
                 // -- Last Name --
                 TextFormField(
