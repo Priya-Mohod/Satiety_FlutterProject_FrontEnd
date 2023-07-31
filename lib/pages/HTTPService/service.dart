@@ -184,6 +184,24 @@ class Service {
     }
   }
 
+  Future<bool> checkUserPhoneNumber(String phone) async {
+    try {
+      var request =
+          http.MultipartRequest('POST', Uri.parse('$url/getUserByMobile'));
+      request.fields['mobile'] = phone;
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+      return false;
+    }
+  }
+
   // Verify User OTP using Email
   Future<bool> verifyUserOTP(String email, int otp) async {
     try {
