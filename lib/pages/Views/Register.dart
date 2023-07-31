@@ -55,10 +55,10 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Join Satiety',
-          style: TextStyle(
-            color: Colors.black,
+        title: Text(
+          TextConstants.register_screen_title,
+          style: const TextStyle(
+            color: Colors.white,
             fontSize: 40,
             fontWeight: FontWeight.bold,
           ),
@@ -83,7 +83,8 @@ class _RegisterState extends State<Register> {
                 //  SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _showImagePickerOptions,
-                  child: Text('Select Image'),
+                  child: const Text('Select Image',
+                      style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 10),
                 // -- Last Name --
