@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        home: LoginPage(),
+        home: const LoginPage(),
         //home: ListViewPage(),
         //home: SplashScreen(),
         routes: {
