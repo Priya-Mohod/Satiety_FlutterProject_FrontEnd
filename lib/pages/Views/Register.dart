@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 // import 'dart:html';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -28,6 +29,8 @@ class _RegisterState extends State<Register> {
   final _formfield = GlobalKey<FormState>();
   GlobalKey<FormFieldState<String>> _emailField =
       GlobalKey<FormFieldState<String>>();
+  GlobalKey<FormFieldState<String>> _phoneField =
+      GlobalKey<FormFieldState<String>>();
   File? userImage; // User Image
   final firstNameController = TextEditingController(); // First Name
   final lastNameController = TextEditingController(); // Last Name
@@ -40,8 +43,9 @@ class _RegisterState extends State<Register> {
 
   bool passwordVisible = true;
   bool isChecked = false;
-  bool isEmailExists = true; // Email Validation
+  bool isEmailExists = false; // Email Validation
   bool isEmailValid = true; // Email Validation
+  bool isPhoneExists = false; // Phone Validation
 
   Service service = Service();
 
@@ -106,21 +110,21 @@ class _RegisterState extends State<Register> {
                     prefixIcon: Icon(Icons.email),
                     errorText: isEmailValid
                         ? null
-                        : 'Please enter a valid email address.',
+                        : TextConstants.register_email_invalid,
                     errorStyle: TextStyle(color: Colors.red),
                   ),
                   validator: (value) {
                     if (isEmailExists) {
-                      return TextConstants.email_exists_message;
+                      return TextConstants.register_email_exists_message;
                     }
 
                     bool emailValidator =
                         RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                             .hasMatch(value!);
                     if (value.isEmpty) {
-                      return "Please enter your email";
+                      return TextConstants.register_email_empty;
                     } else if (!emailValidator) {
-                      return "Please enter a valid email";
+                      return TextConstants.register_enter_valid_email;
                     }
                   },
                   onChanged: (value) => {
@@ -130,7 +134,6 @@ class _RegisterState extends State<Register> {
                     })
                   },
                   onEditingComplete: () async {
-                    // -- TODO: Check if email already exists
                     if (await _isEmailExists(emailController.text)) {
                       isEmailExists = true;
                       setState(() {
@@ -144,10 +147,46 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   keyboardType: TextInputType.phone,
                   controller: phoneController,
+                  key: _phoneField,
+                  maxLength: 10,
+                  inputFormatters: [LengthLimitingTextInputFormatter(10)],
                   decoration: const InputDecoration(
                     labelText: "Phone",
                     prefixIcon: Icon(Icons.phone),
                   ),
+                  validator: (value) {
+                    if (isPhoneExists) {
+                      return TextConstants.register_phone_exists_message;
+                    }
+
+                    if (value == null || value.isEmpty) {
+                      return TextConstants.register_phone_number_empty;
+                    } else if (value.length != 10) {
+                      return TextConstants.register_phone_number_invalid;
+                    } else {
+                      return null;
+                    }
+                  },
+                  onChanged: (value) async {
+                    if (value.length == 10) {
+                      if (await _isPhoneExists(phoneController.text)) {
+                        isPhoneExists = true;
+                        setState(() {
+                          _phoneField.currentState!.validate();
+                        });
+                      } else {
+                        isPhoneExists = false;
+                        setState(() {
+                          _phoneField.currentState!.validate();
+                        });
+                      }
+                    } else {
+                      isPhoneExists = false;
+                      setState(() {
+                        _phoneField.currentState!.validate();
+                      });
+                    }
+                  },
                 ),
                 const SizedBox(height: 10),
                 // -- Password --
@@ -414,6 +453,11 @@ class _RegisterState extends State<Register> {
       return false;
     }*/
     var response = await service.checkUserEmailExist(email);
+    return response;
+  }
+
+  Future<bool> _isPhoneExists(String phone) async {
+    var response = await service.checkUserPhoneNumber(phone);
     return response;
   }
 
