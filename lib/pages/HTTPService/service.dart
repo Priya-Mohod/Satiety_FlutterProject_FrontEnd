@@ -9,9 +9,9 @@ import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
-import 'package:satietyfrontend/pages/TextConstants.dart';
 import 'dart:io';
 
+import '../Constatnts/StringConstants.dart';
 import '../Constatnts/URLConstants.dart';
 import '../Views/SnackbarHelper.dart';
 
@@ -244,7 +244,7 @@ class Service {
       return response;
     } else {
       // Show snack bar with no internet connection
-      SnackbarHelper(TextConstants.internet_error);
+      SnackbarHelper(StringConstants.internet_error);
       return null;
     }
   }
