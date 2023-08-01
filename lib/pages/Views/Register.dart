@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../TextConstants.dart';
+import '../Constatnts/StringConstants.dart';
 import 'ListView.dart';
 import 'SnackbarHelper.dart';
 
@@ -130,21 +130,21 @@ class _RegisterState extends State<Register> {
                     ),
                     errorText: isEmailValid
                         ? null
-                        : TextConstants.register_email_invalid,
+                        : StringConstants.register_email_invalid,
                     errorStyle: TextStyle(color: Colors.red),
                   ),
                   validator: (value) {
                     if (isEmailExists) {
-                      return TextConstants.register_email_exists_message;
+                      return StringConstants.register_email_exists_message;
                     }
 
                     bool emailValidator =
                         RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                             .hasMatch(value!);
                     if (value.isEmpty) {
-                      return TextConstants.register_email_empty;
+                      return StringConstants.register_email_empty;
                     } else if (!emailValidator) {
-                      return TextConstants.register_enter_valid_email;
+                      return StringConstants.register_enter_valid_email;
                     }
                   },
                   onChanged: (value) => {
@@ -179,13 +179,13 @@ class _RegisterState extends State<Register> {
                   ),
                   validator: (value) {
                     if (isPhoneExists) {
-                      return TextConstants.register_phone_exists_message;
+                      return StringConstants.register_phone_exists_message;
                     }
 
                     if (value == null || value.isEmpty) {
-                      return TextConstants.register_phone_number_empty;
+                      return StringConstants.register_phone_number_empty;
                     } else if (value.length != 10) {
-                      return TextConstants.register_phone_number_invalid;
+                      return StringConstants.register_phone_number_invalid;
                     } else {
                       return null;
                     }
@@ -497,7 +497,7 @@ class _RegisterState extends State<Register> {
       return false;
     } else {
       // ignore: use_build_context_synchronously
-      SnackbarHelper.showSnackBar(context, TextConstants.exception_error);
+      SnackbarHelper.showSnackBar(context, StringConstants.exception_error);
       return false;
     }*/
     var response = await service.checkUserEmailExist(email);

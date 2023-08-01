@@ -1,4 +1,4 @@
-class TextConstants {
+class StringConstants {
   // -- General
   static String exception_error = 'Error connecting server, please try again';
   static String internet_error = 'Please check your internet connection!';
