@@ -149,26 +149,33 @@ class _ListViewPageState extends State<ListViewPage> {
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: const [
-                                  Icon(Icons.account_circle, size: 40),
-                                  Text('username',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
-                              ),
-                              Text('foodAmount',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.bold,
-                                  ))
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: const [
+                                Icon(Icons.account_circle, size: 40),
+                                SizedBox(width: 10),
+                                Text('username',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                SizedBox(width: 10),
+                                Icon(Icons.star,
+                                    color: Color.fromARGB(255, 206, 155, 46),
+                                    size: 25),
+                                Text('4.5', style: TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                            const Text('foodAmount',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold,
+                                ))
+                          ],
+                        ),
                       ),
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
