@@ -395,9 +395,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
 
                     if (applyChargesOnFood == true)
                       TextFormField(
+                        controller: foodAmountController,
                         keyboardType: TextInputType.number,
                         style: TextStyle(fontSize: 20),
-                        controller: foodAmountController,
                         decoration: const InputDecoration(
                           labelText: "Food Amount",
                           prefixIcon: Icon(
@@ -410,7 +410,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter the food amount';
                           }
-                          // You can add additional validation for the entered amount if needed.
+
                           return null;
                         },
                       ),
@@ -518,16 +518,18 @@ class _AddFreeFoodState extends State<AddFreeFood> {
 
                           print(allergyContentString);
                           var response = await service.sendFoodDetailsWithFile(
-                              foodNameController.text,
-                              foodDescriptionController.text,
-                              selectedFoodQuantity,
-                              foodAddressController.text,
-                              foodImageUriController.text,
-                              selectedFoodType,
-                              image,
-                              userCoordinates.latitude,
-                              userCoordinates.longitude,
-                              allergyContentString);
+                            foodNameController.text,
+                            foodDescriptionController.text,
+                            selectedFoodQuantity,
+                            foodAddressController.text,
+                            foodImageUriController.text,
+                            selectedFoodType,
+                            image,
+                            userCoordinates.latitude,
+                            userCoordinates.longitude,
+                            allergyContentString,
+                            //foodAmountController.text,
+                          );
 
                           // log event add food
                           await logAddFoodEvent(foodNameController.text);

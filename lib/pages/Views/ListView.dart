@@ -148,15 +148,27 @@ class _ListViewPageState extends State<ListViewPage> {
 
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(children: const [
-                          Icon(Icons.account_circle, size: 40),
-                          Text('username',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ]),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: const [
+                                  Icon(Icons.account_circle, size: 40),
+                                  Text('username',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ],
+                              ),
+                              Text(foodItem.foodAmount,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                  ))
+                            ]),
                       ),
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

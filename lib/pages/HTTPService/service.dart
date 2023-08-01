@@ -46,6 +46,7 @@ class Service {
     double latitude,
     double longitude,
     String allergyString,
+    //String foodAmount,
   ) async {
     var request = http.MultipartRequest('POST', Uri.parse('$url/addfood'));
 

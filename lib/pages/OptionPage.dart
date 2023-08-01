@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Chargeablefood.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:flutter/rendering.dart';
 
 class OptionPage extends StatefulWidget {
   const OptionPage({super.key});
@@ -46,26 +47,26 @@ class _OptionPageState extends State<OptionPage> {
                       builder: (context) => AddFreeFood(),
                     ));
               },
-              child: const Text('Free Food', style: TextStyle(fontSize: 40)),
+              child: const Text('Add Food', style: TextStyle(fontSize: 40)),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.cyan,
-                foregroundColor: Colors.black,
-                shadowColor: Colors.red,
-                elevation: 15,
-                minimumSize: const Size(350, 100),
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChargeableFood(),
-                    ));
-              },
-              child:
-                  const Text('Chargeable Food', style: TextStyle(fontSize: 40)),
-            ),
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.cyan,
+            //     foregroundColor: Colors.black,
+            //     shadowColor: Colors.red,
+            //     elevation: 15,
+            //     minimumSize: const Size(350, 100),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => ChargeableFood(),
+            //         ));
+            //   },
+            //   child:
+            //       const Text('Chargeable Food', style: TextStyle(fontSize: 40)),
+            // ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.cyan,

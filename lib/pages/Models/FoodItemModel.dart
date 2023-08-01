@@ -6,6 +6,7 @@ class FoodItem {
   final String foodDescription;
   final int foodQuantity;
   final String foodSignedUrl;
+  final String foodAmount;
 
   FoodItem({
     required this.foodId,
@@ -13,6 +14,7 @@ class FoodItem {
     required this.foodDescription,
     required this.foodQuantity,
     required this.foodSignedUrl,
+    required this.foodAmount,
   });
 
   // Factory method to create a FoodItem from JSON
@@ -23,6 +25,7 @@ class FoodItem {
       foodDescription: json['foodDescription'],
       foodQuantity: json['foodQuantity'],
       foodSignedUrl: json['foodSignedUrl'],
+      foodAmount: json['foodAmount'],
     );
   }
 }
