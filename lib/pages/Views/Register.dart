@@ -119,11 +119,11 @@ class _RegisterState extends State<Register> {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    suffixText: '@gmail.com',
-                    suffixStyle: const TextStyle(
-                        color: Colors.black,
-                        //fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    // suffixText: '@gmail.com',
+                    // suffixStyle: const TextStyle(
+                    //     color: Colors.black,
+                    //     //fontWeight: FontWeight.bold,
+                    //     fontSize: 20),
                     prefixIcon: const Icon(
                       Icons.email,
                       size: 30,
