@@ -515,8 +515,8 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                 customAllergyText_inController;
                             print(allergyContentString);
                           }
-
                           print(allergyContentString);
+
                           var response = await service.sendFoodDetailsWithFile(
                             foodNameController.text,
                             foodDescriptionController.text,

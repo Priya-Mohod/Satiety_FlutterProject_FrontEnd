@@ -162,7 +162,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                       )),
                                 ],
                               ),
-                              Text(foodItem.foodAmount,
+                              Text('foodAmount',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     color: Colors.black54,
