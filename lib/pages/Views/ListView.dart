@@ -105,108 +105,128 @@ class _ListViewPageState extends State<ListViewPage> {
           }
         },
       ),
-      body: Consumer<FoodListViewModel>(
-        builder: (context, foodListViewModel, child) {
-          final foodList = foodListViewModel.foodList;
+      body: Container(
+        child: Consumer<FoodListViewModel>(
+          builder: (context, foodListViewModel, child) {
+            final foodList = foodListViewModel.foodList;
 
-          return ListView.builder(
-            itemCount: foodList.length,
-            itemBuilder: (context, index) {
-              final foodItem = foodList[index];
-              return Padding(
-                padding: const EdgeInsets.only(top: 10),
-                // Add padding here as per your requirement
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        10.0), // Adjust the value as needed
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 128, 172, 177),
-                        width: 1.0), // Add border color and width
-                  ),
-                  elevation: 5,
-                  child: Container(
-                    height: 130,
-                    child: ListTile(
-                      leading: Image.network(
-                        foodItem.foodSignedUrl,
-                        height: 50,
-                        width: 50,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'images/a.png',
+            return ListView.builder(
+              itemCount: foodList.length,
+              itemBuilder: (context, index) {
+                final foodItem = foodList[index];
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  // Add padding here as per your requirement
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Adjust the value as needed
+                      side: const BorderSide(
+                          color: Color.fromARGB(255, 128, 172, 177),
+                          width: 1.0), // Add border color and width
+                    ),
+                    elevation: 5,
+                    child: Container(
+                      height: 130,
+                      child: ListTile(
+                        leading: Container(
+                          child: Image.network(
+                            foodItem.foodSignedUrl,
                             height: 50,
                             width: 50,
-                          );
-                        },
-                      ),
-                      title: Text(foodItem.foodName,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          )),
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'images/a.png',
+                                height: 50,
+                                width: 50,
+                              );
+                            },
+                          ),
+                        ),
+                        title: Text(foodItem.foodName,
+                            style: const TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            )),
 
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: const [
-                                Icon(Icons.account_circle, size: 40),
-                                SizedBox(width: 10),
-                                Text('username',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                SizedBox(width: 10),
-                                Icon(Icons.star,
-                                    color: Color.fromARGB(255, 206, 155, 46),
-                                    size: 25),
-                                Text('4.5', style: TextStyle(fontSize: 18)),
-                              ],
-                            ),
-                            Text(
-                                'FoodAmount: ${foodItem.foodAmount.toStringAsFixed(1)}',
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: const [
+                                  Icon(Icons.account_circle, size: 40),
+                                  SizedBox(width: 10),
+                                  Text('username',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(width: 10),
+                                  Icon(Icons.star,
+                                      color: Color.fromARGB(255, 206, 155, 46),
+                                      size: 25),
+                                  Text('4.5', style: TextStyle(fontSize: 18)),
+                                ],
+                              ),
+                              SizedBox(width: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                      'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  if (foodItem.foodType == 'Veg')
+                                    const Icon(Icons.circle,
+                                        color: Colors.green, size: 15),
+                                  if (foodItem.foodType == 'Non-Veg')
+                                    const Icon(Icons.circle,
+                                        color: Colors.red, size: 15),
+                                  if (foodItem.foodType == 'Both')
+                                    const Icon(Icons.circle,
+                                        color: Colors.orange, size: 15),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Icon(Icons.location_on_outlined, size: 30),
+                            Text('1.5 km',
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 20,
                                   color: Colors.black54,
                                   fontWeight: FontWeight.bold,
-                                ))
+                                )),
                           ],
                         ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Icon(Icons.location_on_outlined, size: 30),
-                          Text('1.5 km',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
-                      ),
 
-                      // Add more widgets for other food details
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  FoodDetails(foodItem: foodList[index]),
-                            ));
-                      },
+                        // Add more widgets for other food details
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    FoodDetails(foodItem: foodList[index]),
+                              ));
+                        },
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
