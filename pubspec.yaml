@@ -50,6 +50,7 @@ dependencies:
   provider: 
   animated_splash_screen: ^1.3.0
   flutter_native_splash: ^2.2.19
+  connectivity:
 
 flutter_native_splash:
   android: true

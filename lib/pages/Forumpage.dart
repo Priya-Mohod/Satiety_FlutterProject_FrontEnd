@@ -62,15 +62,15 @@ class _ForumPageState extends State<ForumPage> {
         ],
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushNamed(context, '/ListViewPage');
+            Navigator.pushReplacementNamed(context, '/ListViewPage');
           } else if (index == 1) {
-            Navigator.pushNamed(context, '/ForumPage');
+            Navigator.pushReplacementNamed(context, '/ForumPage');
           } else if (index == 2) {
             Navigator.pushNamed(context, '/OptionPage');
           } else if (index == 3) {
-            Navigator.pushNamed(context, '/BookmarksPage');
+            Navigator.pushReplacementNamed(context, '/BookmarksPage');
           } else if (index == 4) {
-            Navigator.pushNamed(context, '/MessegesPage');
+            Navigator.pushReplacementNamed(context, '/MessegesPage');
           }
         },
       ),

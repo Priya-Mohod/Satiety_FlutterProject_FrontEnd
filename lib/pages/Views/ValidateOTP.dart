@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
-import 'package:satietyfrontend/pages/TextConstants.dart';
+import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 
 import 'SnackbarHelper.dart';
@@ -34,7 +34,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
     String userEmail = widget.userEmail;
     return Scaffold(
       appBar: AppBar(
-        title: Text(TextConstants.otp_validation_screen_title),
+        title: Text(StringConstants.otp_validation_screen_title),
       ),
       body: Center(
         child: Padding(
@@ -49,7 +49,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24.0), // Set font size for the OTP
                 decoration: InputDecoration(
-                  hintText: TextConstants.otp_validation_enter_otp,
+                  hintText: StringConstants.otp_validation_enter_otp,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -65,7 +65,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
 
                     String messageUser = result
                         ? 'Welcome to satiety family!'
-                        : TextConstants.otp_validation_error_message;
+                        : StringConstants.otp_validation_error_message;
                     SnackbarHelper.showSnackBar(context, messageUser);
                     // show listView page
                     if (result == true) {
@@ -75,12 +75,12 @@ class _ValidateOTPState extends State<ValidateOTP> {
                     // Show an error message for an invalid OTP
                     // show toast message or snackbar
                     SnackBar(
-                      content:
-                          Text(TextConstants.otp_validation_invalid_otp_error),
+                      content: Text(
+                          StringConstants.otp_validation_invalid_otp_error),
                     );
                   }
                 },
-                child: Text(TextConstants.otp_validation_submit_button),
+                child: Text(StringConstants.otp_validation_submit_button),
               ),
             ],
           ),
