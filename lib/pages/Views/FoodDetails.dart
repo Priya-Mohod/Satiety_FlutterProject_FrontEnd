@@ -4,27 +4,32 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 
-class FoodDetails extends StatelessWidget {
+class FoodDetails extends StatefulWidget {
   final FoodItem foodItem;
 
   const FoodDetails({required this.foodItem});
 
+  @override
+  State<FoodDetails> createState() => _FoodDetailsState();
+}
+
+class _FoodDetailsState extends State<FoodDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //add back button
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 40),
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Food Details',
+        title: Text(
+          widget.foodItem.foodName,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 35,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -34,26 +39,8 @@ class FoodDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //  const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    foodItem.foodName,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Image.network(foodItem.foodSignedUrl,
+            Image.network(widget.foodItem.foodSignedUrl,
                 height: 400, fit: BoxFit.cover, width: double.infinity),
-
             Container(
                 color: Color.fromARGB(255, 192, 209, 212),
                 padding: const EdgeInsets.all(8.0),
@@ -62,9 +49,9 @@ class FoodDetails extends StatelessWidget {
                   children: const [
                     Icon(Icons.share, size: 35),
                     SizedBox(width: 10),
+                    Icon(Icons.favorite_border, size: 35),
                   ],
                 )),
-
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -86,7 +73,7 @@ class FoodDetails extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text('Food Description: ${foodItem.foodDescription}',
+                  Text('Food Description: ${widget.foodItem.foodDescription}',
                       style: const TextStyle(
                         fontSize: 20,
                       )),
@@ -112,13 +99,30 @@ class FoodDetails extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text('Food Quantity: ${foodItem.foodQuantity}',
+                  Text('Food Quantity: ${widget.foodItem.foodQuantity}',
                       style: const TextStyle(
                         fontSize: 20,
                       )),
                 ],
               ),
             ),
+            SizedBox(height: 20),
+            Center(
+                child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.cyan,
+                foregroundColor: Colors.black,
+                shadowColor: Colors.red,
+                elevation: 15,
+                minimumSize: const Size(250, 50),
+              ),
+              onPressed: () {},
+              child: const Text('Request This',
+                  style: TextStyle(
+                    fontSize: 30,
+                  )),
+            )),
+            SizedBox(height: 50),
           ],
         ),
       ),

@@ -166,8 +166,9 @@ class _ListViewPageState extends State<ListViewPage> {
                                       )),
                                   SizedBox(width: 10),
                                   Icon(Icons.star,
-                                      color: Color.fromARGB(255, 206, 155, 46),
+                                      color: Color.fromARGB(255, 221, 161, 32),
                                       size: 25),
+                                  SizedBox(width: 5),
                                   Text('4.5', style: TextStyle(fontSize: 18)),
                                 ],
                               ),
@@ -179,19 +180,20 @@ class _ListViewPageState extends State<ListViewPage> {
                                   Text(
                                       'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}',
                                       style: TextStyle(
-                                        fontSize: 15,
+                                        fontSize: 20,
                                         color: Colors.black54,
                                         fontWeight: FontWeight.bold,
                                       )),
                                   if (foodItem.foodType == 'Veg')
-                                    const Icon(Icons.circle,
-                                        color: Colors.green, size: 15),
+                                    const Icon(Icons.fastfood,
+                                        color: Color.fromARGB(255, 40, 125, 43),
+                                        size: 25),
                                   if (foodItem.foodType == 'Non-Veg')
-                                    const Icon(Icons.circle,
-                                        color: Colors.red, size: 15),
+                                    const Icon(Icons.fastfood,
+                                        color: Colors.red, size: 25),
                                   if (foodItem.foodType == 'Both')
                                     const Icon(Icons.circle,
-                                        color: Colors.orange, size: 15),
+                                        color: Colors.orange, size: 25),
                                 ],
                               ),
                             ],
