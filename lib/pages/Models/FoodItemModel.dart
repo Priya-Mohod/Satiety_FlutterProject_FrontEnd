@@ -6,16 +6,15 @@ class FoodItem {
   final String foodDescription;
   final int foodQuantity;
   final String foodSignedUrl;
-  //final String foodAmount;
+  final double foodAmount;
 
-  FoodItem({
-    required this.foodId,
-    required this.foodName,
-    required this.foodDescription,
-    required this.foodQuantity,
-    required this.foodSignedUrl,
-    // required this.foodAmount,
-  });
+  FoodItem(
+      {required this.foodId,
+      required this.foodName,
+      required this.foodDescription,
+      required this.foodQuantity,
+      required this.foodSignedUrl,
+      required this.foodAmount});
 
   // Factory method to create a FoodItem from JSON
   factory FoodItem.fromJson(Map<String, dynamic> json) {
@@ -25,7 +24,7 @@ class FoodItem {
       foodDescription: json['foodDescription'],
       foodQuantity: json['foodQuantity'],
       foodSignedUrl: json['foodSignedUrl'],
-      //foodAmount: json['foodAmount'],
+      foodAmount: json['foodAmount'],
     );
   }
 }

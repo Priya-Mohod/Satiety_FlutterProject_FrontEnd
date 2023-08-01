@@ -168,7 +168,8 @@ class _ListViewPageState extends State<ListViewPage> {
                                 Text('4.5', style: TextStyle(fontSize: 18)),
                               ],
                             ),
-                            const Text('foodAmount',
+                            Text(
+                                'FoodAmount: ${foodItem.foodAmount.toStringAsFixed(1)}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.black54,

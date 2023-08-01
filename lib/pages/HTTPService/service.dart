@@ -10,8 +10,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
+import '../Constatnts/URLConstants.dart';
+
 class Service {
-  String url = "http://192.168.0.70:8080";
+  String url = URLConstants.url;
 
   // -- Login User
   Future<Response?> loginUser(String email, String password) async {
@@ -46,7 +48,7 @@ class Service {
     double latitude,
     double longitude,
     String allergyString,
-    //String foodAmount,
+    String foodAmount,
   ) async {
     var request = http.MultipartRequest('POST', Uri.parse('$url/addfood'));
 
@@ -68,7 +70,13 @@ class Service {
     // Food Food Type - // Veggies - Veg / Non-Veg / Vegan /
     request.fields['foodType'] = foodType;
     // Food Amount - Free / Chargeable
-    request.fields['foodAmount'] = '0.0';
+    double amount = 0.0;
+    if (foodAmount.isNotEmpty) {
+      double doubleValue = double.parse(foodAmount);
+      double roundedValue = double.parse(doubleValue.toStringAsFixed(1));
+      amount = roundedValue;
+    }
+    request.fields['foodAmount'] = '$amount';
     // latitude -
     request.fields['latitude'] = '$latitude';
     // longitude -

@@ -528,7 +528,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                             userCoordinates.latitude,
                             userCoordinates.longitude,
                             allergyContentString,
-                            //foodAmountController.text,
+                            foodAmountController.text,
                           );
 
                           // log event add food
