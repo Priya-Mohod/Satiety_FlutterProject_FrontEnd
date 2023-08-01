@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -8,9 +9,11 @@ import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
+import 'package:satietyfrontend/pages/TextConstants.dart';
 import 'dart:io';
 
 import '../Constatnts/URLConstants.dart';
+import '../Views/SnackbarHelper.dart';
 
 class Service {
   String url = URLConstants.url;
@@ -87,21 +90,21 @@ class Service {
     // Add the MultipartFile to the request
     request.files.add(multipartFile);
 
-    // Send the form data request
-    print(request);
-    var response = await request.send();
+    var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       // File upload successful
       print('Food data uploaded successfully');
       return true;
       // send response back to caller function
-    } else {
+    } else if (response != null) {
       // File upload failed
       print('Food data failed with status code ${response.statusCode}');
       return false;
     }
+
+    return false;
   }
 
   Future<bool> registerUser(
@@ -145,19 +148,20 @@ class Service {
 
     // Send the form data request
     print(request);
-    var response = await request.send();
+    var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       // File upload successful
       print('Food data uploaded successfully');
       return true;
       // send response back to caller function
-    } else {
+    } else if (response != null) {
       // File upload failed
       print('Food data failed with status code ${response.statusCode}');
       return false;
     }
+    return false;
   }
 
   Future<Response?> fetchFoodData() async {
@@ -179,8 +183,8 @@ class Service {
       var request =
           http.MultipartRequest('POST', Uri.parse('$url/getUserByEmail'));
       request.fields['email'] = email;
-      var response = await request.send();
-      if (response.statusCode == 200) {
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
         return true;
       } else {
         return false;
@@ -197,8 +201,8 @@ class Service {
       var request =
           http.MultipartRequest('POST', Uri.parse('$url/getUserByMobile'));
       request.fields['mobile'] = phone;
-      var response = await request.send();
-      if (response.statusCode == 200) {
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
         return true;
       } else {
         return false;
@@ -217,9 +221,8 @@ class Service {
           http.MultipartRequest('POST', Uri.parse('$url/verifyUserEmail'));
       request.fields['email'] = email;
       request.fields['emailOtp'] = otp.toString();
-      var response = await request.send();
-      print(response.statusCode);
-      if (response.statusCode == 200) {
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
         return true;
       } else {
         return false;
@@ -229,6 +232,31 @@ class Service {
       print('Exception: $e');
 
       return false;
+    }
+  }
+
+  // Check internet connectivity before making server call
+  Future<http.StreamedResponse?> makeServerRequest(
+      MultipartRequest request) async {
+    bool isConnected = await checkInternetConnectivity();
+    if (isConnected) {
+      var response = await request.send();
+      return response;
+    } else {
+      // Show snack bar with no internet connection
+      SnackbarHelper(TextConstants.internet_error);
+      return null;
+    }
+  }
+
+  Future<bool> checkInternetConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      // No internet connection
+      return false;
+    } else {
+      // Internet connection is available
+      return true;
     }
   }
 }

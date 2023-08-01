@@ -1,6 +1,7 @@
 class TextConstants {
   // -- General
   static String exception_error = 'Error connecting server, please try again';
+  static String internet_error = 'Please check your internet connection!';
 
   // -- OTP Validation Screen
   static String otp_validation_screen_title = 'OTP Verification';
