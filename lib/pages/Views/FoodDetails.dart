@@ -57,15 +57,15 @@ class _FoodDetailsState extends State<FoodDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('@username is giving away!',
+                  Text('${widget.foodItem.addedByUserName} is giving away!',
                       style: TextStyle(
                         fontSize: 20,
                       )),
                   Row(
-                    children: const [
+                    children: [
                       Icon(Icons.account_circle, size: 50),
                       SizedBox(width: 10),
-                      Text('User Name',
+                      Text(widget.foodItem.addedByUserName,
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,

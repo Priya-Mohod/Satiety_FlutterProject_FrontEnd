@@ -155,12 +155,12 @@ class _ListViewPageState extends State<ListViewPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
-                                children: const [
-                                  Icon(Icons.account_circle, size: 40),
+                                children: [
+                                  Icon(Icons.account_circle, size: 25),
                                   SizedBox(width: 10),
-                                  Text('username',
+                                  Text(foodItem.addedByUserName,
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 15,
                                         color: Colors.black54,
                                         fontWeight: FontWeight.bold,
                                       )),
@@ -170,9 +170,9 @@ class _ListViewPageState extends State<ListViewPage> {
                                       size: 25),
                                   SizedBox(width: 5),
                                   Text('4.5', style: TextStyle(fontSize: 18)),
+                                  SizedBox(width: 20),
                                 ],
                               ),
-                              SizedBox(width: 10),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
