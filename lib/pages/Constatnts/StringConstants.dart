@@ -26,4 +26,9 @@ class StringConstants {
   static String register_phone_number_empty = 'Please enter your phone number';
   static String register_phone_exists_message =
       'Phone number already exists, please try again with different email';
+
+  // -- Post Ad
+  static String post_ad_user_address = 'Your approximate Address';
+  static String post_ad_image_select = 'Please select an image';
+  static String post_ad_enter_food_name = 'Please enter food name';
 }

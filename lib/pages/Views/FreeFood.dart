@@ -15,6 +15,8 @@ import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
+import '../Constatnts/StringConstants.dart';
+
 class AddFreeFood extends StatefulWidget {
   const AddFreeFood({super.key});
 
@@ -26,8 +28,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   final _free_food_formfield = GlobalKey<FormState>();
   final foodNameController = TextEditingController();
   final foodDescriptionController = TextEditingController();
-  final foodAddressController =
-      TextEditingController(); // Just declared not used
+  //final foodAddressController =  TextEditingController(); // Just declared not used
   final foodImageUriController =
       TextEditingController(); // Just declared not used
   final customAllergyController = TextEditingController();
@@ -44,7 +45,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
   String userAddress = '';
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController foodAddressController = TextEditingController();
   LatLng userCoordinates = LatLng(0.0, 0.0);
   int selectedFoodQuantity = 1;
   String selectedFoodType = "Both"; // TODO:- Create enum for food type
@@ -81,7 +82,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     // TODO: implement initState
     super.initState();
     // locationData = _requestLocationPermission();
-    _controller.text = userAddress;
+    foodAddressController.text = userAddress;
     _determinePosition();
   }
 
@@ -420,9 +421,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                     TextFormField(
                       keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 20),
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        labelText: "Show user Address",
+                      controller: foodAddressController,
+                      decoration: InputDecoration(
+                        labelText: StringConstants.post_ad_user_address,
                         prefixIcon: Icon(Icons.add_location),
                       ),
                     ),
@@ -467,8 +468,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                           // Check if user has selected an image
                           if (image == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select an image'),
+                              SnackBar(
+                                content:
+                                    Text(StringConstants.post_ad_image_select),
                               ),
                             );
                             return;
@@ -477,8 +479,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                           // Check if user has entered food name
                           if (foodNameController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter food name'),
+                              SnackBar(
+                                content: Text(
+                                    StringConstants.post_ad_enter_food_name),
                               ),
                             );
                             return;
@@ -663,7 +666,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       userCoordinates = LatLng(locationData.latitude, locationData.longitude);
       userAddress =
           "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
-      _controller.text = userAddress;
+      foodAddressController.text = userAddress;
       print(userAddress);
       // show toast here
       ScaffoldMessenger.of(context).showSnackBar(
