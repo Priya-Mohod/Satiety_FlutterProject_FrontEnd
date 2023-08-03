@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 10),
                 // -- Last Name --
                 TextFormField(
-                  controller: lastNameController,
+                  controller: firstNameController,
                   style: TextStyle(fontSize: 20),
                   decoration: const InputDecoration(
                     hintText: 'Enter your name',
@@ -500,8 +500,16 @@ class _RegisterState extends State<Register> {
       SnackbarHelper.showSnackBar(context, StringConstants.exception_error);
       return false;
     }*/
-    var response = await service.checkUserEmailExist(email);
-    return response;
+    var response = await service.fetchUserDataUsingEmail(email);
+    if (response != null && response.statusCode == 200) {
+      return true;
+    } else if (response != null && response.statusCode != 200) {
+      return false;
+    } else {
+      // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, StringConstants.exception_error);
+      return false;
+    }
   }
 
   Future<bool> _isPhoneExists(String phone) async {

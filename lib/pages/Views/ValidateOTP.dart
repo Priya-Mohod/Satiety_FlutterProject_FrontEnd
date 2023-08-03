@@ -5,6 +5,7 @@ import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 
+import '../Services/Utility.dart';
 import 'SnackbarHelper.dart';
 
 class ValidateOTP extends StatefulWidget {
@@ -69,7 +70,17 @@ class _ValidateOTPState extends State<ValidateOTP> {
                     SnackbarHelper.showSnackBar(context, messageUser);
                     // show listView page
                     if (result == true) {
-                      _navigateToLoginScreen();
+                      // TODO : Get User Data from server and store in system preferences
+                      if (await AppUtil().getUserDataUsingEmail(userEmail) ==
+                          true) {
+                        _navigateToListPage();
+                      } else {
+                        // Show an error message for an invalid OTP
+                        // show toast message or snackbar
+                        const SnackBar(
+                          content: Text("Error fetching in user data"),
+                        );
+                      }
                     }
                   } else {
                     // Show an error message for an invalid OTP
@@ -89,7 +100,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
     );
   }
 
-  Future<void> _navigateToLoginScreen() async {
+  Future<void> _navigateToListPage() async {
     await Future.delayed(Duration(seconds: 2));
 
     Navigator.pushReplacement(
