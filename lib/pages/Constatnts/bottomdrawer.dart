@@ -138,12 +138,17 @@ class BottomDrawer {
               topRight: Radius.circular(20.0),
             ),
           ),
-          child: Text('Filter Drawer',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontFamily: 'times new roman',
-              )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Filter Drawer',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontFamily: 'times new roman',
+                  )),
+            ],
+          ),
         );
       },
     );

@@ -11,6 +11,7 @@ import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
@@ -67,6 +68,8 @@ class _ListViewPageState extends State<ListViewPage> {
         ),
         //centerTitle: true,
         actions: [
+          Icon(Icons.search, size: 30),
+          Icon(Icons.location_on_outlined, size: 30),
           Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.menu),
@@ -99,41 +102,64 @@ class _ListViewPageState extends State<ListViewPage> {
       body: Column(
         children: [
           Container(
-            color: Colors.grey[300],
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(150, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {
-                        BottomDrawer.showFilterDrawer(context);
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.filter_list, size: 30),
-                          SizedBox(width: 10),
-                          Text('Filter',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
-                      )),
-                ),
-              ],
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[400],
+                              minimumSize: const Size(150, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            onPressed: () {
+                              BottomDrawer.showFilterDrawer(context);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.filter_list, size: 30),
+                                SizedBox(width: 10),
+                                Text('Filter',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            )),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.info_outlined, size: 40),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllergyInfo(),
+                          ));
+                    },
+                  ),
+                ],
+              ),
             ),
+          ),
+          Divider(
+            color: Colors.black,
+            height: 1,
+            thickness: 1,
           ),
           Expanded(
             child: Consumer<FoodListViewModel>(
               builder: (context, foodListViewModel, child) {
                 final foodList = foodListViewModel.foodList;
-
                 return ListView.builder(
                   itemCount: foodList.length,
                   itemBuilder: (context, index) {
@@ -148,7 +174,7 @@ class _ListViewPageState extends State<ListViewPage> {
                               color: Color.fromARGB(255, 128, 172, 177),
                               width: 1.0), // Add border color and width
                         ),
-                        elevation: 5,
+                        elevation: 2,
                         child: Container(
                           height: 130,
                           child: ListTile(
