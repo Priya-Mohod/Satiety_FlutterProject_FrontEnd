@@ -17,6 +17,7 @@ class SideDrawer extends StatelessWidget {
             child: Row(
               children: [
                 ClipOval(
+                  // Todo: Replace this with the actual image of the user
                   child: Image.asset(
                     'images/a.png',
                     height: 50,
@@ -38,7 +39,8 @@ class SideDrawer extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                     Row(
-                      children: [
+                      children: const [
+                        // todo take actual rating from the database
                         Icon(Icons.star,
                             color: Color.fromARGB(255, 221, 161, 32), size: 25),
                         SizedBox(width: 5),

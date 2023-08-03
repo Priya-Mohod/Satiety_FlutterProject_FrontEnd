@@ -8,6 +8,7 @@ import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
+import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -51,10 +52,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        home: const LoginPage(),
-        //home: ListViewPage(),
+        //home: const LoginPage(),
+        home: ListViewPage(),
         //home: SplashScreen(),
-
+        //home: FoodListPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
