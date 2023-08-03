@@ -129,7 +129,7 @@ class Service {
     // User Firstname -
     request.fields['firstName'] = firstName;
     // User Lastname -
-    request.fields['lastName'] = lastName;
+    request.fields['lastName'] = "";
     // User Password -
     request.fields['password'] = password;
     // User Mobile -
@@ -177,22 +177,18 @@ class Service {
     return null;
   }
 
-  // TODO - Check Email Exists
-  Future<bool> checkUserEmailExist(String email) async {
+  // TODO - Check Email Exists, returns complete user data
+  Future<http.StreamedResponse?> fetchUserDataUsingEmail(String email) async {
     try {
       var request =
           http.MultipartRequest('POST', Uri.parse('$url/getUserByEmail'));
       request.fields['email'] = email;
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
+      return response;
     } catch (e) {
       // Handle any exceptions
       print('Exception: $e');
-      return false;
+      return null;
     }
   }
 

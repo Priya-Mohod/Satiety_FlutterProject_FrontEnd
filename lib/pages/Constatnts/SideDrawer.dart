@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import '../Models/UserModel.dart';
+import '../Services/UserStorageService.dart';
 
 class SideDrawer extends StatelessWidget {
-  final FoodItem foodItem;
-  SideDrawer({required this.foodItem});
+  // final User currentUser;
+  // SideDrawer({required this.currentUser});
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -34,9 +35,25 @@ class SideDrawer extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      foodItem.addedByUserName,
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    // Text(
+                    //   '',
+                    //   style: TextStyle(fontSize: 18),
+                    // ),
+                    FutureBuilder<String>(
+                      future: getCurrentUserName(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text(
+                            snapshot.data ?? '', // Use the fetched data
+                            style: TextStyle(fontSize: 18),
+                          );
+                        }
+                      },
                     ),
                     Row(
                       children: const [
@@ -147,5 +164,15 @@ class SideDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<String> getCurrentUserName() async {
+    // Get the user data from the shared preferences
+    User? currentUser = await UserStorageService.getUserFromSharedPreferances();
+    if (currentUser != null) {
+      return currentUser.firstName;
+    } else {
+      return '';
+    }
   }
 }

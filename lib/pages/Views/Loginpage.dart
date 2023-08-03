@@ -1,8 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
+import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
+
+import '../Constatnts/StringConstants.dart';
+import '../ViewModels/UserViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passwordVisible = true;
+  Service service = Service();
 
   @override
   Widget build(BuildContext context) {
@@ -91,17 +101,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 50),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (_formfield.currentState!.validate()) {
                       print("Email: ${emailController.text}");
                       print("Password: ${passwordController.text}");
-                      emailController.clear();
-                      passwordController.clear();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListViewPage(),
-                          ));
+
+                      // TODO : (CHANGE THIS FLOW)
+                      // TEMP : Make server call with valid user to get user data and store it in shared preferences
+                      getUserDataUsingEmail(emailController.text);
                     }
                   },
                   child: Column(
@@ -159,5 +166,25 @@ class _LoginPageState extends State<LoginPage> {
             )),
       )),
     );
+  }
+
+  Future<void> getUserDataUsingEmail(String email) async {
+    if (await AppUtil().getUserDataUsingEmail(email) == true) {
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ListViewPage(),
+          ));
+    } else {
+      SnackBar(
+        content: Text(StringConstants.login_user_not_found,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            )),
+      );
+    }
   }
 }
