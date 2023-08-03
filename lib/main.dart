@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:satietyfrontend/pages/Chargeablefood.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
-import 'package:satietyfrontend/pages/OptionPage.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
@@ -59,11 +57,9 @@ class MyApp extends StatelessWidget {
 
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
-          '/OptionPage': (context) => OptionPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
           '/ForumPage': (context) => ForumPage(),
           '/MessegePage': (context) => MessegePage(),
-          '/ChargeableFood': (context) => ChargeableFood(),
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
