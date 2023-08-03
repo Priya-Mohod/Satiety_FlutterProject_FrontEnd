@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
+import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
@@ -32,45 +34,19 @@ class _ForumPageState extends State<ForumPage> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 40),
-            label: 'Home',
-            backgroundColor: Colors.cyan,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum, size: 40),
-            label: 'Forum',
-            backgroundColor: Colors.cyan,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, size: 40),
-            label: 'Add',
-            backgroundColor: Colors.cyan,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark, size: 40),
-            label: 'Bookmarks',
-            backgroundColor: Colors.cyan,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message, size: 40),
-            label: 'Messeges',
-            backgroundColor: Colors.cyan,
-          ),
-        ],
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacementNamed(context, '/ListViewPage');
           } else if (index == 1) {
             Navigator.pushReplacementNamed(context, '/ForumPage');
           } else if (index == 2) {
-            Navigator.pushNamed(context, '/OptionPage');
+            BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
             Navigator.pushReplacementNamed(context, '/BookmarksPage');
           } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegesPage');
+            Navigator.pushReplacementNamed(context, '/MessegePage');
           }
         },
       ),
