@@ -123,4 +123,29 @@ class BottomDrawer {
       },
     );
   }
+
+  static void showFilterDrawer(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 400, // Set a fixed height for the bottom drawer
+          decoration: BoxDecoration(
+            color: Colors.cyan[50],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          child: Text('Filter Drawer',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontFamily: 'times new roman',
+              )),
+        );
+      },
+    );
+  }
 }

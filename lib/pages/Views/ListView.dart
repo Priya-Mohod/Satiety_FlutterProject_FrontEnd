@@ -112,7 +112,7 @@ class _ListViewPageState extends State<ListViewPage> {
                         ),
                       ),
                       onPressed: () {
-                        BottomDrawer.showBottomDrawer(context);
+                        BottomDrawer.showFilterDrawer(context);
                       },
                       child: Row(
                         children: [
