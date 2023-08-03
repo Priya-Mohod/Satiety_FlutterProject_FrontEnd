@@ -31,18 +31,18 @@ class _FoodListPageState extends State<FoodListPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () {
-              // Handle search action here
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(
+        //       Icons.search,
+        //       color: Colors.black,
+        //       size: 30,
+        //     ),
+        //     onPressed: () {
+        //       // Handle search action here
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
