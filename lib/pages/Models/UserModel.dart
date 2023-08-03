@@ -36,5 +36,14 @@ class User {
         imageSignedUrl: json['imageSignedUrl']);
   }
 
-  toJson() {}
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'firstName': firstName,
+      'email': email,
+      'password': password,
+      'mobile': mobile,
+      'imageSignedUrl': imageSignedUrl,
+    };
+  }
 }
