@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
@@ -106,6 +107,31 @@ class _FoodDetailsState extends State<FoodDetails> {
                         fontSize: 20,
                       )),
                 ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 200,
+              child: GoogleMap(
+                // if locationData is null then show placeholder
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(52.954784,
+                      -1.158109), // TODO : Replace lat long with food item lat long
+                  zoom: 30,
+                ),
+                // how to get current controller
+                // markers: _markers,
+                markers: {
+                  const Marker(
+                    markerId: MarkerId("demo"),
+                    position: LatLng(52.954784,
+                        -1.158109), // TODO : Replace lat long with food item lat long
+                    draggable: true,
+                    infoWindow: InfoWindow(
+                      title: "User Location",
+                    ),
+                  )
+                },
               ),
             ),
             SizedBox(height: 20),
