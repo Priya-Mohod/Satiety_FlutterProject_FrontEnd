@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 
 class SideDrawer extends StatelessWidget {
+  final FoodItem foodItem;
+  SideDrawer({required this.foodItem});
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -9,11 +12,43 @@ class SideDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.cyan[400],
+              color: Colors.cyan[300],
             ),
-            child: Text(
-              'Drawer Header',
-              style: TextStyle(color: Colors.white, fontSize: 24),
+            child: Row(
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    'images/a.png',
+                    height: 50,
+                    width: 50,
+                  ),
+                  // Image.network(
+                  //   foodItem.foodSignedUrl,
+                  //   width: 50,
+                  //   height: 50,
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
+                SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      foodItem.addedByUserName,
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.star,
+                            color: Color.fromARGB(255, 221, 161, 32), size: 25),
+                        SizedBox(width: 5),
+                        Text('4.5', style: TextStyle(fontSize: 18)),
+                        SizedBox(width: 20),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           ListTile(

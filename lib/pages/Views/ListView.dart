@@ -93,7 +93,9 @@ class _ListViewPageState extends State<ListViewPage> {
           }
         },
       ),
-      endDrawer: SideDrawer(),
+      endDrawer: SideDrawer(
+        foodItem: foodList[_selectedIndex],
+      ),
       body: Container(
         child: Consumer<FoodListViewModel>(
           builder: (context, foodListViewModel, child) {

@@ -153,12 +153,12 @@ class Service {
     // Handle the response
     if (response != null && response.statusCode == 200) {
       // File upload successful
-      print('Food data uploaded successfully');
+      print('User data uploaded successfully');
       return true;
       // send response back to caller function
     } else if (response != null) {
       // File upload failed
-      print('Food data failed with status code ${response.statusCode}');
+      print('User data failed with status code ${response.statusCode}');
       return false;
     }
     return false;
