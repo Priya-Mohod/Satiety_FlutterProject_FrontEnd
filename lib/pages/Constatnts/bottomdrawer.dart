@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 
 class BottomDrawer {
   static void showBottomDrawer(BuildContext context) {
@@ -130,7 +132,7 @@ class BottomDrawer {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 400, // Set a fixed height for the bottom drawer
+          //height: 400, // Set a fixed height for the bottom drawer
           decoration: BoxDecoration(
             color: Colors.cyan[50],
             borderRadius: BorderRadius.only(
@@ -139,14 +141,126 @@ class BottomDrawer {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Filter Drawer',
+              SizedBox(height: 20),
+              Text('Food Filter',
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 25,
+                    fontSize: 20,
                     fontFamily: 'times new roman',
                   )),
+              SizedBox(height: 20),
+              Divider(
+                color: Colors.black,
+                height: 1,
+                thickness: 1,
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Free or Chargeable:',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300],
+                                      minimumSize: const Size(40, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.refresh_sharp,
+                                          size: 20,
+                                          color: Colors.amber[900],
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text('All',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    )),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300],
+                                      minimumSize: const Size(50, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_outline,
+                                          size: 20,
+                                          color: Colors.green[900],
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text('Free',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    )),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300],
+                                      minimumSize: const Size(50, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.currency_rupee_rounded,
+                                          size: 20,
+                                          color: Colors.red[900],
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text('Chargeable',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         );
