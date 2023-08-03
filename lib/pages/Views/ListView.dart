@@ -9,7 +9,10 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
+import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/getData.dart';
+import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
+import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
 
 class ListViewPage extends StatefulWidget {
   const ListViewPage({super.key});
@@ -61,9 +64,20 @@ class _ListViewPageState extends State<ListViewPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true,
+        //centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.red,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 40),
@@ -76,7 +90,7 @@ class _ListViewPageState extends State<ListViewPage> {
             backgroundColor: Colors.cyan,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, size: 40),
+            icon: Icon(Icons.add_circle, size: 70),
             label: 'Add',
             backgroundColor: Colors.cyan,
           ),
@@ -95,16 +109,18 @@ class _ListViewPageState extends State<ListViewPage> {
           if (index == 0) {
             Navigator.pushReplacementNamed(context, '/ListViewPage');
           } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
+            Navigator.pushNamed(context, '/ForumPage');
           } else if (index == 2) {
-            Navigator.pushNamed(context, '/OptionPage');
+            //Navigator.pushNamed(context, '/OptionPage');
+            BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
             Navigator.pushReplacementNamed(context, '/BookmarksPage');
           } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
+            Navigator.pushNamed(context, '/MessegePage');
           }
         },
       ),
+      endDrawer: SideDrawer(),
       body: Container(
         child: Consumer<FoodListViewModel>(
           builder: (context, foodListViewModel, child) {
@@ -116,7 +132,6 @@ class _ListViewPageState extends State<ListViewPage> {
                 final foodItem = foodList[index];
                 return Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  // Add padding here as per your requirement
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -178,10 +193,16 @@ class _ListViewPageState extends State<ListViewPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                      'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}',
+                                      //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
+                                      foodItem.foodAmount == 0.0
+                                          ? "Food is Free"
+                                          : 'Cost: Rs. ${foodItem.foodAmount}',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.black54,
+                                        //color: Colors.black54,
+                                        color: foodItem.foodAmount == 0.0
+                                            ? Color.fromARGB(255, 40, 125, 43)
+                                            : Colors.black87,
                                         fontWeight: FontWeight.bold,
                                       )),
                                   if (foodItem.foodType == 'Veg')
@@ -192,7 +213,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                     const Icon(Icons.fastfood,
                                         color: Colors.red, size: 25),
                                   if (foodItem.foodType == 'Both')
-                                    const Icon(Icons.circle,
+                                    const Icon(Icons.fastfood,
                                         color: Colors.orange, size: 25),
                                 ],
                               ),

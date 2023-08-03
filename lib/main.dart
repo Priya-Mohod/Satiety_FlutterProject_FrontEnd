@@ -9,6 +9,7 @@ import 'package:satietyfrontend/pages/OptionPage.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
+import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -26,7 +27,7 @@ void main() async {
   // );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
 
   runApp(
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         //home: const LoginPage(),
         home: ListViewPage(),
         //home: SplashScreen(),
+
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/OptionPage': (context) => OptionPage(),

@@ -318,6 +318,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                               .add(customAllergyText);
                                         }
                                       }
+                                      Navigator.pop(context);
                                     });
                                   },
                                 ),

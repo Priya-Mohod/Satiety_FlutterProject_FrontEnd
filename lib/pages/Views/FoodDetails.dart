@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import 'package:satietyfrontend/pages/allergyPage.dart';
 
 class FoodDetails extends StatefulWidget {
   final FoodItem foodItem;
@@ -33,7 +35,7 @@ class _FoodDetailsState extends State<FoodDetails> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true,
+        // centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -90,7 +92,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ForumPage(),
+                            builder: (context) => AllergyInfo(),
                           ));
                     },
                     child: const Text(
