@@ -1,14 +1,12 @@
 import 'dart:ffi';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
 
 import '../Constatnts/StringConstants.dart';
@@ -120,7 +118,7 @@ class Service {
     var multipartFile;
     // User Image - sent using multipart request
     if (userImage != null) {
-      File file = userImage!;
+      File file = userImage;
       var fileStream = http.ByteStream(file.openRead());
       var length = await file.length();
       multipartFile = http.MultipartFile('file', fileStream, length,
