@@ -2,6 +2,7 @@ class StringConstants {
   // -- General
   static String exception_error = 'Error connecting server, please try again';
   static String internet_error = 'Please check your internet connection!';
+  static String server_error = 'Error connecting server, please try again';
 
   // -- OTP Validation Screen
   static String otp_validation_screen_title = 'OTP Verification';
@@ -29,6 +30,9 @@ class StringConstants {
 
   // -- Login Screen
   static String login_user_not_found = 'User not found, please try again';
+
+  // -- List View Screen
+  static String list_view_screen_title = 'Food List';
 
   // -- Post Ad
   static String post_ad_user_address = 'Your approximate Address';

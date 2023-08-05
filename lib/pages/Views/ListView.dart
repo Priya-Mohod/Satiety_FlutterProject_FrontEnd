@@ -1,3 +1,4 @@
+//import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,10 +8,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
 import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
@@ -28,19 +31,21 @@ Map mapData = {};
 List allData = [];
 
 class _ListViewPageState extends State<ListViewPage> {
+  Future initializedData() async {
+    var result = await Provider.of<FoodListViewModel>(context, listen: false)
+        .fetchFoodData();
+    print(result);
+    if (result == false) {
+      // show snackbar
+      // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, StringConstants.server_error);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    var result =
-        Provider.of<FoodListViewModel>(context, listen: false).fetchFoodData();
-    if (result == false) {
-      // show snackbar
-      var showSnackBar = ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to fetch data'),
-        ),
-      );
-    }
+    initializedData();
   }
 
   void _onItemTapped(int index) {
@@ -59,7 +64,7 @@ class _ListViewPageState extends State<ListViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Food List',
+          StringConstants.list_view_screen_title,
           style: TextStyle(
             color: Colors.black,
             fontSize: 30,
