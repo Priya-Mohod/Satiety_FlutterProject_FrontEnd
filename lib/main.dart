@@ -8,7 +8,10 @@ import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
+import 'package:satietyfrontend/pages/Views/myListing.dart';
+import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
+import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -30,8 +33,13 @@ void main() async {
   FlutterNativeSplash.remove();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => FoodListViewModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => FoodListViewModel(),
+        ),
+        ChangeNotifierProvider(create: (_) => RequestProvider()),
+      ],
       child: MyApp(),
     ),
   );
@@ -52,10 +60,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        home: const LoginPage(),
-        //home: ListViewPage(),
-        //home: SplashScreen(),
-        //home: FoodListPage(),
+        //home: const LoginPage(),
+        home: ListViewPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
@@ -64,6 +70,8 @@ class MyApp extends StatelessWidget {
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
+          '/myList': (context) => MyFoodListing(),
+          '/myRequests': (context) => MyRequests(),
         });
   }
 }

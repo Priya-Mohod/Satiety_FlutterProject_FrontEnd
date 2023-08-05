@@ -220,17 +220,17 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
+                    suffix: InkWell(
+                      onTap: () {
                         setState(() {
                           passwordVisible = !passwordVisible;
                         });
                       },
+                      child: Icon(
+                        passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
                     ),
                   ),
                   validator: (value) {

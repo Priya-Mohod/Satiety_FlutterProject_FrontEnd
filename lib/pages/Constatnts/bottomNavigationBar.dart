@@ -28,7 +28,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           backgroundColor: Colors.cyan,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark, size: 40),
+          icon: Icon(Icons.ads_click, size: 40),
           label: 'Bookmarks',
           backgroundColor: Colors.cyan,
         ),

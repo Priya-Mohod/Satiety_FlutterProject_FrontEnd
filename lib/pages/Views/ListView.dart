@@ -72,7 +72,7 @@ class _ListViewPageState extends State<ListViewPage> {
           Icon(Icons.location_on_outlined, size: 30),
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(Icons.menu, color: Colors.black, size: 30),
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
               },

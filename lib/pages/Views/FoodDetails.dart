@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
+import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 
 class FoodDetails extends StatefulWidget {
   final FoodItem foodItem;
@@ -144,7 +147,11 @@ class _FoodDetailsState extends State<FoodDetails> {
                 elevation: 15,
                 minimumSize: const Size(250, 50),
               ),
-              onPressed: () {},
+              onPressed: () {
+                // Handle the "Request this food" button tap
+                _handleRequestFood(context, widget.foodItem);
+                Navigator.pushReplacementNamed(context, '/myRequests');
+              },
               child: const Text('Request This',
                   style: TextStyle(
                     fontSize: 30,
@@ -153,6 +160,29 @@ class _FoodDetailsState extends State<FoodDetails> {
             SizedBox(height: 50),
           ],
         ),
+      ),
+    );
+  }
+
+  void _handleRequestFood(BuildContext context, FoodItem foodItem) {
+    // Here, you can implement the logic to send the request to the supplier
+    // For this example, let's just add the request to the MyRequestsPage
+    final requestProvider =
+        Provider.of<RequestProvider>(context, listen: false);
+
+    Request newRequest = Request(
+      id: DateTime.now().toString(),
+      foodItemId: foodItem.foodId,
+      message: 'I want to order this food: ${foodItem.foodName}',
+      isAccepted: false,
+    );
+
+    requestProvider.addRequest(newRequest);
+
+    // Show a snack bar to inform the user that the request is added
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Request added successfully!'),
       ),
     );
   }

@@ -71,14 +71,13 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: () {
-              // Close the drawer and navigate to the home page
-              Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ListViewPage');
-            },
-          ),
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                // Close the drawer and navigate to the home page
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/ListViewPage');
+              }),
           ListTile(
             leading: Icon(Icons.forum),
             title: Text('Forum'),
@@ -94,7 +93,7 @@ class SideDrawer extends StatelessWidget {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushReplacementNamed(context, '/myList');
             },
           ),
           ListTile(
@@ -103,7 +102,7 @@ class SideDrawer extends StatelessWidget {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushReplacementNamed(context, '/myRequests');
             },
           ),
           ListTile(
