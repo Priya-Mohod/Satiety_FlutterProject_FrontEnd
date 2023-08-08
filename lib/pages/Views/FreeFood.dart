@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
+import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,7 +44,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   //var locationData;
 
   GoogleMapController? _mapController;
-  Set<Marker> _markers = {};
+  Set<Marker> markers = {};
   String userAddress = '';
   final TextEditingController foodAddressController = TextEditingController();
   LatLng userCoordinates = LatLng(0.0, 0.0);
@@ -423,6 +424,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                       keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 20),
                       controller: foodAddressController,
+                      enabled: false,
                       decoration: InputDecoration(
                         labelText: StringConstants.post_ad_user_address,
                         prefixIcon: Icon(Icons.add_location),
@@ -435,22 +437,35 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                     SizedBox(
                       height: 200,
                       child: GoogleMap(
-                        // if locationData is null then show placeholder
+                        onMapCreated: (GoogleMapController controller) {
+                          _mapController = controller;
+                          setState(() {
+                            markers.clear();
+                            markers.add(Marker(
+                              markerId: MarkerId(userCoordinates.toString()),
+                              position: userCoordinates,
+                              infoWindow: InfoWindow(
+                                title: "Selected Location",
+                              ),
+                            ));
+                          });
+                        },
                         initialCameraPosition: CameraPosition(
                           target: userCoordinates,
-                          zoom: 30,
+                          zoom: 15,
                         ),
-                        // how to get current controller
-                        // markers: _markers,
-                        markers: {
-                          Marker(
-                            markerId: const MarkerId("demo"),
-                            position: userCoordinates,
-                            draggable: true,
-                            infoWindow: const InfoWindow(
-                              title: "User Location",
+                        markers: markers,
+                        onTap: (LatLng location) async {
+                          userCoordinates = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupplierLocationMap(
+                                  selectedLocation: userCoordinates),
                             ),
-                          )
+                          );
+
+                          _addMarker(userCoordinates.latitude,
+                              userCoordinates.longitude);
                         },
                       ),
                     ),
@@ -599,20 +614,32 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     // Function to add a marker on the map and animate the camera to the marker's position
   }
 
-  void _addMarker(double lat, double lng) {
+  void _addMarker(double lat, double lng) async {
+    final marker = Marker(
+      markerId: MarkerId('marker_id'),
+      position: LatLng(lat, lng),
+      infoWindow: InfoWindow(
+        title: 'Marker Title',
+        snippet: 'Marker Snippet',
+      ),
+    );
+    Placemark place = await getUserAddress(marker.position) as Placemark;
+    var userAddress =
+        "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
     setState(() {
-      final marker = Marker(
-        markerId: MarkerId('marker_id'),
-        position: LatLng(lat, lng),
-        infoWindow: InfoWindow(
-          title: 'Marker Title',
-          snippet: 'Marker Snippet',
-        ),
-      );
-
-      _markers.add(marker);
+      markers.clear();
+      markers.add(marker);
       _mapController?.animateCamera(CameraUpdate.newLatLng(marker.position));
+      foodAddressController.text = userAddress;
     });
+  }
+
+  Future<Placemark?> getUserAddress(LatLng userCoordinates) async {
+    List<Placemark> placemark = await placemarkFromCoordinates(
+        userCoordinates.latitude, userCoordinates.longitude);
+    print(placemark);
+    Placemark place = placemark[0];
+    return place;
   }
 
   Future<Position> _determinePosition() async {
@@ -658,7 +685,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
     List<Placemark> placemark = await placemarkFromCoordinates(
         locationData.latitude, locationData.longitude);
     print(placemark);
-    Placemark place = placemark[0];
 
     print(userAddress);
 
@@ -666,9 +692,23 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       //_addMarker(locationData.latitude, locationData.longitude);
       userCoordinates = LatLng(locationData.latitude, locationData.longitude);
       userAddress =
-          "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+          "${placemark[0].name}, ${placemark[0].locality}, ${placemark[0].postalCode}, ${placemark[0].country}";
       foodAddressController.text = userAddress;
       print(userAddress);
+
+      markers.clear();
+      markers.add(Marker(
+        markerId: MarkerId(userCoordinates.toString()),
+        position: userCoordinates,
+        infoWindow: const InfoWindow(
+          title: 'Pick up location',
+        ),
+      ));
+
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLng(userCoordinates),
+      );
+
       // show toast here
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

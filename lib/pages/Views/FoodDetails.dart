@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -9,6 +11,8 @@ import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../Constatnts/StringConstants.dart';
 
 class FoodDetails extends StatefulWidget {
   final FoodItem foodItem;
@@ -113,27 +117,42 @@ class _FoodDetailsState extends State<FoodDetails> {
               ),
             ),
             const SizedBox(height: 10),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              style: TextStyle(fontSize: 20),
+              enabled: false,
+              decoration: InputDecoration(
+                labelText: widget.foodItem.foodAddress,
+                prefixIcon: Icon(Icons.add_location),
+              ),
+            ),
+            const SizedBox(height: 10),
             SizedBox(
               height: 200,
               child: GoogleMap(
-                // if locationData is null then show placeholder
+                // TODO : Check for null location and handle it
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(52.954784,
-                      -1.158109), // TODO : Replace lat long with food item lat long
-                  zoom: 30,
+                  target: LatLng(
+                      widget.foodItem.latitude, widget.foodItem.longitude),
+                  zoom: 15,
                 ),
-                // how to get current controller
+                // how to get current controllerx
                 // markers: _markers,
                 markers: {
-                  const Marker(
+                  Marker(
                     markerId: MarkerId("demo"),
-                    position: LatLng(52.954784,
-                        -1.158109), // TODO : Replace lat long with food item lat long
+                    position: LatLng(
+                        widget.foodItem.latitude, widget.foodItem.longitude),
                     draggable: true,
                     infoWindow: InfoWindow(
-                      title: "User Location",
+                      title: StringConstants.food_details_map_marker,
                     ),
                   )
+                },
+                // on Tap open google map mobile application
+                onTap: (LatLng latLng) {
+                  _onMapTapped(LatLng(
+                      widget.foodItem.latitude, widget.foodItem.longitude));
                 },
               ),
             ),
@@ -185,5 +204,23 @@ class _FoodDetailsState extends State<FoodDetails> {
         content: Text('Request added successfully!'),
       ),
     );
+  }
+
+  void _onMapTapped(LatLng latLng) {
+    // Open Google Maps app with the destination coordinates
+    _launchGoogleMaps(latLng);
+  }
+
+  Future<void> _launchGoogleMaps(LatLng latLng) async {
+    final String mapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=${latLng.latitude},${latLng.longitude}';
+
+    Uri uri = Uri.parse(mapsUrl);
+
+    if (await canLaunchUrl(uri)) {
+      await canLaunchUrl(uri);
+    } else {
+      throw 'Could not launch Google Maps.';
+    }
   }
 }
