@@ -159,6 +159,49 @@ class _ListViewPageState extends State<ListViewPage> {
             height: 1,
             thickness: 1,
           ),
+          // GestureDetector(onTap: () {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => FoodDetails(foodItem: foodList[0]),
+          //       ));
+          // }, child: Consumer<FoodListViewModel>(
+          //     builder: (context, foodListViewModel, child) {
+          //   final foodList = foodListViewModel.foodList;
+          //   return ListView.builder(
+          //       itemCount: foodList.length,
+          //       itemBuilder: (context, index) {
+          //         final foodItem = foodList[index];
+          //         return Row(children: [
+          //           Column(children: [
+          //             Container(
+          //               color: Colors.grey[300],
+          //               height: 100,
+          //               width: 100,
+          //               child: ClipOval(
+          //                 child: Image.network(
+          //                   foodList[0].foodSignedUrl,
+          //                   height: 100,
+          //                   width: 100,
+          //                   errorBuilder: (context, error, stackTrace) {
+          //                     return Image.asset(
+          //                       'images/a.png',
+          //                       height: 50,
+          //                       width: 50,
+          //                     );
+          //                   },
+          //                 ),
+          //               ),
+          //             ),
+          //           ]),
+          //           Column(
+          //             children: [
+          //               Row(children: [],)
+          //             ],
+          //           )
+          //         ]);
+          //       });
+          // })),
           Expanded(
             child: Consumer<FoodListViewModel>(
               builder: (context, foodListViewModel, child) {
@@ -168,7 +211,7 @@ class _ListViewPageState extends State<ListViewPage> {
                   itemBuilder: (context, index) {
                     final foodItem = foodList[index];
                     return Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 5),
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
@@ -182,19 +225,25 @@ class _ListViewPageState extends State<ListViewPage> {
                           height: 130,
                           child: ListTile(
                             leading: Container(
-                              child: Image.network(
-                                foodItem.foodSignedUrl,
-                                height: 50,
-                                width: 50,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'images/a.png',
-                                    height: 50,
-                                    width: 50,
-                                  );
-                                },
+                              color: Colors.grey[300],
+                              height: 100,
+                              width: 100,
+                              child: ClipOval(
+                                child: Image.network(
+                                  foodItem.foodSignedUrl,
+                                  height: 100,
+                                  width: 100,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'images/a.png',
+                                      height: 50,
+                                      width: 50,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
+
                             title: Text(foodItem.foodName,
                                 style: const TextStyle(
                                   fontSize: 25,
@@ -208,11 +257,11 @@ class _ListViewPageState extends State<ListViewPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.account_circle, size: 25),
+                                      Icon(Icons.account_circle, size: 30),
                                       SizedBox(width: 10),
                                       Text(foodItem.addedByUserName,
                                           style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 20,
                                             color: Colors.black54,
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -220,16 +269,15 @@ class _ListViewPageState extends State<ListViewPage> {
                                       Icon(Icons.star,
                                           color:
                                               Color.fromARGB(255, 221, 161, 32),
-                                          size: 25),
+                                          size: 30),
                                       SizedBox(width: 5),
                                       Text('4.5',
-                                          style: TextStyle(fontSize: 18)),
+                                          style: TextStyle(fontSize: 20)),
                                       SizedBox(width: 20),
                                     ],
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                           //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
@@ -245,6 +293,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 : Colors.black87,
                                             fontWeight: FontWeight.bold,
                                           )),
+                                      SizedBox(width: 10),
                                       if (foodItem.foodType == 'Veg')
                                         const Icon(Icons.fastfood,
                                             color: Color.fromARGB(
@@ -256,23 +305,36 @@ class _ListViewPageState extends State<ListViewPage> {
                                       if (foodItem.foodType == 'Both')
                                         const Icon(Icons.fastfood,
                                             color: Colors.orange, size: 25),
+                                      SizedBox(width: 20),
                                     ],
                                   ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.location_on_outlined,
+                                          size: 25),
+                                      Text('1.5 km',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Icon(Icons.location_on_outlined, size: 30),
-                                Text('1.5 km',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ],
-                            ),
+                            // trailing: Column(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   children: const [
+                            //     Icon(Icons.location_on_outlined, size: 30),
+                            //     Text('1.5 km',
+                            //         style: TextStyle(
+                            //           fontSize: 20,
+                            //           color: Colors.black54,
+                            //           fontWeight: FontWeight.bold,
+                            //         )),
+                            //   ],
+                            // ),
 
                             // Add more widgets for other food details
                             onTap: () {
