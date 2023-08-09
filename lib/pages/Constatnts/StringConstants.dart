@@ -38,4 +38,15 @@ class StringConstants {
   static String post_ad_user_address = 'Your approximate Address';
   static String post_ad_image_select = 'Please select an image';
   static String post_ad_enter_food_name = 'Please enter food name';
+
+  // -- Supplier Location Map
+  static String supplier_location_map_title = 'Choose Pickup Location';
+  static String supplier_location_map_search_hint = 'Search for a place...';
+  static String supplier_location_map_select_place = 'Select this location';
+  static String supplier_location_map_pick_up_location = 'Puck up location';
+
+  // -- Food Details View
+  static String food_details_map_marker = 'Supplier Location';
+  static String food_details_map_supplier_address =
+      'Supplier approximate Address';
 }

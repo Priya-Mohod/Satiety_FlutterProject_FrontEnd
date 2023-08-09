@@ -95,7 +95,8 @@ class _ListViewPageState extends State<ListViewPage> {
           } else if (index == 2) {
             BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, '/BookmarksPage');
+            Navigator.pushReplacementNamed(
+                context, '/ForumPage'); // TODO: Change this to Ads Page
           } else if (index == 4) {
             Navigator.pushReplacementNamed(context, '/MessegePage');
           }

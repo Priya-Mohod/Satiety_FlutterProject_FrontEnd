@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
@@ -6,6 +7,7 @@ import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
+import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
 import 'package:satietyfrontend/pages/Views/myListing.dart';
@@ -72,6 +74,8 @@ class MyApp extends StatelessWidget {
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
           '/myList': (context) => MyFoodListing(),
           '/myRequests': (context) => MyRequests(),
+          '/SupplierLocationMap': (context) =>
+              SupplierLocationMap(selectedLocation: LatLng(0, 0)),
         });
   }
 }
