@@ -206,9 +206,32 @@ class _FoodDetailsState extends State<FoodDetails> {
     );
   }
 
-  void _onMapTapped(LatLng latLng) {
-    // Open Google Maps app with the destination coordinates
-    _launchGoogleMaps(latLng);
+  void _onMapTapped(LatLng latLng) async {
+    const String url = "comgooglemaps://";
+
+    Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      _launchGoogleMaps(latLng);
+    } else {
+      openMapWithMapKit(latLng.latitude, latLng.longitude);
+    }
+  }
+
+  Future<void> openMapWithMapKit(double latitude, double longitude) async {
+    final String url = "http://maps.apple.com/?ll=$latitude,$longitude";
+
+    Uri uri = Uri.parse(url);
+
+    try {
+      if (await canLaunchUrl(uri)) {
+        await canLaunchUrl(uri);
+      } else {
+        throw "Could not launch maps";
+      }
+    } catch (e) {
+      print("Error launching URL: $e");
+    }
   }
 
   Future<void> _launchGoogleMaps(LatLng latLng) async {
