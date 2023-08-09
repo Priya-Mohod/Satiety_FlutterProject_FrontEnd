@@ -53,6 +53,7 @@ dependencies:
   connectivity:
   shared_preferences:
   intl:
+  retry:
 
 flutter_native_splash:
   android: true

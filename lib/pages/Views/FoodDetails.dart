@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
@@ -169,7 +170,28 @@ class _FoodDetailsState extends State<FoodDetails> {
               onPressed: () {
                 // Handle the "Request this food" button tap
                 _handleRequestFood(context, widget.foodItem);
-                Navigator.pushReplacementNamed(context, '/myRequests');
+                //Navigator.pushReplacementNamed(context, '/myRequests');
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Food Request'),
+                    content: const Text('Your food request has been sent.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListViewPage(),
+                              ));
+                          // TODO:- clear the form fields
+                          // TODO:- clear the image
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: const Text('Request This',
                   style: TextStyle(
@@ -246,4 +268,6 @@ class _FoodDetailsState extends State<FoodDetails> {
       throw 'Could not launch Google Maps.';
     }
   }
+
+  void sendRegistrationRequest() {}
 }

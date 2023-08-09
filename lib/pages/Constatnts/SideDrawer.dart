@@ -1,10 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Services/Utility.dart';
 import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
+import 'package:retry/retry.dart';
 
-class SideDrawer extends StatelessWidget {
-  // final User currentUser;
-  // SideDrawer({required this.currentUser});
+class SideDrawer extends StatefulWidget {
+  const SideDrawer({super.key});
+
+  @override
+  State<SideDrawer> createState() => _SideDrawerState();
+}
+
+class _SideDrawerState extends State<SideDrawer> {
+  User? currentUser;
+  final retryOptions = RetryOptions(
+    maxAttempts: 3,
+    delayFactor: Duration(seconds: 2),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  // call deinit state
+  @override
+  void dispose() {
+    super.dispose();
+    //denitState();
+  }
+
+  Future<void> getCurrentUser() async {
+    // Get the user data from the shared preferences
+    //final retryOperation = RetryOperation(options: retryOptions);
+    User? localUser = await UserStorageService.getUserFromSharedPreferances();
+    if (localUser != null) {
+      var response = await AppUtil().getUserUsingEmail(localUser.email);
+      setState(() {
+        currentUser = response;
+      });
+    }
+  }
+
+  @override
+  void denitState() {
+    print("Denit state called");
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -19,17 +64,18 @@ class SideDrawer extends StatelessWidget {
               children: [
                 ClipOval(
                   // Todo: Replace this with the actual image of the user
-                  child: Image.asset(
-                    'images/a.png',
-                    height: 50,
-                    width: 50,
+                  child: Image.network(
+                    currentUser?.imageSignedUrl ?? '',
+                    height: 100,
+                    width: 100,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'images/a.png',
+                        height: 50,
+                        width: 50,
+                      );
+                    },
                   ),
-                  // Image.network(
-                  //   foodItem.foodSignedUrl,
-                  //   width: 50,
-                  //   height: 50,
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
                 SizedBox(width: 10),
                 Column(
@@ -61,7 +107,10 @@ class SideDrawer extends StatelessWidget {
                         Icon(Icons.star,
                             color: Color.fromARGB(255, 221, 161, 32), size: 25),
                         SizedBox(width: 5),
-                        Text('4.5', style: TextStyle(fontSize: 18)),
+                        Text(
+                          '4.5',
+                          style: TextStyle(fontSize: 18),
+                        ),
                         SizedBox(width: 20),
                       ],
                     ),
@@ -173,5 +222,16 @@ class SideDrawer extends StatelessWidget {
     } else {
       return '';
     }
+  }
+
+  Future<String> getCurrentUserImage() async {
+    // Get the user data from the shared preferences
+    User? currentUser = await UserStorageService.getUserFromSharedPreferances();
+    return currentUser?.imageSignedUrl ?? '';
+    // if (currentUser != null) {
+    //   return currentUser.firstName;
+    // } else {
+    //   return '';
+    // }
   }
 }
