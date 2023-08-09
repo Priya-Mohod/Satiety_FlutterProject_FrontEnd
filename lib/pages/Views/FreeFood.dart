@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -77,6 +77,10 @@ class _AddFreeFoodState extends State<AddFreeFood> {
 
   // Overlay entry to show the allergy options
   OverlayEntry? _allergyOptionsOverlay;
+
+  DateTime foodAvailableDate = DateTime.now();
+  TimeOfDay foodAvailableFromTime = TimeOfDay.now();
+  TimeOfDay foodAvailableToTime = TimeOfDay.now();
 
   @override
   void initState() {
@@ -248,6 +252,52 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                         buildChoiceChip('Veg'),
                         buildChoiceChip('Non-Veg'),
                         buildChoiceChip('Both'),
+                      ],
+                    ),
+
+                    SizedBox(height: 10),
+
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    Text(
+                      'Sleect Food Availability Date and Time :',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                    //   ],
+                    // ),
+
+                    SizedBox(height: 10),
+
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => _selectDate(context),
+                          child: Text(DateFormat('dd-MM-yyyy')
+                              .format(foodAvailableDate)),
+                        ),
+                        SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: () => _selectStartTime(context),
+                          child: Text(foodAvailableFromTime.format(context)),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '-',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () => _selectEndTime(context),
+                          child: Text(foodAvailableToTime.format(context)),
+                        ),
                       ],
                     ),
 
@@ -803,6 +853,84 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       setState(() {
         image = File(pickedFile.path);
       });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: foodAvailableDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 1)),
+    );
+
+    if (picked != null && picked != foodAvailableDate) {
+      setState(() {
+        foodAvailableDate = picked;
+        foodAvailableFromTime = TimeOfDay.now();
+        foodAvailableToTime = TimeOfDay.now();
+      });
+    }
+  }
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    TimeOfDay currentTime = TimeOfDay.now();
+    DateTime currentDate = DateTime.now();
+    final TimeOfDay? picked =
+        await showTimePicker(context: context, initialTime: currentTime);
+    bool setStartTime = false;
+    if (picked != null && picked != foodAvailableFromTime) {
+      // check if selected day is greater than current day
+      if (currentDate == foodAvailableDate) {
+        if ((picked.hour > currentTime.hour) ||
+            (picked.hour == currentTime.hour &&
+                picked.minute > currentTime.minute)) {
+          setStartTime = true;
+        }
+      } else {
+        setStartTime = true;
+      }
+    }
+
+    if (setStartTime == true) {
+      setState(() {
+        foodAvailableFromTime = picked!;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a valid time'),
+        ),
+      );
+      setState(() {
+        foodAvailableFromTime = TimeOfDay.now();
+      });
+    }
+  }
+
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: foodAvailableToTime,
+    );
+
+    if (picked != null && picked != foodAvailableToTime) {
+      if ((picked.hour > foodAvailableFromTime.hour) ||
+          (picked.hour == foodAvailableFromTime.hour &&
+              picked.minute > foodAvailableFromTime.minute)) {
+        setState(() {
+          foodAvailableToTime = picked;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('End time must be greater than start time'),
+          ),
+        );
+        setState(() {
+          foodAvailableToTime = TimeOfDay.now();
+        });
+      }
     }
   }
 }

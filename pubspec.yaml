@@ -52,6 +52,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
   connectivity:
   shared_preferences:
+  intl:
 
 flutter_native_splash:
   android: true
