@@ -157,7 +157,7 @@ class _SideDrawerState extends State<SideDrawer> {
 
           ListTile(
             leading: Icon(Icons.emoji_emotions_sharp),
-            title: Text('Profile'),
+            title: Text('User Profile'),
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
