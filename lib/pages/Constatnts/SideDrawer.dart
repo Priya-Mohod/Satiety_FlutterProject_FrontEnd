@@ -154,15 +154,7 @@ class _SideDrawerState extends State<SideDrawer> {
               Navigator.pushReplacementNamed(context, '/myRequests');
             },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.account_circle),
-          //   title: Text('Account'),
-          //   onTap: () {
-          //     // Close the drawer and navigate to the forum page
-          //     Navigator.pop(context);
-          //     Navigator.pushReplacementNamed(context, '/ForumPage');
-          //   },
-          // ),
+
           ListTile(
             leading: Icon(Icons.emoji_emotions_sharp),
             title: Text('Profile'),
