@@ -370,7 +370,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                               .add(customAllergyText);
                                         }
                                       }
-                                      Navigator.pop(context);
                                     });
                                   },
                                 ),
@@ -380,10 +379,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                     controller: customAllergyController,
                                     decoration: const InputDecoration(
                                         labelText: 'Enter Custom Allergy'),
-                                    onChanged: (customAllergyText) {
+                                    onChanged: (newText) {
                                       setState(() {
-                                        customAllergyText =
-                                            customAllergyController.text;
+                                        customAllergyText = newText;
                                       });
                                     },
                                     onEditingComplete: () {
@@ -391,6 +389,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                         selectedAllergies
                                             .add(customAllergyText);
                                       });
+                                      FocusScope.of(context).unfocus();
                                     },
                                   ),
                               ],
@@ -660,7 +659,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
             ),
           ),
         ));
-
     // Function to add a marker on the map and animate the camera to the marker's position
   }
 
