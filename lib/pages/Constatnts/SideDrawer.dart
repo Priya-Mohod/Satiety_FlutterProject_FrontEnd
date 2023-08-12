@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
 import 'package:retry/retry.dart';
@@ -154,7 +155,6 @@ class _SideDrawerState extends State<SideDrawer> {
               Navigator.pushReplacementNamed(context, '/myRequests');
             },
           ),
-
           ListTile(
             leading: Icon(Icons.emoji_emotions_sharp),
             title: Text('User Profile'),
@@ -200,7 +200,64 @@ class _SideDrawerState extends State<SideDrawer> {
               Navigator.pushReplacementNamed(context, '/ForumPage');
             },
           ),
-          // Add more items in the drawer as needed
+          DrawerHeader(
+            padding: EdgeInsets.only(bottom: 40),
+            decoration: BoxDecoration(
+              color: Colors.cyan[300],
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.deepOrange[300]!,
+                  Colors.red[700]!,
+                ],
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app, color: Colors.black, size: 30),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                // Close the drawer
+                Navigator.pop(context);
+
+                // Show the logout confirmation dialog
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Logout Confirmation'),
+                      content: Text('Are you sure you want to log out?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          child: Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            // Perform the logout action here
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.remove('authToken');
+                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.pushReplacementNamed(context, '/Login');
+                          },
+                          child: Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
