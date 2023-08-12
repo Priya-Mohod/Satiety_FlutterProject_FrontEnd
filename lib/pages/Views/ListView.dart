@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
 import 'package:satietyfrontend/pages/Constatnts/BottomNavigationBar.dart';
+import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
@@ -31,6 +32,40 @@ Map mapData = {};
 List allData = [];
 
 class _ListViewPageState extends State<ListViewPage> {
+  bool isFreeFilter = false;
+  bool isChargeableFilter = false;
+  bool isTiffinAvailableFilter = false;
+  String selectedFoodType = 'All';
+  double maxDistance = 1.0;
+
+  List<FoodItem> applyFilter(List<FoodItem> foodList) {
+    List<FoodItem> filteredFoodList = foodList;
+    if (isFreeFilter) {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.foodAmount == 0.0)
+          .toList();
+    }
+    if (isChargeableFilter) {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.foodAmount > 0.0)
+          .toList();
+    }
+    if (isTiffinAvailableFilter) {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.isTiffinAvailable == true)
+          .toList();
+    }
+    if (selectedFoodType != 'All') {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.foodType == selectedFoodType)
+          .toList();
+    }
+    filteredFoodList = filteredFoodList
+        .where((foodItem) => foodItem.distance <= maxDistance)
+        .toList();
+    return filteredFoodList;
+  }
+
   Future initializedData() async {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
         .fetchFoodData();
@@ -61,6 +96,18 @@ class _ListViewPageState extends State<ListViewPage> {
   Widget build(BuildContext context) {
     // Get the foodList from the FoodListViewModel
     final foodList = Provider.of<FoodListViewModel>(context).foodList;
+    // Apply your filter logic to filter the foodList based on filter variables
+    List<FoodItem> filteredFoodList = foodList;
+    if (isFreeFilter) {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.foodAmount == 0.0)
+          .toList();
+    }
+    if (isChargeableFilter) {
+      filteredFoodList = filteredFoodList
+          .where((foodItem) => foodItem.foodAmount > 0.0)
+          .toList();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -125,7 +172,9 @@ class _ListViewPageState extends State<ListViewPage> {
                               ),
                             ),
                             onPressed: () {
-                              BottomDrawer.showFilterDrawer(context);
+                              BottomDrawer.showFilterDrawer(
+                                  context, applyFilter);
+                              setState(() {});
                             },
                             child: Row(
                               children: [
@@ -207,10 +256,13 @@ class _ListViewPageState extends State<ListViewPage> {
             child: Consumer<FoodListViewModel>(
               builder: (context, foodListViewModel, child) {
                 final foodList = foodListViewModel.foodList;
+                final filteredList = applyFilter(foodList);
                 return ListView.builder(
-                  itemCount: foodList.length,
+                  //itemCount: foodList.length,
+                  itemCount: filteredList.length,
                   itemBuilder: (context, index) {
-                    final foodItem = foodList[index];
+                    //final foodItem = foodList[index];
+                    final foodItem = filteredList[index];
                     return Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Card(

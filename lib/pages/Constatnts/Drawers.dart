@@ -126,7 +126,14 @@ class BottomDrawer {
     );
   }
 
-  static void showFilterDrawer(BuildContext context) {
+  static void showFilterDrawer(
+      BuildContext context, Function applyFiltersCallback) {
+    bool isFreeFilter = false;
+    bool isChargeableFilter = false;
+    bool isTiffinAvailableFilter = false;
+    String selectedFoodType = 'All';
+    double maxDistance = 1.0;
+
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -147,7 +154,7 @@ class BottomDrawer {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
-                      children: const [
+                      children: [
                         SizedBox(height: 20),
                         Text('Food Filter',
                             style: TextStyle(
@@ -157,7 +164,24 @@ class BottomDrawer {
                               fontFamily: 'times new roman',
                             )),
                       ],
-                    )
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            isFreeFilter ? Colors.green : Colors.grey[300],
+                        // Add your other button style properties
+                      ),
+                      onPressed: () {
+                        applyFiltersCallback(
+                            isFreeFilter,
+                            isChargeableFilter,
+                            isTiffinAvailableFilter,
+                            selectedFoodType,
+                            maxDistance);
+                        Navigator.pop(context);
+                      },
+                      child: Text('Apply'),
+                    ),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -437,7 +461,7 @@ class BottomDrawer {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Tiffin Availability',
+                                              'Food Type',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
