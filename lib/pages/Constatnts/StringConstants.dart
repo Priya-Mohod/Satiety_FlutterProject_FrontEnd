@@ -30,6 +30,10 @@ class StringConstants {
 
   // -- Login Screen
   static String login_user_not_found = 'User not found, please try again';
+  static String login_invalid_credentials =
+      'Invalid credentials, please try again';
+  static String login_error =
+      'Error occurred while logging in, please try again';
 
   // -- List View Screen
   static String list_view_screen_title = 'Food List';

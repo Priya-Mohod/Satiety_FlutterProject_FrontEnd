@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 
 import '../Constatnts/StringConstants.dart';
@@ -16,19 +17,98 @@ import '../Views/SnackbarHelper.dart';
 class Service {
   String url = URLConstants.url;
 
+  Future<http.Response> convertStreamedResponse(
+      StreamedResponse streamedResponse) async {
+    final bytes = await streamedResponse.stream.toBytes();
+    final response = http.Response.bytes(bytes, streamedResponse.statusCode,
+        headers: streamedResponse.headers);
+    return response;
+  }
+
   // -- Login User
   Future<Response?> loginUser(String email, String password) async {
     try {
-      // Replace this URL with the actual URL of your server
+      final requestBody = {
+        "username": email,
+        "password": password,
+      };
       final response = await http.post(
-        Uri.parse('$url/loginUser'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, String>{'email': email, 'password': password},
-        ),
+        Uri.parse('$url/authenticateUser'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
       );
+      print(response);
+      return response;
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+    }
+
+    return null;
+  }
+
+  Future<bool> registerUser(
+      File? userImage,
+      String firstName,
+      String lastName,
+      String password,
+      String mobile,
+      String email,
+      String pincode,
+      String address) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$url/registerUser'));
+    var multipartFile;
+    // User Image - sent using multipart request
+    if (userImage != null) {
+      File file = userImage;
+      var fileStream = http.ByteStream(file.openRead());
+      var length = await file.length();
+      multipartFile = http.MultipartFile('file', fileStream, length,
+          filename: path.basename(file.path));
+    }
+    // User Firstname -
+    request.fields['firstName'] = firstName;
+    // User Lastname -
+    request.fields['lastName'] = "";
+    // User Password -
+    request.fields['password'] = password;
+    // User Mobile -
+    request.fields['mobile'] = mobile;
+    // User Email -
+    request.fields['email'] = email;
+    // User Pincode -
+    request.fields['pincode'] = pincode;
+    // User Address -
+    request.fields['address'] = address;
+
+    // Add the MultipartFile to the request
+    if (multipartFile != null) {
+      request.files.add(multipartFile);
+    }
+
+    // Send the form data request
+    print(request);
+    var response = await makeServerRequest(request);
+
+    // Handle the response
+    if (response != null && response.statusCode == 200) {
+      // File upload successful
+      print('User data uploaded successfully');
+      return true;
+      // send response back to caller function
+    } else if (response != null) {
+      // File upload failed
+      print('User data failed with status code ${response.statusCode}');
+      return false;
+    }
+    return false;
+  }
+
+  Future<Response?> fetchFoodData() async {
+    try {
+      Map<String, String> headers = await getRequestHeader();
+      final response =
+          await http.get(Uri.parse('$url/getAllFood'), headers: headers);
       return response;
     } catch (e) {
       // Handle any exceptions
@@ -105,76 +185,6 @@ class Service {
     return false;
   }
 
-  Future<bool> registerUser(
-      File? userImage,
-      String firstName,
-      String lastName,
-      String password,
-      String mobile,
-      String email,
-      String pincode,
-      String address) async {
-    var request = http.MultipartRequest('POST', Uri.parse('$url/registerUser'));
-    var multipartFile;
-    // User Image - sent using multipart request
-    if (userImage != null) {
-      File file = userImage;
-      var fileStream = http.ByteStream(file.openRead());
-      var length = await file.length();
-      multipartFile = http.MultipartFile('file', fileStream, length,
-          filename: path.basename(file.path));
-    }
-    // User Firstname -
-    request.fields['firstName'] = firstName;
-    // User Lastname -
-    request.fields['lastName'] = "";
-    // User Password -
-    request.fields['password'] = password;
-    // User Mobile -
-    request.fields['mobile'] = mobile;
-    // User Email -
-    request.fields['email'] = email;
-    // User Pincode -
-    request.fields['pincode'] = pincode;
-    // User Address -
-    request.fields['address'] = address;
-
-    // Add the MultipartFile to the request
-    if (multipartFile != null) {
-      request.files.add(multipartFile);
-    }
-
-    // Send the form data request
-    print(request);
-    var response = await makeServerRequest(request);
-
-    // Handle the response
-    if (response != null && response.statusCode == 200) {
-      // File upload successful
-      print('User data uploaded successfully');
-      return true;
-      // send response back to caller function
-    } else if (response != null) {
-      // File upload failed
-      print('User data failed with status code ${response.statusCode}');
-      return false;
-    }
-    return false;
-  }
-
-  Future<Response?> fetchFoodData() async {
-    try {
-      // Replace this URL with the actual URL of your server
-      final response = await http.get(Uri.parse('$url/getAllFood'));
-      return response;
-    } catch (e) {
-      // Handle any exceptions
-      print('Exception: $e');
-    }
-
-    return null;
-  }
-
   // TODO - Check Email Exists, returns complete user data
   Future<http.StreamedResponse?> fetchUserDataUsingEmail(String email) async {
     try {
@@ -233,7 +243,9 @@ class Service {
   Future<http.StreamedResponse?> makeServerRequest(
       MultipartRequest request) async {
     bool isConnected = await checkInternetConnectivity();
+    Map<String, String> headers = await getRequestHeader();
     if (isConnected) {
+      request.headers.addAll(headers);
       var response = await request.send();
       return response;
     } else {
@@ -252,5 +264,15 @@ class Service {
       // Internet connection is available
       return true;
     }
+  }
+
+  Future<Map<String, String>> getRequestHeader() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authToken =
+        prefs.getString('authToken') ?? ''; // Default to empty string
+    Map<String, String> headers = {
+      'Authorization': authToken,
+    };
+    return headers;
   }
 }

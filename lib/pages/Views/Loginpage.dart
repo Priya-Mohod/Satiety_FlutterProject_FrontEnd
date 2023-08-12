@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:satietyfrontend/pages/HTTPService/service.dart';
+import 'package:provider/provider.dart';
+//import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
@@ -11,6 +12,7 @@ import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 import '../Constatnts/StringConstants.dart';
+import '../ViewModels/LoginViewModel.dart';
 import '../ViewModels/UserViewModel.dart';
 
 class LoginPage extends StatefulWidget {
@@ -25,10 +27,11 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passwordVisible = true;
-  Service service = Service();
+//  Service service = Service();
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<LoginViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -108,7 +111,23 @@ class _LoginPageState extends State<LoginPage> {
 
                       // TODO : (CHANGE THIS FLOW)
                       // TEMP : Make server call with valid user to get user data and store it in shared preferences
-                      getUserDataUsingEmail(emailController.text);
+                      //getUserDataUsingEmail(emailController.text);
+
+                      bool response = await viewModel.loginUser(
+                          emailController.text, passwordController.text);
+
+                      if (response == true) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ListViewPage(),
+                            ));
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        SnackbarHelper.showSnackBar(
+                            context, StringConstants.login_error);
+                      }
                     }
                   },
                   child: Column(
@@ -166,25 +185,5 @@ class _LoginPageState extends State<LoginPage> {
             )),
       )),
     );
-  }
-
-  Future<void> getUserDataUsingEmail(String email) async {
-    if (await AppUtil().getUserDataUsingEmail(email) == true) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ListViewPage(),
-          ));
-    } else {
-      SnackBar(
-        content: Text(StringConstants.login_user_not_found,
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            )),
-      );
-    }
   }
 }
