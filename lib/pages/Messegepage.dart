@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
+import 'package:satietyfrontend/pages/Constatnts/BottomNavigationBar.dart';
 //import 'Constatnts/endDrawer.dart';
-import 'Constatnts/bottomdrawer.dart';
+import 'Constatnts/Drawers.dart';
 
 class MessegePage extends StatefulWidget {
   const MessegePage({super.key});

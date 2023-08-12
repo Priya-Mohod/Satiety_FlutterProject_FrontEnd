@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
+import 'package:satietyfrontend/pages/Constatnts/BottomNavigationBar.dart';
+import 'package:satietyfrontend/pages/Constatnts/Drawers.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
