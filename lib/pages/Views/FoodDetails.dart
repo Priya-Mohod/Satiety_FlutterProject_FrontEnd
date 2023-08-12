@@ -9,7 +9,7 @@ import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
-import 'package:satietyfrontend/pages/Views/myRequests.dart';
+import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:url_launcher/url_launcher.dart';

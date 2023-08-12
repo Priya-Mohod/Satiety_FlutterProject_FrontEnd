@@ -161,7 +161,7 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushReplacementNamed(context, '/Profile');
             },
           ),
           ListTile(

@@ -5,13 +5,14 @@ import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
+import 'package:satietyfrontend/pages/Views/Profile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
-import 'package:satietyfrontend/pages/Views/myListing.dart';
-import 'package:satietyfrontend/pages/Views/myRequests.dart';
+import 'package:satietyfrontend/pages/Constatnts/Drawers.dart';
+import 'package:satietyfrontend/pages/Views/MyListing.dart';
+import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'firebase_options.dart';
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
           '/myRequests': (context) => MyRequests(),
           '/SupplierLocationMap': (context) =>
               SupplierLocationMap(selectedLocation: LatLng(0, 0)),
+          '/Profile': (context) => UserProfile(),
         });
   }
 }

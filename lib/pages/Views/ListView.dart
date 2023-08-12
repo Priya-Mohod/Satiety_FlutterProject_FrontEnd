@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomNavigationBar.dart';
+import 'package:satietyfrontend/pages/Constatnts/BottomNavigationBar.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
@@ -17,7 +17,7 @@ import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/getData.dart';
 import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
-import 'package:satietyfrontend/pages/Constatnts/bottomdrawer.dart';
+import 'package:satietyfrontend/pages/Constatnts/Drawers.dart';
 
 class ListViewPage extends StatefulWidget {
   const ListViewPage({super.key});
