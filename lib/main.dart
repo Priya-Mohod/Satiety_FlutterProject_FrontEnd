@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
@@ -41,6 +42,7 @@ void main() async {
           create: (_) => FoodListViewModel(),
         ),
         ChangeNotifierProvider(create: (_) => RequestProvider()),
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
       child: MyApp(),
     ),
@@ -62,8 +64,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        //home: const LoginPage(),
-        home: ListViewPage(),
+        home: const LoginPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
