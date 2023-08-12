@@ -130,6 +130,8 @@ class Service {
     double longitude,
     String allergyString,
     String foodAmount,
+    String foodAvailableFromDateTime,
+    String foodAvailableToDateTime,
   ) async {
     var request = http.MultipartRequest('POST', Uri.parse('$url/addfood'));
 
@@ -164,6 +166,10 @@ class Service {
     request.fields['longitude'] = '$longitude';
     // Allergy -
     request.fields['allergies'] = allergyString;
+    // Food Available From Date Time -
+    request.fields['availableFrom'] = foodAvailableFromDateTime;
+    // Food Available To Date Time -
+    request.fields['availableTo'] = foodAvailableToDateTime;
 
     // Add the MultipartFile to the request
     request.files.add(multipartFile);
