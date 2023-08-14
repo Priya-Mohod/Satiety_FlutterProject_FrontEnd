@@ -245,12 +245,32 @@ class Service {
     }
   }
 
-  // Check internet connectivity before making server call
+  // Request Food
+  Future<bool> requestFood(int foodId) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/requestForFood'));
+      request.fields['foodId'] = '$foodId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
+  }
+
+  // Server call
   Future<http.StreamedResponse?> makeServerRequest(
       MultipartRequest request) async {
     bool isConnected = await checkInternetConnectivity();
-    Map<String, String> headers = await getRequestHeader();
     if (isConnected) {
+      Map<String, String> headers = await getRequestHeader();
       request.headers.addAll(headers);
       var response = await request.send();
       return response;
@@ -261,6 +281,7 @@ class Service {
     }
   }
 
+  // Check internet connectivity
   Future<bool> checkInternetConnectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
@@ -272,6 +293,7 @@ class Service {
     }
   }
 
+  // Request header for all requests
   Future<Map<String, String>> getRequestHeader() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authToken =
