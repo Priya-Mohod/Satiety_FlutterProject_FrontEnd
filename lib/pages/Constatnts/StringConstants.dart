@@ -49,8 +49,12 @@ class StringConstants {
   static String supplier_location_map_select_place = 'Select this location';
   static String supplier_location_map_pick_up_location = 'Puck up location';
 
-  // -- Food Details View
+  // -- Food Details
   static String food_details_map_marker = 'Supplier Location';
   static String food_details_map_supplier_address =
       'Supplier approximate Address';
+  static String food_details_request_failed =
+      'Request failed, please try again';
+  static String food_details_request_success = 'Food request sent successfully';
+  static String food_details_request_button = 'Request Food';
 }

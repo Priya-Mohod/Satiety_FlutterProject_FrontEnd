@@ -1,5 +1,4 @@
 //import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -10,10 +9,12 @@ import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
+import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Constatnts/StringConstants.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
 
 class FoodDetails extends StatefulWidget {
   final FoodItem foodItem;
@@ -25,6 +26,8 @@ class FoodDetails extends StatefulWidget {
 }
 
 class _FoodDetailsState extends State<FoodDetails> {
+  Service service = Service();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,31 +170,45 @@ class _FoodDetailsState extends State<FoodDetails> {
                 elevation: 15,
                 minimumSize: const Size(250, 50),
               ),
-              onPressed: () {
-                // Handle the "Request this food" button tap
-                _handleRequestFood(context, widget.foodItem);
-                //Navigator.pushReplacementNamed(context, '/myRequests');
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Food Request'),
-                    content: const Text('Your food request has been sent.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
+              onPressed: () async {
+                var response =
+                    await service.requestFood(widget.foodItem.foodId);
+                if (response) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(StringConstants.food_details_request_button),
+                      content:
+                          Text(StringConstants.food_details_request_success),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Make server call to request food
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ListViewPage(),
-                              ));
-                          // TODO:- clear the form fields
-                          // TODO:- clear the image
-                        },
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
-                );
+                                builder: (context) => Navigator(
+                                  onGenerateRoute: (settings) {
+                                    return MaterialPageRoute(
+                                        builder: (context) => MyRequests());
+                                  },
+                                ),
+                              ),
+                            );
+
+                            // TODO:- clear the form fields
+                            // TODO:- clear the image
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  // show error message
+                  SnackbarHelper.showSnackBar(
+                      context, StringConstants.food_details_request_failed);
+                }
               },
               child: const Text('Request This',
                   style: TextStyle(
