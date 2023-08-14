@@ -585,6 +585,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                           }
                           print(allergyContentString);
 
+                          Map<String, String> foodTime =
+                              getFoodAvailableDateTime();
+
                           var response = await service.sendFoodDetailsWithFile(
                             foodNameController.text,
                             foodDescriptionController.text,
@@ -597,6 +600,8 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                             userCoordinates.longitude,
                             allergyContentString,
                             foodAmountController.text,
+                            foodTime['fromTime']!,
+                            foodTime['toTime']!,
                           );
 
                           // log event add food
@@ -930,5 +935,34 @@ class _AddFreeFoodState extends State<AddFreeFood> {
         });
       }
     }
+  }
+
+  Map<String, String> getFoodAvailableDateTime() {
+    // --  Date format --
+    DateTime combinedFromDateTime = DateTime(
+      foodAvailableDate.year,
+      foodAvailableDate.month,
+      foodAvailableDate.day,
+      foodAvailableFromTime.hour,
+      foodAvailableFromTime.minute,
+    );
+
+    DateTime combinedToDateTime = DateTime(
+      foodAvailableDate.year,
+      foodAvailableDate.month,
+      foodAvailableDate.day,
+      foodAvailableToTime.hour,
+      foodAvailableToTime.minute,
+    );
+
+    String formattedFromDateTime =
+        combinedFromDateTime.toIso8601String().split('.')[0];
+    String formattedToDateTime =
+        combinedToDateTime.toIso8601String().split('.')[0];
+    print(formattedFromDateTime);
+    print(formattedToDateTime);
+
+    // return [formattedFromDateTime, formattedToDateTime];
+    return {"fromTime": formattedFromDateTime, "toTime": formattedToDateTime};
   }
 }

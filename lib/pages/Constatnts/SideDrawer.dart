@@ -26,13 +26,6 @@ class _SideDrawerState extends State<SideDrawer> {
     getCurrentUser();
   }
 
-  // call deinit state
-  @override
-  void dispose() {
-    super.dispose();
-    //denitState();
-  }
-
   Future<void> getCurrentUser() async {
     // Get the user data from the shared preferences
     //final retryOperation = RetryOperation(options: retryOptions);
@@ -43,12 +36,6 @@ class _SideDrawerState extends State<SideDrawer> {
         currentUser = response;
       });
     }
-  }
-
-  @override
-  void denitState() {
-    print("Denit state called");
-    super.dispose();
   }
 
   @override
