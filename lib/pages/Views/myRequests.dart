@@ -7,6 +7,9 @@ import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 
+import '../Constants/Drawers.dart';
+import '../Constants/bottomNavigationBar.dart';
+
 class MyRequests extends StatefulWidget {
   const MyRequests({super.key});
 
@@ -32,6 +35,22 @@ class _MyRequestsState extends State<MyRequests> {
           ],
         ),
         endDrawer: SideDrawer(),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: 0,
+          onTap: (index) {
+            if (index == 0) {
+              Navigator.pushReplacementNamed(context, '/ListViewPage');
+            } else if (index == 1) {
+              Navigator.pushReplacementNamed(context, '/ForumPage');
+            } else if (index == 2) {
+              BottomDrawer.showBottomDrawer(context);
+            } else if (index == 3) {
+              Navigator.pushReplacementNamed(context, '/BookmarksPage');
+            } else if (index == 4) {
+              Navigator.pushReplacementNamed(context, '/MessegePage');
+            }
+          },
+        ),
         body: Consumer<RequestProvider>(
             builder: (context, requestProvider, child) {
           final myRequests = requestProvider.myRequests;
