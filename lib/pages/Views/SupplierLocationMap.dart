@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:satietyfrontend/pages/Constatnts/LocationManager.dart';
+import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
-import '../Constatnts/StringConstants.dart';
+import '../Constants/StringConstants.dart';
 
 class SupplierLocationMap extends StatefulWidget {
   LatLng selectedLocation;
@@ -143,29 +143,35 @@ class _SupplierLocationMapState extends State<SupplierLocationMap> {
                           ElevatedButton(
                             onPressed: () async {
                               _searchController.text = '';
-                              var locationData =
-                                  await LocationManager().determinePosition();
-                              setState(() {
-                                print(locationData);
-                                // set selected location to current location
-                                widget.selectedLocation = LatLng(
-                                  locationData.latitude,
-                                  locationData.longitude,
-                                );
-                                markers.clear();
-                                markers.add(Marker(
-                                  markerId: MarkerId(
-                                      widget.selectedLocation.toString()),
-                                  position: widget.selectedLocation,
-                                  infoWindow: InfoWindow(
-                                    title: "Selected Location",
-                                  ),
-                                ));
-                                _mapController?.animateCamera(
-                                  CameraUpdate.newLatLng(
-                                      widget.selectedLocation),
-                                );
-                              });
+                              try {
+                                var locationData =
+                                    await LocationManager().determinePosition();
+
+                                setState(() {
+                                  print(locationData);
+                                  // set selected location to current location
+                                  widget.selectedLocation = LatLng(
+                                    locationData.latitude,
+                                    locationData.longitude,
+                                  );
+                                  markers.clear();
+                                  markers.add(Marker(
+                                    markerId: MarkerId(
+                                        widget.selectedLocation.toString()),
+                                    position: widget.selectedLocation,
+                                    infoWindow: InfoWindow(
+                                      title: "Selected Location",
+                                    ),
+                                  ));
+                                  _mapController?.animateCamera(
+                                    CameraUpdate.newLatLng(
+                                        widget.selectedLocation),
+                                  );
+                                });
+                              } catch (e) {
+                                SnackbarHelper.showSnackBar(context,
+                                    StringConstants.location_permission_error);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor:

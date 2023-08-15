@@ -16,7 +16,9 @@ import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-import '../Constatnts/StringConstants.dart';
+import '../Constants/LocationManager.dart';
+import '../Constants/StringConstants.dart';
+import 'SnackbarHelper.dart';
 
 class AddFreeFood extends StatefulWidget {
   const AddFreeFood({super.key});
@@ -47,7 +49,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   Set<Marker> markers = {};
   String userAddress = '';
   final TextEditingController foodAddressController = TextEditingController();
-  LatLng userCoordinates = LatLng(0.0, 0.0);
   int selectedFoodQuantity = 1;
   String selectedFoodType = "Both"; // TODO:- Create enum for food type
   bool hasAllergyContent = false; // Variable to track Yes/No selection
@@ -82,13 +83,52 @@ class _AddFreeFoodState extends State<AddFreeFood> {
   TimeOfDay foodAvailableFromTime = TimeOfDay.now();
   TimeOfDay foodAvailableToTime = TimeOfDay.now();
 
+  var locationData;
+  LatLng userCoordinates = LatLng(0.0, 0.0);
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // locationData = _requestLocationPermission();
     foodAddressController.text = userAddress;
-    _determinePosition();
+    // _determinePosition();
+    getLocation();
+  }
+
+  Future getLocation() async {
+    try {
+      locationData = await LocationManager().determinePosition();
+      // Update Map Location
+      setMarker_AnimateCamera_userLocation(locationData);
+    } catch (e) {
+      SnackbarHelper.showSnackBar(
+          context, StringConstants.location_update_error);
+    }
+  }
+
+  Future setMarker_AnimateCamera_userLocation(dynamic location) async {
+    // Update Map Location
+    userCoordinates = LatLng(location.latitude, location.longitude);
+
+    setState(() {
+      markers.clear();
+      markers.add(Marker(
+        markerId: MarkerId(userCoordinates.toString()),
+        position: userCoordinates,
+        infoWindow: const InfoWindow(
+          title: 'Pick up location',
+        ),
+      ));
+    });
+
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLng(userCoordinates),
+    );
+
+    foodAddressController.text = await LocationManager()
+        .getAddressFromCoordinates(
+            userCoordinates.latitude, userCoordinates.longitude);
   }
 
   @override
@@ -512,9 +552,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                                   selectedLocation: userCoordinates),
                             ),
                           );
-
-                          _addMarker(userCoordinates.latitude,
-                              userCoordinates.longitude);
+                          setMarker_AnimateCamera_userLocation(userCoordinates);
                         },
                       ),
                     ),
@@ -665,112 +703,6 @@ class _AddFreeFoodState extends State<AddFreeFood> {
           ),
         ));
     // Function to add a marker on the map and animate the camera to the marker's position
-  }
-
-  void _addMarker(double lat, double lng) async {
-    final marker = Marker(
-      markerId: MarkerId('marker_id'),
-      position: LatLng(lat, lng),
-      infoWindow: InfoWindow(
-        title: 'Marker Title',
-        snippet: 'Marker Snippet',
-      ),
-    );
-    Placemark place = await getUserAddress(marker.position) as Placemark;
-    var userAddress =
-        "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
-    setState(() {
-      markers.clear();
-      markers.add(marker);
-      _mapController?.animateCamera(CameraUpdate.newLatLng(marker.position));
-      foodAddressController.text = userAddress;
-    });
-  }
-
-  Future<Placemark?> getUserAddress(LatLng userCoordinates) async {
-    List<Placemark> placemark = await placemarkFromCoordinates(
-        userCoordinates.latitude, userCoordinates.longitude);
-    print(placemark);
-    Placemark place = placemark[0];
-    return place;
-  }
-
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled, handle the
-      await Geolocator.openLocationSettings();
-      return Future.error('Location services are disabled.');
-    }
-
-    // Check if the app has location permission
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      // Location permissions are permanently denied, handle the scenario
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // Check if the app has location permission
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      // Location permissions are denied, ask user for permission
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Location permissions are denied
-        return Future.error(
-            'Location permissions are denied, we cannot request permissions.');
-      }
-    }
-
-    // Location permissions are granted
-    // get location here
-    final locationData = await Geolocator.getCurrentPosition();
-    print(locationData.latitude);
-    print(locationData.longitude);
-    print(locationData.accuracy);
-
-    // get address here
-    List<Placemark> placemark = await placemarkFromCoordinates(
-        locationData.latitude, locationData.longitude);
-    print(placemark);
-
-    print(userAddress);
-
-    setState(() {
-      //_addMarker(locationData.latitude, locationData.longitude);
-      userCoordinates = LatLng(locationData.latitude, locationData.longitude);
-      userAddress =
-          "${placemark[0].name}, ${placemark[0].locality}, ${placemark[0].postalCode}, ${placemark[0].country}";
-      foodAddressController.text = userAddress;
-      print(userAddress);
-
-      markers.clear();
-      markers.add(Marker(
-        markerId: MarkerId(userCoordinates.toString()),
-        position: userCoordinates,
-        infoWindow: const InfoWindow(
-          title: 'Pick up location',
-        ),
-      ));
-
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLng(userCoordinates),
-      );
-
-      // show toast here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("User Address Updated!"),
-        ),
-      );
-    });
-
-    return locationData;
   }
 
   Widget buildChoiceChip(String label) {

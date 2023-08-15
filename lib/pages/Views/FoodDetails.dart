@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
@@ -133,32 +134,9 @@ class _FoodDetailsState extends State<FoodDetails> {
             const SizedBox(height: 10),
             SizedBox(
               height: 200,
-              child: GoogleMap(
-                // TODO : Check for null location and handle it
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      widget.foodItem.latitude, widget.foodItem.longitude),
-                  zoom: 15,
-                ),
-                // how to get current controllerx
-                // markers: _markers,
-                markers: {
-                  Marker(
-                    markerId: MarkerId("demo"),
-                    position: LatLng(
-                        widget.foodItem.latitude, widget.foodItem.longitude),
-                    draggable: true,
-                    infoWindow: InfoWindow(
-                      title: StringConstants.food_details_map_marker,
-                    ),
-                  )
-                },
-                // on Tap open google map mobile application
-                onTap: (LatLng latLng) {
-                  _onMapTapped(LatLng(
-                      widget.foodItem.latitude, widget.foodItem.longitude));
-                },
-              ),
+              child: GoogleMapWidget(
+                  latitude: widget.foodItem.latitude,
+                  longitude: widget.foodItem.longitude),
             ),
             SizedBox(height: 20),
             Center(
@@ -221,70 +199,4 @@ class _FoodDetailsState extends State<FoodDetails> {
       ),
     );
   }
-
-  void _handleRequestFood(BuildContext context, FoodItem foodItem) {
-    // Here, you can implement the logic to send the request to the supplier
-    // For this example, let's just add the request to the MyRequestsPage
-    final requestProvider =
-        Provider.of<RequestProvider>(context, listen: false);
-
-    Request newRequest = Request(
-      id: DateTime.now().toString(),
-      foodItemId: foodItem.foodId,
-      message: 'I want to order this food: ${foodItem.foodName}',
-      isAccepted: false,
-    );
-
-    requestProvider.addRequest(newRequest);
-
-    // Show a snack bar to inform the user that the request is added
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Request added successfully!'),
-      ),
-    );
-  }
-
-  void _onMapTapped(LatLng latLng) async {
-    const String url = "comgooglemaps://";
-
-    Uri uri = Uri.parse(url);
-
-    if (await canLaunchUrl(uri)) {
-      _launchGoogleMaps(latLng);
-    } else {
-      openMapWithMapKit(latLng.latitude, latLng.longitude);
-    }
-  }
-
-  Future<void> openMapWithMapKit(double latitude, double longitude) async {
-    final String url = "http://maps.apple.com/?ll=$latitude,$longitude";
-
-    Uri uri = Uri.parse(url);
-
-    try {
-      if (await canLaunchUrl(uri)) {
-        await canLaunchUrl(uri);
-      } else {
-        throw "Could not launch maps";
-      }
-    } catch (e) {
-      print("Error launching URL: $e");
-    }
-  }
-
-  Future<void> _launchGoogleMaps(LatLng latLng) async {
-    final String mapsUrl =
-        'https://www.google.com/maps/search/?api=1&query=${latLng.latitude},${latLng.longitude}';
-
-    Uri uri = Uri.parse(mapsUrl);
-
-    if (await canLaunchUrl(uri)) {
-      await canLaunchUrl(uri);
-    } else {
-      throw 'Could not launch Google Maps.';
-    }
-  }
-
-  void sendRegistrationRequest() {}
 }
