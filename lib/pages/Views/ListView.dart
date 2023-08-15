@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
-import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
+import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';

@@ -11,7 +11,7 @@ import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
-import 'package:satietyfrontend/pages/Constatnts/Drawers.dart';
+import 'package:satietyfrontend/pages/Constants/Drawers.dart';
 import 'package:satietyfrontend/pages/Views/MyListing.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';

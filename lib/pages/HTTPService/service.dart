@@ -10,8 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 
-import '../Constatnts/StringConstants.dart';
-import '../Constatnts/URLConstants.dart';
+import '../Constants/StringConstants.dart';
+import '../Constants/URLConstants.dart';
 import '../Views/SnackbarHelper.dart';
 
 class Service {

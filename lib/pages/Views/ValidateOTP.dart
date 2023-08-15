@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
-import 'package:satietyfrontend/pages/Constatnts/StringConstants.dart';
+import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 
 import '../Services/Utility.dart';

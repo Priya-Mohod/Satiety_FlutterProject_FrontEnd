@@ -11,7 +11,7 @@ import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
-import '../Constatnts/StringConstants.dart';
+import '../Constants/StringConstants.dart';
 import '../ViewModels/LoginViewModel.dart';
 import '../ViewModels/UserViewModel.dart';
 
