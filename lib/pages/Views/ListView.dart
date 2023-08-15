@@ -14,10 +14,9 @@ import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
-import 'package:satietyfrontend/pages/getData.dart';
-import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
-import 'package:satietyfrontend/pages/Constatnts/Drawers.dart';
 
+import '../Constants/Drawers.dart';
+import '../Constants/SideDrawer.dart';
 import '../Constants/bottomNavigationBar.dart';
 
 class ListViewPage extends StatefulWidget {
@@ -26,10 +25,6 @@ class ListViewPage extends StatefulWidget {
   @override
   State<ListViewPage> createState() => _ListViewPageState();
 }
-
-String getdata = '';
-Map mapData = {};
-List allData = [];
 
 class _ListViewPageState extends State<ListViewPage> {
   Future initializedData() async {

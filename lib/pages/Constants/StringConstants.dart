@@ -3,6 +3,11 @@ class StringConstants {
   static String exception_error = 'Error connecting server, please try again';
   static String internet_error = 'Please check your internet connection!';
   static String server_error = 'Error connecting server, please try again';
+  static String location_update = 'Updating your location...';
+  static String location_update_error =
+      'Error updating your location, please select your location manually';
+  static String location_permission_error =
+      'Please enable location permission to detect your location';
 
   // -- OTP Validation Screen
   static String otp_validation_screen_title = 'OTP Verification';
@@ -44,7 +49,7 @@ class StringConstants {
   static String post_ad_enter_food_name = 'Please enter food name';
 
   // -- Supplier Location Map
-  static String supplier_location_map_title = 'Choose Pickup Location';
+  static String supplier_location_map_title = 'Select Location';
   static String supplier_location_map_search_hint = 'Search for a place...';
   static String supplier_location_map_select_place = 'Select this location';
   static String supplier_location_map_pick_up_location = 'Puck up location';

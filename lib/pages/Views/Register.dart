@@ -3,6 +3,8 @@ import 'dart:io';
 // import 'dart:html';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -12,9 +14,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Constatnts/StringConstants.dart';
+import '../Constants/LocationManager.dart';
+import '../Constants/StringConstants.dart';
 import 'ListView.dart';
 import 'SnackbarHelper.dart';
+import 'SupplierLocationMap.dart';
 
 //create stateful widget called Register
 class Register extends StatefulWidget {
@@ -46,10 +50,57 @@ class _RegisterState extends State<Register> {
   bool isEmailExists = false; // Email Validation
   bool isEmailValid = true; // Email Validation
   bool isPhoneExists = false; // Phone Validation
+  final TextEditingController userAddressController = TextEditingController();
+
+  var locationData;
+  GoogleMapController? _mapController;
+  Set<Marker> markers = {};
+  LatLng userCoordinates = LatLng(0.0, 0.0);
 
   Service service = Service();
 
   final picker = ImagePicker();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocation();
+  }
+
+  Future getLocation() async {
+    try {
+      locationData = await LocationManager().determinePosition();
+      // Update Map Location
+      setMarker_AnimateCamera_userLocation(locationData);
+    } catch (e) {
+      SnackbarHelper.showSnackBar(
+          context, StringConstants.location_update_error);
+    }
+  }
+
+  Future setMarker_AnimateCamera_userLocation(dynamic location) async {
+    // Update Map Location
+    userCoordinates = LatLng(location.latitude, location.longitude);
+
+    setState(() {
+      markers.clear();
+      markers.add(Marker(
+        markerId: MarkerId(userCoordinates.toString()),
+        position: userCoordinates,
+        infoWindow: const InfoWindow(
+          title: 'My Location',
+        ),
+      ));
+    });
+
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLng(userCoordinates),
+    );
+
+    userAddressController.text = await LocationManager()
+        .getAddressFromCoordinates(
+            userCoordinates.latitude, userCoordinates.longitude);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +292,7 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 05),
                 // -- Confirm Password --
                 TextFormField(
                   controller: confirmPasswordController,
@@ -270,6 +321,56 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
+                SizedBox(height: 10),
+                // show map here to select address
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(fontSize: 20),
+                  controller: userAddressController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: StringConstants.post_ad_user_address,
+                    prefixIcon: Icon(Icons.add_location),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 200,
+                  child: GoogleMap(
+                    onMapCreated: (GoogleMapController controller) {
+                      // Show snackbar while getting location
+                      SnackbarHelper.showSnackBar(
+                          context, StringConstants.location_update);
+                      _mapController = controller;
+                      setState(() {
+                        markers.clear();
+                        markers.add(Marker(
+                          markerId: MarkerId(userCoordinates.toString()),
+                          position: userCoordinates,
+                          infoWindow: InfoWindow(
+                            title: "Selected Location",
+                          ),
+                        ));
+                      });
+                    },
+                    initialCameraPosition: CameraPosition(
+                      target: userCoordinates,
+                      zoom: 15,
+                    ),
+                    markers: markers,
+                    onTap: (LatLng location) async {
+                      userCoordinates = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SupplierLocationMap(
+                              selectedLocation: userCoordinates),
+                        ),
+                      );
+                      setMarker_AnimateCamera_userLocation(userCoordinates);
+                    },
+                  ),
+                ),
+
                 const SizedBox(height: 20),
                 // -- Terms & condition --
                 CheckboxListTile(
@@ -339,8 +440,9 @@ class _RegisterState extends State<Register> {
                         emailController.text,
                         pincodeController.text,
                         addressController.text,
+                        userCoordinates.latitude,
+                        userCoordinates.longitude,
                       );
-                      print(response);
 
                       // show alert dialog on condition
                       if (response) {
