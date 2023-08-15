@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
+import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';

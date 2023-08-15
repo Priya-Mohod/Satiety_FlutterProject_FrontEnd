@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:satietyfrontend/pages/Constatnts/SideDrawer.dart';
+import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 

@@ -14,7 +14,7 @@ import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Constatnts/StringConstants.dart';
+import '../Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 
 class FoodDetails extends StatefulWidget {
