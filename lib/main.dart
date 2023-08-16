@@ -6,6 +6,7 @@ import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
+import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/Profile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
@@ -72,9 +73,8 @@ class MyApp extends StatelessWidget {
           '/ForumPage': (context) => ForumPage(),
           '/MessegePage': (context) => MessegePage(),
           '/Register': (context) => Register(),
-          '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
-          '/myList': (context) => MyFoodListing(),
+          '/myList': (context) => MyListings(),
           '/myRequests': (context) => MyRequests(),
           '/SupplierLocationMap': (context) =>
               SupplierLocationMap(selectedLocation: LatLng(0, 0)),
