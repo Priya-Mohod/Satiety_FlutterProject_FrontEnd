@@ -291,6 +291,45 @@ class Service {
     }
   }
 
+  // Accept Requests
+  Future<bool> acceptRequest(int requestId) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/acceptFoodRequest'));
+      request.fields['foodRequestId'] = '$requestId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
+  }
+
+  Future<bool> declineRequest(int requestId) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/deleteFoodRequest'));
+      request.fields['foodRequestId'] = '$requestId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
+  }
+
   // Server call
   Future<http.StreamedResponse?> makeServerRequest(
       MultipartRequest request) async {

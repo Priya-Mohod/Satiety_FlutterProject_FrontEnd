@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -396,6 +397,12 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(20)),
                   ),
                   onPressed: () async {
+                    // TODO : Remove this code after testing
+                    // Remove user auth token from system
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove('authToken');
+
                     if (_formfield.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

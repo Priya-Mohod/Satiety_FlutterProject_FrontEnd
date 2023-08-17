@@ -8,7 +8,7 @@ import '../Models/FoodRequestsModel.dart';
 class MyListingsViewModel {
   Service service = Service();
 
-  Future<Map<FoodItem, List<FoodRequest>>?> fetchListings() async {
+  Future<List<MyListingsDTO>> fetchListings() async {
     // Simulate fetching data from the server
     // Replace this with actual server API calls
     await Future.delayed(Duration(seconds: 2));
@@ -21,31 +21,49 @@ class MyListingsViewModel {
       } else if (response != null) {
         // Handle error response
         print('Error: ${response.statusCode}');
-        return null;
       } else {
         // Unable to send data to server
         print('Unable to send data to server');
-        return null;
       }
     } catch (e) {
       print('Exception at fetchListings: $e');
     }
+    return [];
   }
 
-  Map<FoodItem, List<FoodRequest>> mapServerResponse(
-      List<Map<String, dynamic>> serverResponse) {
-    Map<FoodItem, List<FoodRequest>> dataMap = {};
+  Future<List<MyListingsDTO>> mapServerResponse(
+      List<Map<String, dynamic>> serverResponse) async {
+    List<MyListingsDTO> dataList = [];
 
     for (var json in serverResponse) {
-      List<FoodRequest> foodRequestsList =
-          (json['foodRequestsList'] as List<dynamic>)
-              .map((requestJson) => FoodRequest.fromJson(requestJson))
-              .toList();
+      List<FoodRequest> foodRequestsList = [];
+      if (json['foodRequestsList'] != null) {
+        foodRequestsList = (json['foodRequestsList'] as List<dynamic>)
+            .map((requestJson) => FoodRequest.fromJson(requestJson))
+            .toList();
+      }
 
       FoodItem foodItem = FoodItem.fromJson(json);
-      dataMap[foodItem] = foodRequestsList;
+
+      dataList.add(MyListingsDTO(
+        foodItem: foodItem,
+        foodRequestsList: foodRequestsList,
+      ));
     }
 
-    return dataMap;
+    return dataList;
+  }
+
+  Future<bool> onRequestAcceptClick(int requestId) async {
+    return await service.acceptRequest(requestId);
+  }
+
+  Future<bool> onRequestDeclineClick(int requestId) async {
+    return await service.declineRequest(requestId);
+  }
+
+  Future<bool> onRequestCancelClick(int requestId) async {
+    // return await service.cancelRequest(requestId);
+    return true;
   }
 }

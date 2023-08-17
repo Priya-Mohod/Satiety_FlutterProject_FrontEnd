@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import '../Constants/Drawers.dart';
 import '../Constants/SideDrawer.dart';
+import '../Constants/StringConstants.dart';
 import '../Constants/bottomNavigationBar.dart';
 import '../Models/FoodItemModel.dart';
 import '../Models/FoodRequestsModel.dart';
@@ -12,19 +14,24 @@ class MyListings extends StatefulWidget {
 }
 
 class _MyListingsState extends State<MyListings> {
-  final MyListingsViewModel _viewModel = MyListingsViewModel();
-  Map<FoodItem, List<FoodRequest>>? _dataMap = {};
+  final MyListingsViewModel viewModel = MyListingsViewModel();
+  late Future<List<MyListingsDTO>> dataListFuture;
 
   @override
   void initState() {
     super.initState();
-    _viewModel.fetchListings();
     fetchListings();
   }
 
   Future<void> fetchListings() async {
-    _dataMap = await _viewModel.fetchListings();
-    print(_dataMap);
+    dataListFuture = viewModel.fetchListings();
+    print(dataListFuture);
+  }
+
+  void refreshData() {
+    setState(() {
+      fetchListings();
+    });
   }
 
   @override
@@ -32,14 +39,20 @@ class _MyListingsState extends State<MyListings> {
     return Scaffold(
       appBar: AppBar(title: Text('My Listings')),
       body: FutureBuilder(
-        future: _viewModel.fetchListings(),
+        future: dataListFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error loading data'));
           } else {
-            return ListingScreen(_dataMap!);
+            final List<MyListingsDTO>? dataList = snapshot.data;
+            if (dataList == null || dataList.isEmpty) {
+              return Center(
+                  child: Text(StringConstants.my_listings_screen_no_listings));
+            } else {
+              return ListingScreen(dataList, viewModel, refreshData);
+            }
           }
         },
       ),
@@ -66,18 +79,20 @@ class _MyListingsState extends State<MyListings> {
 }
 
 class ListingScreen extends StatelessWidget {
-  final Map<FoodItem, List<FoodRequest>> dataMap;
+  final List<MyListingsDTO>? dataList;
+  final MyListingsViewModel _viewModel;
+  final VoidCallback refreshCallback;
 
-  ListingScreen(this.dataMap);
+  ListingScreen(this.dataList, this._viewModel, this.refreshCallback);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: dataMap.length,
+        itemCount: dataList!.length,
         itemBuilder: (context, index) {
-          final foodItem = dataMap.keys.elementAt(index);
-          final requestsList = dataMap[foodItem];
+          final foodItem = dataList![index].foodItem;
+          final requestsList = dataList![index].foodRequestsList;
 
           return Card(
             margin: EdgeInsets.all(10),
@@ -111,33 +126,24 @@ class ListingScreen extends StatelessWidget {
                   child: Text('Requests:'),
                 ),
                 Column(
-                  children: requestsList!.map<Widget>((request) {
+                  children: requestsList.map<Widget>((request) {
                     return ListTile(
                       leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage(request.requestedUserImageUrl),
                       ),
-                      title: Text(request.requestedUserName),
+                      title: Text(
+                        request.requestedUserName,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
                       // subtitle: Text(
                       //     request.acceptedFlag == 'Y' ? 'Accepted' : 'Pending'),
-                      trailing: Row(
-                        mainAxisSize:
-                            MainAxisSize.min, // Ensure buttons are compact
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle Accept button tap
-                            },
-                            child: Text('Accept'),
-                          ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle Decline button tap
-                            },
-                            child: Text('Decline'),
-                          ),
-                        ],
+                      trailing: Container(
+                        width: 170,
+                        child: buildButtons(context, request),
                       ),
                     );
                   }).toList(),
@@ -148,6 +154,121 @@ class ListingScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget buildButtons(BuildContext context, FoodRequest request) {
+    if (request.acceptedFlag == 'Y') {
+      return Row(children: [
+        Text('Accepted',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.bold)),
+        SizedBox(width: 30),
+        ElevatedButton(
+          onPressed: () async {
+            // Handle Accept button tap
+            // TODO : Implement request cancellation
+            var result =
+                await _viewModel.onRequestDeclineClick(request.requestId);
+            if (result) {
+              // Show alert dialog
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Cancel'),
+                  content: Text('Request cancelled successfully'),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        refreshCallback();
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              // Show SnackbarHelper
+              SnackbarHelper.showSnackBar(
+                  context, StringConstants.my_listings_error_cancel_request);
+            }
+          },
+          child: const Text('Cancel'),
+        ),
+      ]);
+    } else {
+      return Row(
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              // Handle Accept button tap
+              var result =
+                  await _viewModel.onRequestAcceptClick(request.requestId);
+              if (result) {
+                // Show alert dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Success'),
+                    content: Text('Request accepted successfully'),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Refresh the page
+                          refreshCallback();
+                          Navigator.pop(context);
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                // Show SnackbarHelper
+                SnackbarHelper.showSnackBar(
+                    context, StringConstants.my_listings_error_accept_request);
+              }
+            },
+            child: const Text('Accept'),
+          ),
+          SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () async {
+              // Handle Decline button tap
+              var result =
+                  await _viewModel.onRequestDeclineClick(request.requestId);
+              if (result) {
+                // Show alert dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Success'),
+                    content: Text('Request declined successfully'),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Refresh the page
+                          refreshCallback();
+                          Navigator.pop(context);
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                // Show SnackbarHelper
+                SnackbarHelper.showSnackBar(
+                    context, StringConstants.my_listings_error_decline_request);
+              }
+            },
+            child: Text('Decline'),
+          ),
+        ],
+      );
+    }
   }
 }
 

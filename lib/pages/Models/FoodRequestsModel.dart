@@ -1,3 +1,5 @@
+import 'FoodItemModel.dart';
+
 class FoodRequest {
   String requestedUserImageUrl;
   String requestedUserName;
@@ -19,4 +21,14 @@ class FoodRequest {
       acceptedFlag: json['acceptedFlag'],
     );
   }
+}
+
+class MyListingsDTO {
+  final FoodItem foodItem;
+  final List<FoodRequest> foodRequestsList;
+
+  MyListingsDTO({
+    required this.foodItem,
+    required this.foodRequestsList,
+  });
 }

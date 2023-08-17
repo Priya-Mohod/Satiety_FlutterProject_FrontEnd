@@ -62,4 +62,12 @@ class StringConstants {
       'Request failed, please try again';
   static String food_details_request_success = 'Food request sent successfully';
   static String food_details_request_button = 'Request Food';
+
+  // -- My Listings
+  static String my_listings_screen_title = 'My Listings';
+  static String my_listings_screen_no_listings = 'No listings found';
+  static String my_listings_error_accept_request =
+      'Error accepting request, please try again';
+  static String my_listings_error_decline_request = 'Error declining request';
+  static String my_listings_error_cancel_request = 'Error cancelling request';
 }

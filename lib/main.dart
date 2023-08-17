@@ -73,6 +73,7 @@ class MyApp extends StatelessWidget {
           '/ForumPage': (context) => ForumPage(),
           '/MessegePage': (context) => MessegePage(),
           '/Register': (context) => Register(),
+          '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
           '/myList': (context) => MyListings(),
           '/myRequests': (context) => MyRequests(),
