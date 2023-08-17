@@ -37,7 +37,8 @@ class _FoodDetailsState extends State<FoodDetails> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ListViewPage()));
           },
         ),
         title: Text(

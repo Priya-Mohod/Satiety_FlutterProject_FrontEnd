@@ -92,7 +92,7 @@ class _ListViewPageState extends State<ListViewPage> {
             BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
             Navigator.pushReplacementNamed(
-                context, '/ForumPage'); // TODO: Change this to Ads Page
+                context, '/Sample'); // TODO: Change this to Ads Page
           } else if (index == 4) {
             Navigator.pushReplacementNamed(context, '/MessegePage');
           }
@@ -156,49 +156,6 @@ class _ListViewPageState extends State<ListViewPage> {
             height: 1,
             thickness: 1,
           ),
-          // GestureDetector(onTap: () {
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => FoodDetails(foodItem: foodList[0]),
-          //       ));
-          // }, child: Consumer<FoodListViewModel>(
-          //     builder: (context, foodListViewModel, child) {
-          //   final foodList = foodListViewModel.foodList;
-          //   return ListView.builder(
-          //       itemCount: foodList.length,
-          //       itemBuilder: (context, index) {
-          //         final foodItem = foodList[index];
-          //         return Row(children: [
-          //           Column(children: [
-          //             Container(
-          //               color: Colors.grey[300],
-          //               height: 100,
-          //               width: 100,
-          //               child: ClipOval(
-          //                 child: Image.network(
-          //                   foodList[0].foodSignedUrl,
-          //                   height: 100,
-          //                   width: 100,
-          //                   errorBuilder: (context, error, stackTrace) {
-          //                     return Image.asset(
-          //                       'images/a.png',
-          //                       height: 50,
-          //                       width: 50,
-          //                     );
-          //                   },
-          //                 ),
-          //               ),
-          //             ),
-          //           ]),
-          //           Column(
-          //             children: [
-          //               Row(children: [],)
-          //             ],
-          //           )
-          //         ]);
-          //       });
-          // })),
           Expanded(
             child: Consumer<FoodListViewModel>(
               builder: (context, foodListViewModel, child) {
@@ -217,119 +174,92 @@ class _ListViewPageState extends State<ListViewPage> {
                               color: Color.fromARGB(255, 128, 172, 177),
                               width: 1.0), // Add border color and width
                         ),
-                        elevation: 2,
-                        child: Container(
-                          height: 130,
-                          child: ListTile(
-                            leading: Container(
-                              color: Colors.grey[300],
-                              height: 100,
-                              width: 100,
-                              child: ClipOval(
-                                child: Image.network(
-                                  foodItem.foodSignedUrl,
-                                  height: 100,
-                                  width: 100,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'images/a.png',
-                                      height: 50,
-                                      width: 50,
-                                    );
-                                  },
-                                ),
+                        elevation: 4,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      FoodDetails(foodItem: foodList[index]),
+                                ));
+                          },
+                          child: Row(
+                            children: [
+                              Image.network(
+                                foodItem.foodSignedUrl,
+                                height: 150,
+                                width: 130,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'images/a.png',
+                                    height: 100,
+                                    width: 100,
+                                  );
+                                },
                               ),
-                            ),
-
-                            title: Text(foodItem.foodName,
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                )),
-
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              SizedBox(width: 15),
+                              Row(
                                 children: [
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Icon(Icons.account_circle, size: 30),
-                                      SizedBox(width: 10),
-                                      Text(foodItem.addedByUserName,
+                                      SizedBox(height: 15),
+                                      Text(foodItem.foodName,
                                           style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black54,
+                                            fontSize: 26,
                                             fontWeight: FontWeight.bold,
                                           )),
-                                      SizedBox(width: 10),
-                                      Icon(Icons.star,
-                                          color:
-                                              Color.fromARGB(255, 221, 161, 32),
-                                          size: 30),
-                                      SizedBox(width: 5),
-                                      Text('4.5',
-                                          style: TextStyle(fontSize: 20)),
-                                      SizedBox(width: 20),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
-                                          foodItem.foodAmount == 0.0
-                                              ? "Food is Free"
-                                              : 'Cost: Rs. ${foodItem.foodAmount}',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            //color: Colors.black54,
-                                            color: foodItem.foodAmount == 0.0
-                                                ? Color.fromARGB(
-                                                    255, 40, 125, 43)
-                                                : Colors.black87,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      SizedBox(width: 10),
-                                      if (foodItem.foodType == 'Veg')
-                                        const Icon(Icons.fastfood,
-                                            color: Color.fromARGB(
-                                                255, 40, 125, 43),
-                                            size: 25),
-                                      if (foodItem.foodType == 'Non-Veg')
-                                        const Icon(Icons.fastfood,
-                                            color: Colors.red, size: 25),
-                                      if (foodItem.foodType == 'Both')
-                                        const Icon(Icons.fastfood,
-                                            color: Colors.orange, size: 25),
-                                      SizedBox(width: 20),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on_outlined,
-                                          size: 25),
-                                      Text('1.5 km',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      SizedBox(height: 5),
+                                      Row(
+                                        children: [
+                                          ClipOval(
+                                            child: Icon(Icons.account_circle,
+                                                size: 40,
+                                                color: Colors.red[300]),
+                                          ),
+                                          SizedBox(width: 3),
+                                          Text(foodItem.addedByUserName,
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[700],
+                                              )),
+                                          SizedBox(width: 10),
+                                          Icon(
+                                            Icons.star_half,
+                                            size: 30,
+                                            color: Colors.orange[800],
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text('3.5',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[800],
+                                              )),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.location_on_outlined,
+                                              size: 30,
+                                              color: Colors.grey[700]),
+                                          SizedBox(width: 3),
+                                          Text('1.1 km',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[700],
+                                              )),
+                                        ],
+                                      )
                                     ],
                                   )
                                 ],
-                              ),
-                            ),
-
-                            // Add more widgets for other food details
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        FoodDetails(foodItem: foodList[index]),
-                                  ));
-                            },
+                              )
+                            ],
                           ),
                         ),
                       ),
