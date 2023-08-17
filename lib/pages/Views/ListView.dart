@@ -161,6 +161,7 @@ class _ListViewPageState extends State<ListViewPage> {
               builder: (context, foodListViewModel, child) {
                 final foodList = foodListViewModel.foodList;
                 return ListView.builder(
+                  shrinkWrap: true,
                   itemCount: foodList.length,
                   itemBuilder: (context, index) {
                     final foodItem = foodList[index];
@@ -253,6 +254,47 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey[700],
                                               )),
+                                          // Text(
+                                          //     //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
+                                          //     foodItem.foodAmount == 0.0
+                                          //         ? 'Free'
+                                          //         : 'Cost: Rs. ${foodItem.foodAmount}',
+                                          //     style: TextStyle(
+                                          //       fontSize: 20,
+                                          //       //color: Colors.black54,
+                                          //       color:
+                                          //           foodItem.foodAmount == 0.0
+                                          //               ? Color.fromARGB(
+                                          //                   255, 40, 125, 43)
+                                          //               : Colors.black87,
+                                          //       fontWeight: FontWeight.bold,
+                                          //     )),
+
+                                          SizedBox(width: 10),
+                                          if (foodItem.foodType == 'Veg')
+                                            const Icon(Icons.fastfood,
+                                                color: Color.fromARGB(
+                                                    255, 40, 125, 43),
+                                                size: 25),
+                                          if (foodItem.foodType == 'Non-Veg')
+                                            const Icon(Icons.fastfood,
+                                                color: Colors.red, size: 25),
+                                          if (foodItem.foodType == 'Both')
+                                            const Icon(Icons.fastfood,
+                                                color: Colors.orange, size: 25),
+                                          SizedBox(width: 20),
+                                          if (foodItem.foodAmount == 0.0)
+                                            Icon(
+                                              Icons.currency_rupee_rounded,
+                                              size: 30,
+                                              color: Colors.green[800],
+                                            ),
+                                          if (foodItem.foodAmount != 0.0)
+                                            Icon(
+                                              Icons.currency_rupee_rounded,
+                                              size: 30,
+                                              color: Colors.red[900],
+                                            )
                                         ],
                                       )
                                     ],

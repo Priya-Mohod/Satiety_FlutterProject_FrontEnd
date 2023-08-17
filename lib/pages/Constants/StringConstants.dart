@@ -62,4 +62,6 @@ class StringConstants {
       'Request failed, please try again';
   static String food_details_request_success = 'Food request sent successfully';
   static String food_details_request_button = 'Request Food';
+  static String food_details_allergy_Sring =
+      'View Food Allergen Information Here';
 }
