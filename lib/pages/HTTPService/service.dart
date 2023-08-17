@@ -9,7 +9,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
-
 import '../Constants/StringConstants.dart';
 import '../Constants/URLConstants.dart';
 import '../Views/SnackbarHelper.dart';
@@ -258,6 +257,65 @@ class Service {
       var request =
           http.MultipartRequest('GET', Uri.parse('$url/requestForFood'));
       request.fields['foodId'] = '$foodId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
+  }
+
+  // Get MyListings
+  Future<Response?> getMyListings() async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/getMyListings'));
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        final streamedResponse = await http.Response.fromStream(response);
+        return streamedResponse;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return null;
+    }
+  }
+
+  // Accept Requests
+  Future<bool> acceptRequest(int requestId) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/acceptFoodRequest'));
+      request.fields['foodRequestId'] = '$requestId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return false;
+    }
+  }
+
+  Future<bool> declineRequest(int requestId) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/deleteFoodRequest'));
+      request.fields['foodRequestId'] = '$requestId';
       var response = await makeServerRequest(request);
       if (response != null && response.statusCode == 200) {
         return true;

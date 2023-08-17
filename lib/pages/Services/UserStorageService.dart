@@ -22,4 +22,10 @@ class UserStorageService {
     }
     return null;
   }
+
+  static Future<void> removeUserFromSharedPreferances() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('authToken');
+    await prefs.remove(_keyUser);
+  }
 }

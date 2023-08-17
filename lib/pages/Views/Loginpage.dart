@@ -117,6 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                           emailController.text, passwordController.text);
 
                       if (response == true) {
+                        // After successful login get the user data from the server
+                        await AppUtil()
+                            .getUserDataUsingEmail(emailController.text);
+
                         // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(
                             context,

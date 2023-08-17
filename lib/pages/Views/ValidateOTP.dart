@@ -70,17 +70,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
                     SnackbarHelper.showSnackBar(context, messageUser);
                     // show listView page
                     if (result == true) {
-                      // TODO : Get User Data from server and store in system preferences
-                      if (await AppUtil().getUserDataUsingEmail(userEmail) ==
-                          true) {
-                        _navigateToListPage();
-                      } else {
-                        // Show an error message for an invalid OTP
-                        // show toast message or snackbar
-                        const SnackBar(
-                          content: Text("Error fetching in user data"),
-                        );
-                      }
+                      _navigateToLoginPage();
                     }
                   } else {
                     // Show an error message for an invalid OTP
@@ -100,14 +90,8 @@ class _ValidateOTPState extends State<ValidateOTP> {
     );
   }
 
-  Future<void> _navigateToListPage() async {
+  Future<void> _navigateToLoginPage() async {
     await Future.delayed(Duration(seconds: 2));
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ListViewPage(),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, '/Login');
   }
 }
