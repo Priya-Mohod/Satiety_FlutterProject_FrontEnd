@@ -1,16 +1,23 @@
 import 'FoodItemModel.dart';
 
 class FoodRequest {
-  String requestedUserImageUrl;
-  String requestedUserName;
+  String? requestedUserImageUrl;
+  String? requestedUserName;
   int requestId;
-  String acceptedFlag;
+  String? acceptedFlag;
+  String? requestedAt; // TODO: Remove the nullable
+  String? acceptedAt; // TODO: Remove the nullable
+
+  FoodItem? foodItem;
 
   FoodRequest({
     required this.requestedUserImageUrl,
     required this.requestedUserName,
     required this.requestId,
     required this.acceptedFlag,
+    required this.requestedAt,
+    required this.acceptedAt,
+    required this.foodItem,
   });
 
   factory FoodRequest.fromJson(Map<String, dynamic> json) {
@@ -19,6 +26,9 @@ class FoodRequest {
       requestedUserName: json['requestedUserName'],
       requestId: json['requestId'],
       acceptedFlag: json['acceptedFlag'],
+      requestedAt: json['requestedAt'],
+      acceptedAt: json['acceptedAt'],
+      foodItem: FoodItem.fromJson(json['foodBean']),
     );
   }
 }

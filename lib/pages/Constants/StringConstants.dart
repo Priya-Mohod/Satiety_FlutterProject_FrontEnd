@@ -72,10 +72,15 @@ class StringConstants {
       'Error accepting request, please try again';
   static String my_listings_error_decline_request = 'Error declining request';
   static String my_listings_error_cancel_request = 'Error cancelling request';
+  static String my_listings_received_requests = 'Received Requests:';
 
   // -- My Requests
+  static String my_requests_screen_title = 'My Requests';
+  static String my_requests_screen_no_listings = 'No listings found';
+  static String my_requests_no_requests_available = 'No requests available';
+  static String my_requests_request_cancelled =
+      'Request cancelled successfully';
 
   // -- User Profile
   static String user_profile_screen_title = 'Profile';
-
 }
