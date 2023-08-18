@@ -69,7 +69,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                   ],
                 )),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 2, 10),
+              padding: const EdgeInsets.fromLTRB(15, 15, 10, 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -131,7 +131,6 @@ class _FoodDetailsState extends State<FoodDetails> {
                         fontSize: 20,
                       )),
                   const SizedBox(height: 20),
-
                   Container(
                     height: 50,
                     width: 350,
@@ -151,28 +150,6 @@ class _FoodDetailsState extends State<FoodDetails> {
                       ),
                     ),
                   ),
-
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     backgroundColor: Color.fromARGB(255, 215, 233, 235),
-                  //     foregroundColor: Colors.black,
-                  //     //shadowColor: Color.fromARGB(255, 152, 218, 226),
-                  //     elevation: 4,
-                  //     minimumSize: const Size(390, 50),
-                  //   ),
-                  //   onPressed: () {
-                  //     _launchURL;
-                  //     // Navigator.push(
-                  //     //     context,
-                  //     //     MaterialPageRoute(
-                  //     //       builder: (context) => AllergyInfo(),
-                  //     //     ));
-                  //   },
-                  //   child: Text(
-                  //     StringConstants.food_details_allergy_Sring,
-                  //     style: TextStyle(fontSize: 20),
-                  //   ),
-                  // ),
                   const SizedBox(height: 20),
                   Text('Quantity: ${widget.foodItem.foodQuantity}',
                       style: const TextStyle(
