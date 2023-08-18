@@ -9,7 +9,7 @@ class User {
   final String? password;
   final String mobile;
   //final String pincode;
-  //final String address;
+  final String address;
   final String? imageSignedUrl;
 
   User(
@@ -20,7 +20,7 @@ class User {
       this.password,
       required this.mobile,
       //required this.pincode,
-      //required this.address,
+      required this.address,
       this.imageSignedUrl});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -32,7 +32,7 @@ class User {
         password: json['password'],
         mobile: json['mobile'],
         //pincode: json['pincode'],
-        //address: json['address'],
+        address: json['address'],
         imageSignedUrl: json['imageSignedUrl']);
   }
 
@@ -44,6 +44,7 @@ class User {
       'password': password,
       'mobile': mobile,
       'imageSignedUrl': imageSignedUrl,
+      'address': address,
     };
   }
 }

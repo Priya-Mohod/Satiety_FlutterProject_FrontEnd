@@ -70,4 +70,9 @@ class StringConstants {
       'Error accepting request, please try again';
   static String my_listings_error_decline_request = 'Error declining request';
   static String my_listings_error_cancel_request = 'Error cancelling request';
+
+  // -- My Requests
+
+  // -- User Profile
+  static String user_profile_screen_title = 'Profile';
 }

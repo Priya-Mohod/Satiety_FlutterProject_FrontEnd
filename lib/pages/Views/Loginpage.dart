@@ -13,7 +13,7 @@ import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 import '../Constants/StringConstants.dart';
 import '../ViewModels/LoginViewModel.dart';
-import '../ViewModels/UserViewModel.dart';
+import '../ViewModels/UserProfileViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

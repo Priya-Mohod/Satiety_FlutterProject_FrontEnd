@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 
 import '../Models/UserModel.dart';
-import '../ViewModels/UserViewModel.dart';
+import '../ViewModels/UserProfileViewModel.dart';
 import 'UserStorageService.dart';
 
 class AppUtil {
@@ -15,7 +15,7 @@ class AppUtil {
     if (response != null && response.statusCode == 200) {
       Map<String, dynamic> responseData =
           jsonDecode(await response.stream.bytesToString());
-      var userViewModel = UserViewModel();
+      var userViewModel = UserProfileViewModel();
       final user = userViewModel.parseUserData(responseData);
       if (user != null) {
         await UserStorageService.saveUserToSharedPreferences(user);
@@ -31,7 +31,7 @@ class AppUtil {
     if (response != null && response.statusCode == 200) {
       Map<String, dynamic> responseData =
           jsonDecode(await response.stream.bytesToString());
-      var userViewModel = UserViewModel();
+      var userViewModel = UserProfileViewModel();
       user = userViewModel.parseUserData(responseData);
       if (user != null) {
         return user;
