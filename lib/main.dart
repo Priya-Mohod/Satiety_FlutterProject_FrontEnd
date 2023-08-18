@@ -6,13 +6,13 @@ import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
-import 'package:satietyfrontend/pages/Views/Profile.dart';
+import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
+import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:satietyfrontend/pages/Constants/Drawers.dart';
-import 'package:satietyfrontend/pages/Views/MyListing.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
-          '/myList': (context) => MyFoodListing(),
+          '/myList': (context) => MyListings(),
           '/myRequests': (context) => MyRequests(),
           '/SupplierLocationMap': (context) =>
               SupplierLocationMap(selectedLocation: LatLng(0, 0)),

@@ -229,10 +229,8 @@ class _SideDrawerState extends State<SideDrawer> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            // Perform the logout action here
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.remove('authToken');
+                            UserStorageService
+                                .removeUserFromSharedPreferances();
                             Navigator.of(context).pop(); // Close the dialog
                             Navigator.pushReplacementNamed(context, '/Login');
                           },

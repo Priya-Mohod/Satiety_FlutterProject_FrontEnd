@@ -13,7 +13,7 @@ import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 import '../Constants/StringConstants.dart';
 import '../ViewModels/LoginViewModel.dart';
-import '../ViewModels/UserViewModel.dart';
+import '../ViewModels/UserProfileViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -117,6 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                           emailController.text, passwordController.text);
 
                       if (response == true) {
+                        // After successful login get the user data from the server
+                        await AppUtil()
+                            .getUserDataUsingEmail(emailController.text);
+
                         // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(
                             context,
