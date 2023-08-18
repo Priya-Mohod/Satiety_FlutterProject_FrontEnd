@@ -46,16 +46,19 @@ class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Requests')),
+      appBar: AppBar(title: Text(StringConstants.my_requests_screen_title)),
       body: FutureBuilder<List<FoodRequest>>(
         future: dataListFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading data'));
+            return Center(
+                child: Text('Error loading data', textScaleFactor: 1.5));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No requests available'));
+            return Center(
+                child: Text(StringConstants.my_requests_no_requests_available,
+                    textScaleFactor: 1.5));
           } else {
             if (snapshot.data == null || snapshot.data!.isEmpty) {
               return Center(
@@ -127,8 +130,8 @@ class _MyRequestsState extends State<MyRequests> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: Text('Cancel'),
-                                    content:
-                                        Text('Request cancelled successfully'),
+                                    content: Text(StringConstants
+                                        .my_requests_request_cancelled),
                                     actions: [
                                       ElevatedButton(
                                         onPressed: () {

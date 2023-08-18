@@ -37,14 +37,15 @@ class _MyListingsState extends State<MyListings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Listings')),
+      appBar: AppBar(title: Text(StringConstants.my_listings_screen_title)),
       body: FutureBuilder(
         future: dataListFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading data'));
+            return Center(
+                child: Text('Error loading data', textScaleFactor: 1.5));
           } else {
             final List<MyListingsDTO>? dataList = snapshot.data;
             if (dataList == null || dataList.isEmpty) {
@@ -73,7 +74,7 @@ class _MyListingsState extends State<MyListings> {
           }
         },
       ),
-      endDrawer: SideDrawer(),
+      endDrawer: const SideDrawer(),
     );
   }
 }
@@ -123,7 +124,7 @@ class ListingScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text('Requests:'),
+                  child: Text(StringConstants.my_listings_received_requests),
                 ),
                 Column(
                   children: requestsList.map<Widget>((request) {
