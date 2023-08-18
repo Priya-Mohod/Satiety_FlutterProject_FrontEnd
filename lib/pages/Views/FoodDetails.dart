@@ -141,7 +141,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                       child: InkWell(
                         onTap: _launchURL,
                         child: Text(
-                          StringConstants.food_details_allergy_Sring,
+                          StringConstants.food_details_allergy_String,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.black87,
