@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:satietyfrontend/pages/TermsAndCondition.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -380,9 +381,34 @@ class _RegisterState extends State<Register> {
                       isChecked = value!;
                     });
                   },
-                  title: const Text(
-                    'I agree to the terms and conditions',
-                    style: TextStyle(fontSize: 20),
+                  // title: InkWell(
+                  //   onTap: _launchURL,
+                  //   child: const Text(
+                  //     'Click here to open a website',
+                  //     style: TextStyle(
+                  //       fontSize: 25,
+                  //       color: Colors.cyan,
+                  //       //decoration: TextDecoration.underline,
+                  //     ),
+                  //   ),
+                  // ),
+
+                  title: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TermsAndCondition(),
+                          ));
+                    },
+                    child: const Text(
+                      'I agree to the terms and conditions',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.cyan,
+                        //decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
@@ -583,7 +609,8 @@ class _RegisterState extends State<Register> {
   }
 
   _launchURL() async {
-    final Uri url = Uri.parse('https://flutter.dev');
+    final Uri url = Uri.parse(
+        'https://www.food.gov.uk/business-guidance/allergen-guidance-for-food-businesses');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }

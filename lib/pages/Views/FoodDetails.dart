@@ -131,26 +131,48 @@ class _FoodDetailsState extends State<FoodDetails> {
                         fontSize: 20,
                       )),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 215, 233, 235),
-                      foregroundColor: Colors.black,
-                      //shadowColor: Color.fromARGB(255, 152, 218, 226),
-                      elevation: 4,
-                      minimumSize: const Size(390, 50),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AllergyInfo(),
-                          ));
-                    },
-                    child: Text(
-                      StringConstants.food_details_allergy_Sring,
-                      style: TextStyle(fontSize: 20),
+
+                  Container(
+                    height: 50,
+                    width: 350,
+                    color: Colors.blueGrey[200],
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: InkWell(
+                        onTap: _launchURL,
+                        child: Text(
+                          StringConstants.food_details_allergy_Sring,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            //decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
+
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: Color.fromARGB(255, 215, 233, 235),
+                  //     foregroundColor: Colors.black,
+                  //     //shadowColor: Color.fromARGB(255, 152, 218, 226),
+                  //     elevation: 4,
+                  //     minimumSize: const Size(390, 50),
+                  //   ),
+                  //   onPressed: () {
+                  //     _launchURL;
+                  //     // Navigator.push(
+                  //     //     context,
+                  //     //     MaterialPageRoute(
+                  //     //       builder: (context) => AllergyInfo(),
+                  //     //     ));
+                  //   },
+                  //   child: Text(
+                  //     StringConstants.food_details_allergy_Sring,
+                  //     style: TextStyle(fontSize: 20),
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   Text('Quantity: ${widget.foodItem.foodQuantity}',
                       style: const TextStyle(
@@ -319,5 +341,13 @@ class _FoodDetailsState extends State<FoodDetails> {
         ),
       ),
     );
+  }
+
+  _launchURL() async {
+    final Uri url = Uri.parse(
+        'https://www.food.gov.uk/business-guidance/allergen-guidance-for-food-businesses');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
