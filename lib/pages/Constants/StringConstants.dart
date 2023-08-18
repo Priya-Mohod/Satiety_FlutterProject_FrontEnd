@@ -74,8 +74,9 @@ class StringConstants {
   static String my_listings_error_cancel_request = 'Error cancelling request';
 
   // -- My Requests
+  static String my_requests_screen_title = 'My Listings';
+  static String my_requests_screen_no_listings = 'No listings found';
 
   // -- User Profile
   static String user_profile_screen_title = 'Profile';
-
 }

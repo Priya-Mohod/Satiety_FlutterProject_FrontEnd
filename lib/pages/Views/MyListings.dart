@@ -130,10 +130,10 @@ class ListingScreen extends StatelessWidget {
                     return ListTile(
                       leading: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(request.requestedUserImageUrl),
+                            NetworkImage(request.requestedUserImageUrl ?? ''),
                       ),
                       title: Text(
-                        request.requestedUserName,
+                        request.requestedUserName ?? '',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

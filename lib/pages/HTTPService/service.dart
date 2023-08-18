@@ -291,6 +291,26 @@ class Service {
     }
   }
 
+  // Get Requests
+  Future<Response?> getMyRequests() async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/getMyRequests'));
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        final streamedResponse = await http.Response.fromStream(response);
+        return streamedResponse;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+
+      return null;
+    }
+  }
+
   // Accept Requests
   Future<bool> acceptRequest(int requestId) async {
     try {
