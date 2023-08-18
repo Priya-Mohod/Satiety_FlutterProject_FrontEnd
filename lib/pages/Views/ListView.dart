@@ -92,7 +92,6 @@ class _ListViewPageState extends State<ListViewPage> {
         //centerTitle: true,
         actions: [
           Icon(Icons.search, size: 30),
-          Icon(Icons.location_on_outlined, size: 30),
           Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.menu, color: Colors.black, size: 30),
@@ -206,21 +205,42 @@ class _ListViewPageState extends State<ListViewPage> {
                         },
                         child: Container(
                           width: 300,
+                          height: 120,
                           child: Row(
                             children: [
-                              Image.network(
-                                fit: BoxFit.cover,
-                                foodItem.foodSignedUrl,
-                                height: 130,
-                                width: 130,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'images/a.png',
-                                    height: 100,
-                                    width: 100,
-                                  );
-                                },
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                ),
+                                child: Image.network(
+                                  fit: BoxFit.cover,
+                                  foodItem.foodSignedUrl,
+                                  height: 120,
+                                  width: 130,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'images/a.png',
+                                      height: 100,
+                                      width: 100,
+                                    );
+                                  },
+                                ),
                               ),
+                              // AspectRatio(
+                              //   aspectRatio: 130 / 120, // Adjust this as needed
+                              //   child: Image.network(
+                              //     foodItem.foodSignedUrl,
+                              //     fit: BoxFit.fill,
+                              //     errorBuilder: (context, error, stackTrace) {
+                              //       return Image.asset(
+                              //         'images/a.png',
+                              //         height: 100,
+                              //         width: 100,
+                              //       );
+                              //     },
+                              //   ),
+                              // ),
                               SizedBox(width: 15),
                               Row(
                                 children: [
@@ -235,99 +255,88 @@ class _ListViewPageState extends State<ListViewPage> {
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: TextStyle(
-                                              fontSize: 26,
+                                              fontSize: 22,
                                               fontWeight: FontWeight.bold,
                                             )),
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 7),
                                         Container(
                                           width: 200,
                                           child: Row(
                                             children: [
                                               ClipOval(
-                                                // child: Image.network(
-                                                //   currentUser?.imageSignedUrl ??
-                                                //       '',
-                                                child: Image.asset(
-                                                  'images/a.png',
-                                                  height: 35,
-                                                  width: 35,
-                                                ),
-                                              ),
+                                                  child: Image.network(
+                                                foodItem.addedByUserImageUrl,
+                                                height: 30,
+                                                width: 30,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    'images/a.png',
+                                                    height: 30,
+                                                    width: 30,
+                                                  );
+                                                },
+                                              )),
                                               SizedBox(width: 3),
                                               Text(foodItem.addedByUserName,
                                                   style: TextStyle(
-                                                    fontSize: 20,
+                                                    fontSize: 18,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.grey[700],
                                                   )),
                                               SizedBox(width: 10),
                                               Icon(
                                                 Icons.star_half,
-                                                size: 30,
+                                                size: 20,
                                                 color: Colors.orange[800],
                                               ),
                                               SizedBox(width: 5),
                                               Text('3.5',
                                                   style: TextStyle(
-                                                    fontSize: 20,
+                                                    fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.grey[800],
                                                   )),
                                             ],
                                           ),
                                         ),
+                                        SizedBox(height: 10),
                                         Row(
                                           children: [
                                             Icon(Icons.location_on_outlined,
-                                                size: 30,
+                                                size: 20,
                                                 color: Colors.grey[700]),
                                             SizedBox(width: 3),
                                             Text('1.1 km',
                                                 style: TextStyle(
-                                                  fontSize: 20,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.grey[700],
                                                 )),
-                                            // Text(
-                                            //     //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
-                                            //     foodItem.foodAmount == 0.0
-                                            //         ? 'Free'
-                                            //         : 'Cost: Rs. ${foodItem.foodAmount}',
-                                            //     style: TextStyle(
-                                            //       fontSize: 20,
-                                            //       //color: Colors.black54,
-                                            //       color:
-                                            //           foodItem.foodAmount == 0.0
-                                            //               ? Color.fromARGB(
-                                            //                   255, 40, 125, 43)
-                                            //               : Colors.black87,
-                                            //       fontWeight: FontWeight.bold,
-                                            //     )),
-
                                             SizedBox(width: 10),
                                             if (foodItem.foodType == 'Veg')
                                               const Icon(Icons.fastfood,
                                                   color: Color.fromARGB(
                                                       255, 40, 125, 43),
-                                                  size: 25),
+                                                  size: 20),
                                             if (foodItem.foodType == 'Non-Veg')
                                               const Icon(Icons.fastfood,
-                                                  color: Colors.red, size: 25),
+                                                  color: Colors.red, size: 20),
                                             if (foodItem.foodType == 'Both')
                                               const Icon(Icons.fastfood,
                                                   color: Colors.orange,
-                                                  size: 25),
+                                                  size: 20),
                                             SizedBox(width: 20),
                                             if (foodItem.foodAmount == 0.0)
                                               Icon(
                                                 Icons.currency_rupee_rounded,
-                                                size: 30,
+                                                size: 20,
                                                 color: Colors.green[800],
                                               ),
                                             if (foodItem.foodAmount != 0.0)
                                               Icon(
                                                 Icons.currency_rupee_rounded,
-                                                size: 30,
+                                                size: 20,
                                                 color: Colors.red[900],
                                               )
                                           ],

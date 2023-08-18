@@ -11,6 +11,7 @@ import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
+import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,11 +78,34 @@ class _FoodDetailsState extends State<FoodDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.account_circle,
-                          size: 50, color: Colors.redAccent[100]),
+                      // Icon(Icons.account_circle,
+                      //     size: 50, color: Colors.redAccent[100]),
+                      ClipOval(
+                        child: Material(
+                          color: Colors.blue, // Button color
+                          child: InkWell(
+                              //splashColor: Colors.red, // Splash color
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserProfile(),
+                                  ),
+                                );
+                              },
+                              child: ClipOval(
+                                child: Image.network(
+                                  widget.foodItem.addedByUserImageUrl,
+                                  fit: BoxFit.cover,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              )),
+                        ),
+                      ),
                       SizedBox(width: 10),
                       Container(
-                        width: 310,
+                        width: 300,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
