@@ -62,7 +62,10 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(StringConstants.user_profile_screen_title)),
+      appBar: AppBar(
+        title: Text(StringConstants.user_profile_screen_title),
+      ),
+      endDrawer: SideDrawer(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(

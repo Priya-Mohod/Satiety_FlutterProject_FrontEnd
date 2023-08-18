@@ -81,6 +81,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                           size: 50, color: Colors.redAccent[100]),
                       SizedBox(width: 10),
                       Container(
+                        width: 310,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -88,15 +89,8 @@ class _FoodDetailsState extends State<FoodDetails> {
                                 '${widget.foodItem.addedByUserName} is giving away!',
                                 style: TextStyle(
                                   fontSize: 20,
+                                  color: Color.fromARGB(255, 52, 64, 72),
                                 )),
-                            // Title(
-                            //   color: Colors.black,
-                            //   child: Text(
-                            //     widget.foodItem.foodName,
-                            //     style: TextStyle(
-                            //         fontSize: 30, fontWeight: FontWeight.bold),
-                            //   ),
-                            // ),
                             Text(widget.foodItem.foodName,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -127,8 +121,11 @@ class _FoodDetailsState extends State<FoodDetails> {
                   ),
                   const SizedBox(height: 10),
                   Text(widget.foodItem.foodDescription,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
                       style: const TextStyle(
                         fontSize: 20,
+                        color: Color.fromARGB(255, 52, 64, 72),
                       )),
                   const SizedBox(height: 20),
                   Container(
@@ -154,14 +151,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                   Text('Quantity: ${widget.foodItem.foodQuantity}',
                       style: const TextStyle(
                         fontSize: 20,
-                        color: Colors.black87,
+                        color: Color.fromARGB(255, 66, 82, 91),
+                        fontWeight: FontWeight.bold,
                       )),
                   SizedBox(height: 25),
                   Text('Pick-Up Times',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: Color.fromARGB(255, 66, 82, 91),
                       )),
                   SizedBox(height: 8),
                   Text('From 4 to 6',

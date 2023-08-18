@@ -8,7 +8,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
+import 'package:retry/retry.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
@@ -42,6 +46,7 @@ class _ListViewPageState extends State<ListViewPage> {
   void initState() {
     super.initState();
     initializedData();
+    getCurrentUser();
   }
 
   void _onItemTapped(int index) {
@@ -50,7 +55,24 @@ class _ListViewPageState extends State<ListViewPage> {
     });
   }
 
+  User? currentUser;
+  final retryOptions = RetryOptions(
+    maxAttempts: 3,
+    delayFactor: Duration(seconds: 2),
+  );
   int _selectedIndex = 0;
+
+  Future<void> getCurrentUser() async {
+    // Get the user data from the shared preferences
+    //final retryOperation = RetryOperation(options: retryOptions);
+    User? localUser = await UserStorageService.getUserFromSharedPreferances();
+    if (localUser != null) {
+      var response = await AppUtil().getUserUsingEmail(localUser.email);
+      setState(() {
+        currentUser = response;
+      });
+    }
+  }
 
   //Data data = Data();
   @override
@@ -167,10 +189,10 @@ class _ListViewPageState extends State<ListViewPage> {
                     return Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
-                            10.0), // Adjust the value as needed
+                            20.0), // Adjust the value as needed
                         side: const BorderSide(
                             color: Color.fromARGB(255, 128, 172, 177),
-                            width: 0.5), // Add border color and width
+                            width: 1), // Add border color and width
                       ),
                       elevation: 4,
                       child: GestureDetector(
@@ -182,122 +204,141 @@ class _ListViewPageState extends State<ListViewPage> {
                                     FoodDetails(foodItem: foodList[index]),
                               ));
                         },
-                        child: Row(
-                          children: [
-                            Image.network(
-                              foodItem.foodSignedUrl,
-                              height: 150,
-                              width: 130,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'images/a.png',
-                                  height: 100,
-                                  width: 100,
-                                );
-                              },
-                            ),
-                            SizedBox(width: 15),
-                            Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 15),
-                                    Text(foodItem.foodName,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    SizedBox(height: 5),
-                                    Row(
+                        child: Container(
+                          width: 300,
+                          child: Row(
+                            children: [
+                              Image.network(
+                                fit: BoxFit.cover,
+                                foodItem.foodSignedUrl,
+                                height: 130,
+                                width: 130,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'images/a.png',
+                                    height: 100,
+                                    width: 100,
+                                  );
+                                },
+                              ),
+                              SizedBox(width: 15),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 250,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        ClipOval(
-                                          child: Icon(Icons.account_circle,
-                                              size: 40, color: Colors.red[300]),
-                                        ),
-                                        SizedBox(width: 3),
-                                        Text(foodItem.addedByUserName,
+                                        SizedBox(height: 15),
+                                        Text(foodItem.foodName,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 26,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.grey[700],
                                             )),
-                                        SizedBox(width: 10),
-                                        Icon(
-                                          Icons.star_half,
-                                          size: 30,
-                                          color: Colors.orange[800],
+                                        SizedBox(height: 5),
+                                        Container(
+                                          width: 200,
+                                          child: Row(
+                                            children: [
+                                              ClipOval(
+                                                // child: Image.network(
+                                                //   currentUser?.imageSignedUrl ??
+                                                //       '',
+                                                child: Image.asset(
+                                                  'images/a.png',
+                                                  height: 35,
+                                                  width: 35,
+                                                ),
+                                              ),
+                                              SizedBox(width: 3),
+                                              Text(foodItem.addedByUserName,
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[700],
+                                                  )),
+                                              SizedBox(width: 10),
+                                              Icon(
+                                                Icons.star_half,
+                                                size: 30,
+                                                color: Colors.orange[800],
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text('3.5',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[800],
+                                                  )),
+                                            ],
+                                          ),
                                         ),
-                                        SizedBox(width: 5),
-                                        Text('3.5',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey[800],
-                                            )),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.location_on_outlined,
+                                                size: 30,
+                                                color: Colors.grey[700]),
+                                            SizedBox(width: 3),
+                                            Text('1.1 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[700],
+                                                )),
+                                            // Text(
+                                            //     //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
+                                            //     foodItem.foodAmount == 0.0
+                                            //         ? 'Free'
+                                            //         : 'Cost: Rs. ${foodItem.foodAmount}',
+                                            //     style: TextStyle(
+                                            //       fontSize: 20,
+                                            //       //color: Colors.black54,
+                                            //       color:
+                                            //           foodItem.foodAmount == 0.0
+                                            //               ? Color.fromARGB(
+                                            //                   255, 40, 125, 43)
+                                            //               : Colors.black87,
+                                            //       fontWeight: FontWeight.bold,
+                                            //     )),
+
+                                            SizedBox(width: 10),
+                                            if (foodItem.foodType == 'Veg')
+                                              const Icon(Icons.fastfood,
+                                                  color: Color.fromARGB(
+                                                      255, 40, 125, 43),
+                                                  size: 25),
+                                            if (foodItem.foodType == 'Non-Veg')
+                                              const Icon(Icons.fastfood,
+                                                  color: Colors.red, size: 25),
+                                            if (foodItem.foodType == 'Both')
+                                              const Icon(Icons.fastfood,
+                                                  color: Colors.orange,
+                                                  size: 25),
+                                            SizedBox(width: 20),
+                                            if (foodItem.foodAmount == 0.0)
+                                              Icon(
+                                                Icons.currency_rupee_rounded,
+                                                size: 30,
+                                                color: Colors.green[800],
+                                              ),
+                                            if (foodItem.foodAmount != 0.0)
+                                              Icon(
+                                                Icons.currency_rupee_rounded,
+                                                size: 30,
+                                                color: Colors.red[900],
+                                              )
+                                          ],
+                                        )
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.location_on_outlined,
-                                            size: 30, color: Colors.grey[700]),
-                                        SizedBox(width: 3),
-                                        Text('1.1 km',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey[700],
-                                            )),
-                                        // Text(
-                                        //     //'Amount: ${foodItem.foodAmount.toStringAsFixed(1)}'
-                                        //     foodItem.foodAmount == 0.0
-                                        //         ? 'Free'
-                                        //         : 'Cost: Rs. ${foodItem.foodAmount}',
-                                        //     style: TextStyle(
-                                        //       fontSize: 20,
-                                        //       //color: Colors.black54,
-                                        //       color:
-                                        //           foodItem.foodAmount == 0.0
-                                        //               ? Color.fromARGB(
-                                        //                   255, 40, 125, 43)
-                                        //               : Colors.black87,
-                                        //       fontWeight: FontWeight.bold,
-                                        //     )),
-
-                                        SizedBox(width: 10),
-                                        if (foodItem.foodType == 'Veg')
-                                          const Icon(Icons.fastfood,
-                                              color: Color.fromARGB(
-                                                  255, 40, 125, 43),
-                                              size: 25),
-                                        if (foodItem.foodType == 'Non-Veg')
-                                          const Icon(Icons.fastfood,
-                                              color: Colors.red, size: 25),
-                                        if (foodItem.foodType == 'Both')
-                                          const Icon(Icons.fastfood,
-                                              color: Colors.orange, size: 25),
-                                        SizedBox(width: 20),
-                                        if (foodItem.foodAmount == 0.0)
-                                          Icon(
-                                            Icons.currency_rupee_rounded,
-                                            size: 30,
-                                            color: Colors.green[800],
-                                          ),
-                                        if (foodItem.foodAmount != 0.0)
-                                          Icon(
-                                            Icons.currency_rupee_rounded,
-                                            size: 30,
-                                            color: Colors.red[900],
-                                          )
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );
