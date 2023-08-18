@@ -62,6 +62,8 @@ class StringConstants {
       'Request failed, please try again';
   static String food_details_request_success = 'Food request sent successfully';
   static String food_details_request_button = 'Request Food';
+  static String food_details_allergy_String =
+      'View Food Allergen Information Here';
 
   // -- My Listings
   static String my_listings_screen_title = 'My Listings';
@@ -75,4 +77,5 @@ class StringConstants {
 
   // -- User Profile
   static String user_profile_screen_title = 'Profile';
+
 }
