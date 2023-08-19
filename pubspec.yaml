@@ -54,6 +54,7 @@ dependencies:
   shared_preferences:
   intl:
   retry:
+  full_screen_image: ^2.0.0
 
 flutter_native_splash:
   android: true
