@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Constants/ImageLoader/ImageLoader.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
@@ -57,8 +58,17 @@ class _FoodDetailsState extends State<FoodDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(widget.foodItem.foodSignedUrl,
-                height: 350, fit: BoxFit.cover, width: double.infinity),
+            // ImageLoader(
+            //   imageUrl: widget.foodItem.foodSignedUrl,
+            //   imageHeight: 350,
+            //   imageWidth: double.infinity,
+            // ),
+            Image.network(
+              widget.foodItem.foodSignedUrl,
+              height: 350,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
             Container(
                 color: Color.fromARGB(255, 192, 209, 212),
                 padding: const EdgeInsets.all(8.0),
