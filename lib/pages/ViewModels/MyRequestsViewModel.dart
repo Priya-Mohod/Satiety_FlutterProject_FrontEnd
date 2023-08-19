@@ -11,7 +11,7 @@ class MyRequestsViewModel {
   Future<List<FoodRequest>> fetchRequests() async {
     // Simulate fetching data from the server
     // Replace this with actual server API calls
-    await Future.delayed(Duration(seconds: 2));
+    //await Future.delayed(Duration(seconds: 2));
     try {
       final response = await service.getMyRequests();
       if (response != null && response.statusCode == 200) {
