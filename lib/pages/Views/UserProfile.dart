@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 
 import '../Constants/Drawers.dart';
@@ -8,6 +12,7 @@ import '../Constants/SideDrawer.dart';
 import '../Constants/bottomNavigationBar.dart';
 import '../Models/UserModel.dart';
 import '../ViewModels/UserProfileViewModel.dart';
+import 'DualImageWidget.dart';
 import 'SnackbarHelper.dart';
 import 'SupplierLocationMap.dart';
 
@@ -20,11 +25,20 @@ class _UserProfileState extends State<UserProfile> {
   var _nameController = TextEditingController();
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
-  var _phoneController = TextEditingController();
+  var _phoneController = TextEditingController(); // Phone Number
   var _addressController = TextEditingController();
   final viewModel = UserProfileViewModel();
-  late User _user;
+  User? _user;
 
+  GlobalKey<FormFieldState<String>> _phoneField =
+      GlobalKey<FormFieldState<String>>();
+  bool isPhoneExists = false; // Phone Validation
+  GlobalKey<FormFieldState<String>> _emailField =
+      GlobalKey<FormFieldState<String>>();
+  bool isEmailExists = false; // Email Validation
+  bool isEmailValid = true; // Email Validation
+
+  File? userImage; // User Image
   var locationData;
   GoogleMapController? _mapController;
   Set<Marker> markers = {};
@@ -34,6 +48,7 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     initializeUserData();
+    getLocation();
   }
 
   Future<void> initializeUserData() async {
@@ -74,42 +89,130 @@ class _UserProfileState extends State<UserProfile> {
             Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    // Handle image update
-                    // ...
-                  },
-                  child: CircleAvatar(
-                    radius: 80,
-                    backgroundImage: NetworkImage(_user.imageSignedUrl ?? ''),
-                    child: Icon(Icons.camera_alt),
-                  ),
-                ),
+                    onTap: () {
+                      _showImagePickerOptions();
+                    },
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundColor: Colors
+                          .white, // Optional: Set a background color for the avatar
+                      child: userImage != null
+                          ? Image(image: FileImage(userImage!))
+                          : FadeInImage(
+                              placeholder: AssetImage('images/a.png'),
+                              image: NetworkImage(_user!.imageSignedUrl!),
+                              fit: BoxFit.cover,
+                            ), // Use a default image if both fileImage and networkImage are null
+                    )),
                 SizedBox(height: 10),
-                Text('Tap to update profile picture'),
               ],
             ),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Name'),
             ),
-            TextField(
+            TextFormField(
+              readOnly: true,
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(fontSize: 16),
+              key: _emailField,
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: "Email",
+                prefixIcon: const Icon(
+                  Icons.email,
+                ),
+                errorText: isEmailValid
+                    ? null
+                    : StringConstants.register_email_invalid,
+                errorStyle: TextStyle(color: Colors.red),
+              ),
+              validator: (value) {
+                if (isEmailExists) {
+                  return StringConstants.register_email_exists_message;
+                }
+
+                bool emailValidator =
+                    RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                        .hasMatch(value!);
+                if (value.isEmpty) {
+                  return StringConstants.register_email_empty;
+                } else if (!emailValidator) {
+                  return StringConstants.register_enter_valid_email;
+                }
+              },
+              onChanged: (value) => {
+                isEmailExists = false,
+                setState(() {
+                  _emailField.currentState!.validate();
+                })
+              },
+              onEditingComplete: () async {
+                if (await viewModel.isEmailExists(_emailController.text)) {
+                  isEmailExists = true;
+                  setState(() {
+                    _emailField.currentState!.validate();
+                  });
+                }
+              },
             ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
-            ),
-            TextField(
+
+            // TextField(
+            //   controller: _passwordController,
+            //   obscureText: true,
+            //   decoration: InputDecoration(labelText: 'Password'),
+            // ),
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              style: TextStyle(fontSize: 16),
               controller: _phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
+              key: _phoneField,
+              maxLength: 10,
+              inputFormatters: [LengthLimitingTextInputFormatter(10)],
+              decoration: const InputDecoration(
+                labelText: "Phone",
+                prefixIcon: Icon(Icons.phone),
+              ),
+              validator: (value) {
+                if (isPhoneExists) {
+                  return StringConstants.register_phone_exists_message;
+                }
+
+                if (value == null || value.isEmpty) {
+                  return StringConstants.register_phone_number_empty;
+                } else if (value.length != 10) {
+                  return StringConstants.register_phone_number_invalid;
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (value) async {
+                if (value.length == 10) {
+                  if (await viewModel.isPhoneExists(_phoneController.text)) {
+                    isPhoneExists = true;
+                    setState(() {
+                      _phoneField.currentState!.validate();
+                    });
+                  } else {
+                    isPhoneExists = false;
+                    setState(() {
+                      _phoneField.currentState!.validate();
+                    });
+                  }
+                } else {
+                  isPhoneExists = false;
+                  setState(() {
+                    _phoneField.currentState!.validate();
+                  });
+                }
+              },
             ),
+
             // Non-editable fields
             TextField(
               controller: _addressController,
               decoration: InputDecoration(
-                labelText: 'Please select location to get address',
+                labelText: 'Your approximate address',
                 prefixIcon: Icon(Icons.location_on),
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -162,28 +265,173 @@ class _UserProfileState extends State<UserProfile> {
             // Add a map widget to show location
             // ...
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Update user profile logic here
-                final updatedUser = User(
-                  userId: _user.userId,
-                  firstName: _nameController.text,
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  mobile: _phoneController.text,
-                  imageSignedUrl: _user.imageSignedUrl,
-                  address: _user.address,
-                  // Copy other properties as needed
-                );
-
+                // final updatedUser = User(
+                //   userId: _user!.userId,
+                //   firstName: _nameController.text,
+                //   email: _emailController.text,
+                //   password: _passwordController.text,
+                //   mobile: _phoneController.text,
+                //   imageSignedUrl: _user!.imageSignedUrl,
+                //   address: _user!.address,
+                //   // Copy other properties as needed
+                // );
                 // Call ViewModel to update user profile
-                // TODO Call ViewModel to update user profile
+                // TODO:- Create Model of User to send data
+                // Call ViewModel to update user profile
+                var response = await viewModel.updateUserProfile(
+                    userImage,
+                    _nameController.text,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    userCoordinates.latitude,
+                    userCoordinates.longitude);
+                if (response) {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Profile Update',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          )),
+                      content: const Text('Profile Updated successfully'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => ValidateOTP(
+                            //           userEmail: emailController.text),
+                            //     ));
+                            // TODO:- clear the form fields
+                            // TODO:- clear the image
+                            Navigator.pop(context);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Register'),
+                      content:
+                          const Text('There was an error, please try again!'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // hide the alert dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
               child: Text('Update Profile'),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/ListViewPage');
+          } else if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/ForumPage');
+          } else if (index == 2) {
+            BottomDrawer.showBottomDrawer(context);
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(
+                context, '/ForumPage'); // TODO: Change this to Ads Page
+          } else if (index == 4) {
+            Navigator.pushReplacementNamed(context, '/MessegePage');
+          }
+        },
+      ),
     );
+  }
+
+  void _showImagePickerOptions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Gallery'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Camera'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 80,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        userImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future getLocation() async {
+    try {
+      locationData = await LocationManager().determinePosition();
+      // Update Map Location
+      setMarker_AnimateCamera_userLocation(locationData);
+    } catch (e) {
+      SnackbarHelper.showSnackBar(
+          context, StringConstants.location_update_error);
+    }
   }
 
   Future setMarker_AnimateCamera_userLocation(dynamic location) async {

@@ -465,17 +465,17 @@ class _RegisterState extends State<Register> {
                       }
 
                       var response = await service.registerUser(
-                        userImage,
-                        firstNameController.text,
-                        lastNameController.text,
-                        passwordController.text,
-                        phoneController.text,
-                        emailController.text,
-                        pincodeController.text,
-                        addressController.text,
-                        userCoordinates.latitude,
-                        userCoordinates.longitude,
-                      );
+                          userImage,
+                          firstNameController.text,
+                          lastNameController.text,
+                          passwordController.text,
+                          phoneController.text,
+                          emailController.text,
+                          pincodeController.text,
+                          addressController.text,
+                          userCoordinates.latitude,
+                          userCoordinates.longitude,
+                          true);
 
                       // show alert dialog on condition
                       if (response) {

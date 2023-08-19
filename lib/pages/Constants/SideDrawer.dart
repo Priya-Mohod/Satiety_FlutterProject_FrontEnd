@@ -177,15 +177,15 @@ class _SideDrawerState extends State<SideDrawer> {
               Navigator.pushReplacementNamed(context, '/ForumPage');
             },
           ),
-          ListTile(
-            leading: Icon(Icons.location_on),
-            title: Text('Location'),
-            onTap: () {
-              // Close the drawer and navigate to the forum page
-              Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.location_on),
+          //   title: Text('Location'),
+          //   onTap: () {
+          //     // Close the drawer and navigate to the forum page
+          //     Navigator.pop(context);
+          //     Navigator.pushReplacementNamed(context, '/ForumPage');
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.supervised_user_circle_sharp),
             title: Text('Users near me'),

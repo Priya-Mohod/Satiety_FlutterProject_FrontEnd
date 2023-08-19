@@ -1,10 +1,13 @@
-import 'package:satietyfrontend/pages/Models/UserModel.dart';
-import 'package:satietyfrontend/pages/Services/Utility.dart';
+import 'dart:developer';
+import 'dart:io';
 
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import '../Services/UserStorageService.dart';
 
 class UserProfileViewModel {
   User? currentUser;
+  Service service = Service();
 
   User? parseUserData(Map<String, dynamic> responseData) {
     try {
@@ -37,5 +40,40 @@ class UserProfileViewModel {
       currentUser = await UserStorageService.getUserFromSharedPreferances();
     }
     return currentUser!;
+  }
+
+  Future<bool> isPhoneExists(String phone) async {
+    var response = await service.checkUserPhoneNumber(phone);
+    return response;
+  }
+
+  Future<bool> isEmailExists(String email) async {
+    var response = await service.fetchUserDataUsingEmail(email);
+    if (response != null && response.statusCode == 200) {
+      return true;
+    } else if (response != null && response.statusCode != 200) {
+      return false;
+    } else {
+      // ignore: use_build_context_synchronously
+      // SnackbarHelper.showSnackBar(context, StringConstants.exception_error);
+      return false;
+    }
+  }
+
+  Future<bool> updateUserProfile(
+    File? userImage,
+    String firstName,
+    String lastName,
+    String password,
+    String mobile,
+    String email,
+    String pincode,
+    String address,
+    double latitude,
+    double longitude,
+  ) async {
+    var response = await service.registerUser(userImage, firstName, lastName,
+        password, mobile, email, pincode, address, latitude, longitude, false);
+    return response;
   }
 }

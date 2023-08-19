@@ -28,7 +28,8 @@ class FoodRequest {
       acceptedFlag: json['acceptedFlag'],
       requestedAt: json['requestedAt'],
       acceptedAt: json['acceptedAt'],
-      foodItem: FoodItem.fromJson(json['foodBean']),
+      foodItem:
+          json['foodBean'] != null ? FoodItem.fromJson(json['foodBean']) : null,
     );
   }
 }
