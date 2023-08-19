@@ -15,6 +15,7 @@ import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/InfoGuide.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 
@@ -163,7 +164,7 @@ class _ListViewPageState extends State<ListViewPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AllergyInfo(),
+                            builder: (context) => InfoGuide(),
                           ));
                     },
                   ),

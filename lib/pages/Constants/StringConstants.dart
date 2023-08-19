@@ -83,4 +83,14 @@ class StringConstants {
 
   // -- User Profile
   static String user_profile_screen_title = 'Profile';
+
+  // -- Information Guide
+  static String info_guide_Location_msg =
+      'Shows Location distance from the supplier or consumer';
+  static String info_guide_food_type_red = 'This food is Non-Vegetarian Food';
+  static String info_guide_food_type_green = 'This food is Vegetarian Food';
+  static String info_guide_food_type_orange =
+      'This food is vegetarian and non-vegetarian both type of Food';
+  static String info_guide_price_red = 'This listed food is Chargeable';
+  static String info_guide_price_green = 'This listed food is Free of Cost';
 }
