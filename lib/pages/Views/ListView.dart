@@ -216,48 +216,39 @@ class _ListViewPageState extends State<ListViewPage> {
                               //   imageWidth: 130,
                               // ),
                               Container(
-                                height: 120,
-                                width: 130,
-
-                                // child: CachedNetworkImage(
-                                //     imageUrl: foodItem.foodSignedUrl,
-                                //     fit: BoxFit.cover,
-
-                                //     placeholder: (context, url) =>
-                                //         CircularProgressIndicator(),
-                                //     errorWidget: (context, url, error) =>
-                                //         Icon(Icons.error)),
-
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    bottomLeft: Radius.circular(20),
-                                  ),
-                                  child: Image.network(
-                                    fit: BoxFit.cover,
-                                    foodItem.foodSignedUrl,
-                                    height: 120,
-                                    width: 130,
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
+                                  height: 120,
+                                  width: 130,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Image.network(
+                                          foodItem.foodSignedUrl,
+                                          height: 120,
+                                          width: 130,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              // Image has finished loading
+                                              return child;
+                                            } else {
+                                              return Align(
+                                                alignment: Alignment.center,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                                      ],
+                                    ),
+                                  )),
 
                               SizedBox(width: 15),
                               Row(
@@ -291,21 +282,17 @@ class _ListViewPageState extends State<ListViewPage> {
                                                         Widget child,
                                                         ImageChunkEvent?
                                                             loadingProgress) {
-                                                  if (loadingProgress == null)
+                                                  if (loadingProgress == null) {
+                                                    // Image has finished loading
                                                     return child;
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                              null
-                                                          ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                          : null,
-                                                    ),
-                                                  );
+                                                  } else {
+                                                    return Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  }
                                                 },
                                               )),
                                               SizedBox(width: 3),
@@ -392,3 +379,24 @@ class _ListViewPageState extends State<ListViewPage> {
     );
   }
 }
+
+
+
+// loadingBuilder: (BuildContext context,
+                                      //     Widget child,
+                                      //     ImageChunkEvent? loadingProgress) {
+                                      //   if (loadingProgress == null)
+                                      //     return child;
+                                      //   return Center(
+                                      //     child: CircularProgressIndicator(
+                                      //       value: loadingProgress
+                                      //                   .expectedTotalBytes !=
+                                      //               null
+                                      //           ? loadingProgress
+                                      //                   .cumulativeBytesLoaded /
+                                      //               loadingProgress
+                                      //                   .expectedTotalBytes!
+                                      //           : null,
+                                      //     ),
+                                      //   );
+                                      // },

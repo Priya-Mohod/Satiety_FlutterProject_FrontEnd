@@ -28,8 +28,6 @@ class _SideDrawerState extends State<SideDrawer> {
   }
 
   Future<void> getCurrentUser() async {
-    // Get the user data from the shared preferences
-    //final retryOperation = RetryOperation(options: retryOptions);
     User? localUser = await UserStorageService.getUserFromSharedPreferances();
     if (localUser != null) {
       var response = await AppUtil().getUserUsingEmail(localUser.email);
@@ -48,91 +46,82 @@ class _SideDrawerState extends State<SideDrawer> {
           DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.cyan[300],
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromARGB(255, 22, 220, 210)!,
+                  Color.fromARGB(255, 245, 248, 248)!,
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Container(
-                  // color: Colors.white,
-                  height: 100,
-                  width: 100,
-                  child:
-
-                      // CachedNetworkImage(
-                      //   imageUrl: currentUser?.imageSignedUrl ?? '',
-                      //   height: 60,
-                      //   width: 60,
-                      //   placeholder: (context, url) => CircularProgressIndicator(),
-                      //   errorWidget: (context, url, error) => Icon(Icons.error),
-                      // ),
-                      ClipOval(
-                    // Todo: Replace this with the actual image of the user
+            child: Container(
+              height: 100,
+              width: 200,
+              //color: Colors.black45,
+              child: Row(
+                children: [
+                  ClipOval(
                     child: Image.network(
                       currentUser?.imageSignedUrl ?? '',
                       height: 60,
                       width: 60,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'images/a.png',
-                          height: 60,
-                          width: 60,
-                        );
-                      },
-
-                      //     // loadingBuilder: (BuildContext context, Widget child,
-                      //     //     ImageChunkEvent? loadingProgress) {
-                      //     //   if (loadingProgress == null) return child;
-                      //     //   return Center(
-                      //     //     child: CircularProgressIndicator(
-                      //     //       value: loadingProgress.expectedTotalBytes != null
-                      //     //           ? loadingProgress.cumulativeBytesLoaded /
-                      //     //               loadingProgress.expectedTotalBytes!
-                      //     //           : null,
-                      //     //     ),
-                      //     //   );
-                      //     // },
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Text(
-                    //   '',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                    FutureBuilder<String>(
-                      future: getCurrentUserName(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          // Image has finished loading
+                          return child;
                         } else {
-                          return Text(
-                            snapshot.data ?? '', // Use the fetched data
-                            style: TextStyle(fontSize: 18),
+                          return Align(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(),
                           );
                         }
                       },
                     ),
-                    Row(
-                      children: const [
-                        // todo take actual rating from the database
-                        Icon(Icons.star,
-                            color: Color.fromARGB(255, 221, 161, 32), size: 25),
-                        SizedBox(width: 5),
-                        Text(
-                          '4.5',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(width: 20),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(width: 10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Text(
+                      //   '',
+                      //   style: TextStyle(fontSize: 18),
+                      // ),
+                      FutureBuilder<String>(
+                        future: getCurrentUserName(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return Text(
+                              snapshot.data ?? '', // Use the fetched data
+                              style: TextStyle(fontSize: 18),
+                            );
+                          }
+                        },
+                      ),
+                      Row(
+                        children: const [
+                          // todo take actual rating from the database
+                          Icon(Icons.star,
+                              color: Color.fromARGB(255, 221, 161, 32),
+                              size: 25),
+                          SizedBox(width: 5),
+                          Text(
+                            '4.5',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(width: 20),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           ListTile(
@@ -223,8 +212,8 @@ class _SideDrawerState extends State<SideDrawer> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.deepOrange[300]!,
-                  Colors.red[700]!,
+                  Color.fromARGB(255, 22, 220, 210)!,
+                  Color.fromARGB(255, 245, 248, 248)!,
                 ],
               ),
             ),
