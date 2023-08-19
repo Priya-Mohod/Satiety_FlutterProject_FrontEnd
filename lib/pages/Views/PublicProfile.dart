@@ -37,7 +37,11 @@ class _PublicProfileState extends State<PublicProfile> {
 
   Widget build(BuildContext context) {
     if (user == null) {
-      return Text("Loading...");
+      return Center(
+          child: CircularProgressIndicator(
+        backgroundColor: Colors.cyanAccent[400],
+        color: Colors.black38,
+      ));
     } else {
       return Scaffold(
         appBar: AppBar(
@@ -78,6 +82,18 @@ class _PublicProfileState extends State<PublicProfile> {
                           width: 150,
                           height: 150,
                           fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              // Image has finished loading
+                              return child;
+                            } else {
+                              return Align(
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
                         ),
                       ),
                       SizedBox(width: 20),
