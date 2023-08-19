@@ -313,12 +313,20 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 },
                                               )),
                                               SizedBox(width: 3),
-                                              Text(foodItem.addedByUserName,
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.grey[700],
-                                                  )),
+                                              Container(
+                                                width: 100,
+                                                //color: Colors.black45,
+                                                child: Text(
+                                                    foodItem.addedByUserName,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.grey[700],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    )),
+                                              ),
                                               SizedBox(width: 10),
                                               Icon(
                                                 Icons.star_half,
