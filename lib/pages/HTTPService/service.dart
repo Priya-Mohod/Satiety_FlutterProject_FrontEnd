@@ -213,6 +213,19 @@ class Service {
     }
   }
 
+  Future<http.StreamedResponse?> fetchedUserDataById(int userId) async {
+    try {
+      var request = http.MultipartRequest('GET', Uri.parse('$url/getUserById'));
+      request.fields['id'] = '$userId';
+      var response = await makeServerRequest(request);
+      return response;
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+      return null;
+    }
+  }
+
   Future<bool> checkUserPhoneNumber(String phone) async {
     try {
       var request =

@@ -10,6 +10,7 @@ import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
+import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
@@ -86,10 +87,12 @@ class _FoodDetailsState extends State<FoodDetails> {
                           child: InkWell(
                               //splashColor: Colors.red, // Splash color
                               onTap: () {
+                                int userId = widget.foodItem.addedByUserId;
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserProfile(),
+                                    builder: (context) =>
+                                        PublicProfile(userId: userId),
                                   ),
                                 );
                               },

@@ -7,6 +7,7 @@ import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
+import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
@@ -39,9 +40,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => FoodListViewModel(),
-        ),
+        ChangeNotifierProvider(create: (_) => FoodListViewModel()),
         ChangeNotifierProvider(create: (_) => RequestProvider()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
@@ -80,6 +79,9 @@ class MyApp extends StatelessWidget {
           '/SupplierLocationMap': (context) =>
               SupplierLocationMap(selectedLocation: LatLng(0, 0)),
           '/Profile': (context) => UserProfile(),
+          '/PublicProfile': (context) => PublicProfile(
+                userId: 1,
+              ),
         });
   }
 }
