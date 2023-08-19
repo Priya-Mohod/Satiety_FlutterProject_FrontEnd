@@ -69,95 +69,101 @@ class _MyRequestsState extends State<MyRequests> {
                 itemBuilder: (context, index) {
                   FoodRequest request = snapshot.data![index];
                   return Card(
+                    margin: EdgeInsets.all(10),
                     elevation: 4, // Optional: Add a shadow effect
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8)),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Image
-                          Image.network(
-                            request.foodItem!.foodSignedUrl,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(width: 10),
-                          // Details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  request.foodItem!.foodName,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                    'Requested on ${getFormattedDateTime(request.requestedAt!)}'),
-                                SizedBox(height: 8),
-                                Text(
-                                  request.acceptedFlag == 'Y'
-                                      ? 'Accepted'
-                                      : 'Pending',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: request.acceptedFlag == 'Y'
-                                        ? Colors.green
-                                        : Colors.red,
-                                  ),
-                                ),
-                              ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          contentPadding:
+                              EdgeInsets.all(16), // Adjust padding as needed
+                          title: Text(
+                            request.foodItem!.foodName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
                           ),
-                          SizedBox(width: 10),
-                          // Cancel Button
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 4),
-                            ),
-                            onPressed: () async {
-                              // Handle cancel request
-                              bool result = await viewModel
-                                  .onRequestCancelClick(request.requestId);
-                              if (result) {
-                                // Show alert dialog
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text('Cancel'),
-                                    content: Text(StringConstants
-                                        .my_requests_request_cancelled),
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          refreshData();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text('OK'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Requested on ${getFormattedDateTime(request.requestedAt!)}',
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                request.acceptedFlag == 'Y'
+                                    ? 'Accepted'
+                                    : 'Pending',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: request.acceptedFlag == 'Y'
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 4),
+                                ),
+                                onPressed: () async {
+                                  // Handle cancel request
+                                  bool result = await viewModel
+                                      .onRequestCancelClick(request.requestId);
+                                  if (result) {
+                                    // Show alert dialog
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text('Cancel'),
+                                        content: Text(StringConstants
+                                            .my_requests_request_cancelled),
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              refreshData();
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                // Show SnackbarHelper
-                                SnackbarHelper.showSnackBar(
-                                    context,
-                                    StringConstants
-                                        .my_listings_error_cancel_request);
-                              }
-                            },
-                            child: Text(
-                              'Cancel Request',
-                              style: TextStyle(fontSize: 12),
+                                    );
+                                  } else {
+                                    // Show SnackbarHelper
+                                    SnackbarHelper.showSnackBar(
+                                      context,
+                                      StringConstants
+                                          .my_listings_error_cancel_request,
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  'Cancel Request',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                          leading: Container(
+                            width: 100,
+                            height: 100,
+                            child: ClipPath(
+                              // clipper:
+                              //     MyCustomShapeClipper(), // Define your custom clipper
+                              child: Image.network(
+                                request.foodItem!.foodSignedUrl ??
+                                    'images/a.png',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   );
                 },
@@ -192,5 +198,30 @@ class _MyRequestsState extends State<MyRequests> {
     String formattedDate = DateFormat.MMMMd().format(dateTime); // Format date
     String formattedTime = DateFormat.jm().format(dateTime); // Format time
     return '$formattedDate at $formattedTime';
+  }
+}
+
+class MyCustomShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    // Define the custom shape path here
+    final path = Path();
+
+    // Add path instructions to define your custom shape
+    // For example, you can create a rounded rectangle
+    path.addRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromPoints(Offset(0, 0), Offset(size.width, size.height)),
+        Radius.circular(20), // Adjust the radius as needed
+      ),
+    );
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // Return true if the old clipper should be replaced with a new one
+    return false; // You can change this based on your requirements
   }
 }

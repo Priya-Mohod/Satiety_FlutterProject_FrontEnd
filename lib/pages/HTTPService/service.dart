@@ -47,18 +47,19 @@ class Service {
   }
 
   Future<bool> registerUser(
-    File? userImage,
-    String firstName,
-    String lastName,
-    String password,
-    String mobile,
-    String email,
-    String pincode,
-    String address,
-    double latitude,
-    double longitude,
-  ) async {
-    var request = http.MultipartRequest('POST', Uri.parse('$url/registerUser'));
+      File? userImage,
+      String firstName,
+      String lastName,
+      String password,
+      String mobile,
+      String email,
+      String pincode,
+      String address,
+      double latitude,
+      double longitude,
+      bool isRegister) async {
+    var request = http.MultipartRequest('POST',
+        Uri.parse(isRegister ? '$url/registerUser' : '$url/updateUser'));
     var multipartFile;
     // User Image - sent using multipart request
     if (userImage != null) {
