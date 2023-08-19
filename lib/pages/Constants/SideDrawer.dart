@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
 import 'package:retry/retry.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});
@@ -50,19 +51,46 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             child: Row(
               children: [
-                ClipOval(
-                  // Todo: Replace this with the actual image of the user
-                  child: Image.network(
-                    currentUser?.imageSignedUrl ?? '',
-                    height: 100,
-                    width: 100,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'images/a.png',
-                        height: 50,
-                        width: 50,
-                      );
-                    },
+                Container(
+                  // color: Colors.white,
+                  height: 100,
+                  width: 100,
+                  child:
+
+                      // CachedNetworkImage(
+                      //   imageUrl: currentUser?.imageSignedUrl ?? '',
+                      //   height: 60,
+                      //   width: 60,
+                      //   placeholder: (context, url) => CircularProgressIndicator(),
+                      //   errorWidget: (context, url, error) => Icon(Icons.error),
+                      // ),
+                      ClipOval(
+                    // Todo: Replace this with the actual image of the user
+                    child: Image.network(
+                      currentUser?.imageSignedUrl ?? '',
+                      height: 60,
+                      width: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'images/a.png',
+                          height: 60,
+                          width: 60,
+                        );
+                      },
+
+                      //     // loadingBuilder: (BuildContext context, Widget child,
+                      //     //     ImageChunkEvent? loadingProgress) {
+                      //     //   if (loadingProgress == null) return child;
+                      //     //   return Center(
+                      //     //     child: CircularProgressIndicator(
+                      //     //       value: loadingProgress.expectedTotalBytes != null
+                      //     //           ? loadingProgress.cumulativeBytesLoaded /
+                      //     //               loadingProgress.expectedTotalBytes!
+                      //     //           : null,
+                      //     //     ),
+                      //     //   );
+                      //     // },
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),

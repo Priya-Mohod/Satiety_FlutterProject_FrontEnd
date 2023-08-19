@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:retry/retry.dart';
+import 'package:satietyfrontend/pages/Constants/ImageLoader/ImageLoader.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
@@ -18,7 +19,7 @@ import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/InfoGuide.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../Constants/Drawers.dart';
 import '../Constants/SideDrawer.dart';
 import '../Constants/bottomNavigationBar.dart';
@@ -206,41 +207,58 @@ class _ListViewPageState extends State<ListViewPage> {
                         child: Container(
                           width: 300,
                           height: 120,
+                          // color: Colors.black54,
                           child: Row(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                ),
-                                child: Image.network(
-                                  fit: BoxFit.cover,
-                                  foodItem.foodSignedUrl,
-                                  height: 120,
-                                  width: 130,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'images/a.png',
-                                      height: 100,
-                                      width: 100,
-                                    );
-                                  },
+                              // ImageLoader(
+                              //   imageUrl: foodItem.foodSignedUrl,
+                              //   imageHeight: 120,
+                              //   imageWidth: 130,
+                              // ),
+                              Container(
+                                height: 120,
+                                width: 130,
+
+                                // child: CachedNetworkImage(
+                                //     imageUrl: foodItem.foodSignedUrl,
+                                //     fit: BoxFit.cover,
+
+                                //     placeholder: (context, url) =>
+                                //         CircularProgressIndicator(),
+                                //     errorWidget: (context, url, error) =>
+                                //         Icon(Icons.error)),
+
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20),
+                                  ),
+                                  child: Image.network(
+                                    fit: BoxFit.cover,
+                                    foodItem.foodSignedUrl,
+                                    height: 120,
+                                    width: 130,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                              // AspectRatio(
-                              //   aspectRatio: 130 / 120, // Adjust this as needed
-                              //   child: Image.network(
-                              //     foodItem.foodSignedUrl,
-                              //     fit: BoxFit.fill,
-                              //     errorBuilder: (context, error, stackTrace) {
-                              //       return Image.asset(
-                              //         'images/a.png',
-                              //         height: 100,
-                              //         width: 100,
-                              //       );
-                              //     },
-                              //   ),
-                              // ),
+
                               SizedBox(width: 15),
                               Row(
                                 children: [
@@ -250,7 +268,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(height: 15),
+                                        SizedBox(height: 10),
                                         Text(foodItem.foodName,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -266,14 +284,27 @@ class _ListViewPageState extends State<ListViewPage> {
                                               ClipOval(
                                                   child: Image.network(
                                                 foodItem.addedByUserImageUrl,
-                                                height: 30,
-                                                width: 30,
-                                                errorBuilder: (context, error,
-                                                    stackTrace) {
-                                                  return Image.asset(
-                                                    'images/a.png',
-                                                    height: 30,
-                                                    width: 30,
+                                                height: 40,
+                                                width: 40,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
                                                   );
                                                 },
                                               )),
@@ -300,7 +331,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        SizedBox(height: 5),
                                         Row(
                                           children: [
                                             Icon(Icons.location_on_outlined,
