@@ -230,6 +230,15 @@ class _ListViewPageState extends State<ListViewPage> {
                                           height: 120,
                                           width: 130,
                                           fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'images/a.jpg',
+                                              height: 120,
+                                              width: 130,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
                                           loadingBuilder: (BuildContext context,
                                               Widget child,
                                               ImageChunkEvent?
@@ -277,6 +286,14 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 foodItem.addedByUserImageUrl,
                                                 height: 40,
                                                 width: 40,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    'images/account.png',
+                                                    height: 30,
+                                                    width: 30,
+                                                  );
+                                                },
                                                 loadingBuilder:
                                                     (BuildContext context,
                                                         Widget child,

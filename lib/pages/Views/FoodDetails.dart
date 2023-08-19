@@ -38,7 +38,7 @@ class _FoodDetailsState extends State<FoodDetails> {
       appBar: AppBar(
         //add back button
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35),
+          icon: const Icon(Icons.home_rounded, color: Colors.white, size: 30),
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ListViewPage()));
@@ -106,19 +106,26 @@ class _FoodDetailsState extends State<FoodDetails> {
                                   ),
                                 );
                               },
-                              child: ClipOval(
-                                child: Image.network(
-                                  widget.foodItem.addedByUserImageUrl,
-                                  fit: BoxFit.cover,
-                                  height: 60,
-                                  width: 60,
-                                ),
+                              child: Image.network(
+                                widget.foodItem.addedByUserImageUrl,
+                                //fit: BoxFit.cover,
+                                height: 60,
+                                width: 60,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'images/account.png',
+                                    height: 60,
+                                    width: 60,
+                                  );
+                                },
                               )),
                         ),
                       ),
                       SizedBox(width: 10),
                       Container(
-                        width: 300,
+                        width: 290,
+                        //color: Colors.black54,
+                        //height: 100,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

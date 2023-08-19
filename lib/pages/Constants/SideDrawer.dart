@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
 import 'package:retry/retry.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});
@@ -66,6 +65,13 @@ class _SideDrawerState extends State<SideDrawer> {
                       currentUser?.imageSignedUrl ?? '',
                       height: 60,
                       width: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'images/account.png',
+                          height: 40,
+                          width: 40,
+                        );
+                      },
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
