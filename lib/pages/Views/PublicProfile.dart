@@ -82,6 +82,13 @@ class _PublicProfileState extends State<PublicProfile> {
                           width: 150,
                           height: 150,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'images/account.png',
+                              height: 100,
+                              width: 100,
+                            );
+                          },
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) {

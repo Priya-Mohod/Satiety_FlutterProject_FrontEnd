@@ -66,6 +66,13 @@ class _SideDrawerState extends State<SideDrawer> {
                       currentUser?.imageSignedUrl ?? '',
                       height: 60,
                       width: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'images/account.png',
+                          height: 40,
+                          width: 40,
+                        );
+                      },
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
