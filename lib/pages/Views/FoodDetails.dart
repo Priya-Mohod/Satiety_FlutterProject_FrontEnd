@@ -11,6 +11,7 @@ import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
+import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,10 +78,34 @@ class _FoodDetailsState extends State<FoodDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.account_circle,
-                          size: 50, color: Colors.redAccent[100]),
+                      // Icon(Icons.account_circle,
+                      //     size: 50, color: Colors.redAccent[100]),
+                      ClipOval(
+                        child: Material(
+                          color: Colors.blue, // Button color
+                          child: InkWell(
+                              //splashColor: Colors.red, // Splash color
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserProfile(),
+                                  ),
+                                );
+                              },
+                              child: ClipOval(
+                                child: Image.network(
+                                  widget.foodItem.addedByUserImageUrl,
+                                  fit: BoxFit.cover,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              )),
+                        ),
+                      ),
                       SizedBox(width: 10),
                       Container(
+                        width: 300,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -88,15 +113,8 @@ class _FoodDetailsState extends State<FoodDetails> {
                                 '${widget.foodItem.addedByUserName} is giving away!',
                                 style: TextStyle(
                                   fontSize: 20,
+                                  color: Color.fromARGB(255, 52, 64, 72),
                                 )),
-                            // Title(
-                            //   color: Colors.black,
-                            //   child: Text(
-                            //     widget.foodItem.foodName,
-                            //     style: TextStyle(
-                            //         fontSize: 30, fontWeight: FontWeight.bold),
-                            //   ),
-                            // ),
                             Text(widget.foodItem.foodName,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -127,8 +145,11 @@ class _FoodDetailsState extends State<FoodDetails> {
                   ),
                   const SizedBox(height: 10),
                   Text(widget.foodItem.foodDescription,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
                       style: const TextStyle(
                         fontSize: 20,
+                        color: Color.fromARGB(255, 52, 64, 72),
                       )),
                   const SizedBox(height: 20),
                   Container(
@@ -154,14 +175,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                   Text('Quantity: ${widget.foodItem.foodQuantity}',
                       style: const TextStyle(
                         fontSize: 20,
-                        color: Colors.black87,
+                        color: Color.fromARGB(255, 66, 82, 91),
+                        fontWeight: FontWeight.bold,
                       )),
                   SizedBox(height: 25),
                   Text('Pick-Up Times',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: Color.fromARGB(255, 66, 82, 91),
                       )),
                   SizedBox(height: 8),
                   Text('From 4 to 6',
