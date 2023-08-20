@@ -95,30 +95,29 @@ class _UserProfileState extends State<UserProfile> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              child: GestureDetector(
-                onTap: () {
-                  _showImagePickerOptions();
-                },
-                child: ClipOval(
-                    child: userImage != null
-                        ? Image(image: FileImage(userImage!))
-                        : Image.network(
-                            _user!.imageSignedUrl!,
-                            width: 170,
-                            height: 170,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'images/account.png',
-                                height: 170,
-                                width: 170,
-                              );
-                            },
-                          )),
-              ),
+            InkWell(
+              //borderRadius: BorderRadius.circular(50),
+              onTap: () {
+                _showImagePickerOptions();
+              },
+              child: ClipOval(
+                  child: userImage != null
+                      ? Image(image: FileImage(userImage!))
+                      : Image.network(
+                          _user!.imageSignedUrl!,
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'images/account.png',
+                              height: 150,
+                              width: 150,
+                            );
+                          },
+                        )),
             ),
             Divider(),
             Container(
