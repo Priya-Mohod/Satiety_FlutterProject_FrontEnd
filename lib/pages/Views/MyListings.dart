@@ -57,23 +57,6 @@ class _MyListingsState extends State<MyListings> {
           }
         },
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/ListViewPage');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
-          } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(
-                context, '/ForumPage'); // TODO: Change this to Ads Page
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
-          }
-        },
-      ),
       endDrawer: const SideDrawer(),
     );
   }
@@ -129,6 +112,26 @@ class ListingScreen extends StatelessWidget {
                 Column(
                   children: requestsList.map<Widget>((request) {
                     return ListTile(
+                      onTap: () {
+                        // Show Dialog
+                        // In Progress, You can connect with user here
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Site under development'),
+                            content: Text(
+                                'On this selection, you can connect with the user soon'),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                       leading: CircleAvatar(
                         backgroundImage:
                             NetworkImage(request.requestedUserImageUrl ?? ''),

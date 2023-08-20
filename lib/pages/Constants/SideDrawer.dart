@@ -103,9 +103,14 @@ class _SideDrawerState extends State<SideDrawer> {
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-                            return Text(
-                              snapshot.data ?? '', // Use the fetched data
-                              style: TextStyle(fontSize: 18),
+                            return Container(
+                              width: 150,
+                              child: Text(
+                                snapshot.data ?? '', // Use the fetched data
+                                style: TextStyle(fontSize: 18),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
                             );
                           }
                         },

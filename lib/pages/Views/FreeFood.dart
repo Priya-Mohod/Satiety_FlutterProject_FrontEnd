@@ -139,7 +139,7 @@ class _AddFreeFoodState extends State<AddFreeFood> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.red),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/ListViewPage');
             },
           ),
           title: const Text(

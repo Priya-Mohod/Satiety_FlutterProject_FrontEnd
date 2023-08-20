@@ -347,23 +347,6 @@ class _UserProfileState extends State<UserProfile> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/ListViewPage');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
-          } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(
-                context, '/ForumPage'); // TODO: Change this to Ads Page
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
-          }
-        },
-      ),
     );
   }
 

@@ -38,10 +38,9 @@ class _FoodDetailsState extends State<FoodDetails> {
       appBar: AppBar(
         //add back button
         leading: IconButton(
-          icon: const Icon(Icons.home_rounded, color: Colors.white, size: 30),
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ListViewPage()));
+            Navigator.of(context).pop();
           },
         ),
         title: Text(

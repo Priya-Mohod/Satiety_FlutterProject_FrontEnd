@@ -17,10 +17,9 @@ class _InfoGuideState extends State<InfoGuide> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.home_rounded, color: Colors.white, size: 30),
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ListViewPage()));
+            Navigator.of(context).pop();
           },
         ),
         title: Text(' Guide',
