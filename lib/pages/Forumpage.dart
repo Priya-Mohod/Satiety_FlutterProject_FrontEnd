@@ -32,6 +32,16 @@ class _ForumPageState extends State<ForumPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.black, size: 30),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
         centerTitle: true,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -44,17 +54,23 @@ class _ForumPageState extends State<ForumPage> {
           } else if (index == 2) {
             BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, '/BookmarksPage');
+            Navigator.pushReplacementNamed(context, '/AdsPage');
           } else if (index == 4) {
             Navigator.pushReplacementNamed(context, '/MessegePage');
           }
         },
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Text(
+            "Here, you can see other user's opinion and views here. And, you can add your comments on their forum messages\n\n\n Site under developement.",
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

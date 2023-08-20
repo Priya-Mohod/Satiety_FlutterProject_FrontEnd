@@ -113,8 +113,7 @@ class _ListViewPageState extends State<ListViewPage> {
           } else if (index == 2) {
             BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
-            Navigator.pushReplacementNamed(
-                context, '/Sample'); // TODO: Change this to Ads Page
+            Navigator.pushReplacementNamed(context, '/AdsPage');
           } else if (index == 4) {
             Navigator.pushReplacementNamed(context, '/MessegePage');
           }
