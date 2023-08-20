@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
+import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 
 import '../Constants/Drawers.dart';
 import '../Constants/LocationManager.dart';
@@ -86,30 +87,70 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Column(
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      _showImagePickerOptions();
-                    },
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors
-                          .white, // Optional: Set a background color for the avatar
-                      child: userImage != null
-                          ? Image(image: FileImage(userImage!))
-                          : FadeInImage(
-                              placeholder: AssetImage('images/a.png'),
-                              image: NetworkImage(_user!.imageSignedUrl!),
-                              fit: BoxFit.cover,
-                            ), // Use a default image if both fileImage and networkImage are null
-                    )),
-                SizedBox(height: 10),
-              ],
+            Container(
+              child: GestureDetector(
+                onTap: () {
+                  _showImagePickerOptions();
+                },
+                child: ClipOval(
+                    child: userImage != null
+                        ? Image(image: FileImage(userImage!))
+                        : Image.network(
+                            _user!.imageSignedUrl!,
+                            width: 170,
+                            height: 170,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'images/account.png',
+                                height: 170,
+                                width: 170,
+                              );
+                            },
+                          )),
+              ),
             ),
+            Divider(),
+            Container(
+              child: TextButton(
+                onPressed: () {
+                  int userId = _user!.userId!;
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PublicProfile(userId: userId),
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    //color: Colors.green,
+                    border:
+                        Border.all(color: Color.fromARGB(255, 32, 137, 175)),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  child: const Text(
+                    'View Public Profile',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 36, 113, 123),
+                        fontSize: 18.0),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                floatingLabelStyle: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 19,
+                  //fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             TextFormField(
               readOnly: true,
@@ -119,6 +160,10 @@ class _UserProfileState extends State<UserProfile> {
               controller: _emailController,
               decoration: InputDecoration(
                 labelText: "Email",
+                floatingLabelStyle: const TextStyle(
+                  color: Colors.black54, fontSize: 19,
+                  //fontWeight: FontWeight.bold,
+                ),
                 prefixIcon: const Icon(
                   Icons.email,
                 ),
@@ -171,6 +216,11 @@ class _UserProfileState extends State<UserProfile> {
               inputFormatters: [LengthLimitingTextInputFormatter(10)],
               decoration: const InputDecoration(
                 labelText: "Phone",
+                floatingLabelStyle: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 19,
+                  //fontWeight: FontWeight.bold,
+                ),
                 prefixIcon: Icon(Icons.phone),
               ),
               validator: (value) {
@@ -213,6 +263,11 @@ class _UserProfileState extends State<UserProfile> {
               controller: _addressController,
               decoration: InputDecoration(
                 labelText: 'Your approximate address',
+                floatingLabelStyle: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 19,
+                  //fontWeight: FontWeight.bold,
+                ),
                 prefixIcon: Icon(Icons.location_on),
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -265,6 +320,13 @@ class _UserProfileState extends State<UserProfile> {
             // Add a map widget to show location
             // ...
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.cyan,
+                foregroundColor: Colors.black,
+                shadowColor: Colors.red,
+                elevation: 15,
+                minimumSize: const Size(200, 50),
+              ),
               onPressed: () async {
                 // Update user profile logic here
                 // final updatedUser = User(
@@ -342,8 +404,14 @@ class _UserProfileState extends State<UserProfile> {
                   );
                 }
               },
-              child: Text('Update Profile'),
+              child: const Text('Update Profile',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  )),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),

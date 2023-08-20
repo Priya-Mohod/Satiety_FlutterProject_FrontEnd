@@ -82,7 +82,7 @@ class StringConstants {
       'Request cancelled successfully';
 
   // -- User Profile
-  static String user_profile_screen_title = 'Profile';
+  static String user_profile_screen_title = 'My Profile';
 
   // -- Information Guide
   static String info_guide_Location_msg =

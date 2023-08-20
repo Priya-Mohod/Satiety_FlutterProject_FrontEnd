@@ -90,34 +90,44 @@ class _FoodDetailsState extends State<FoodDetails> {
                     children: [
                       // Icon(Icons.account_circle,
                       //     size: 50, color: Colors.redAccent[100]),
-                      ClipOval(
-                        child: Material(
-                          color: Colors.blue, // Button color
-                          child: InkWell(
-                              //splashColor: Colors.red, // Splash color
-                              onTap: () {
-                                int userId = widget.foodItem.addedByUserId;
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PublicProfile(userId: userId),
-                                  ),
-                                );
-                              },
-                              child: Image.network(
-                                widget.foodItem.addedByUserImageUrl,
-                                //fit: BoxFit.cover,
+                      InkWell(
+                        //splashColor: Colors.red, // Splash color
+                        onTap: () {
+                          int userId = widget.foodItem.addedByUserId;
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PublicProfile(userId: userId),
+                            ),
+                          );
+                        },
+                        child: ClipOval(
+                          child: Image.network(
+                            widget.foodItem.addedByUserImageUrl,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'images/account.png',
                                 height: 60,
                                 width: 60,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'images/account.png',
-                                    height: 60,
-                                    width: 60,
-                                  );
-                                },
-                              )),
+                              );
+                            },
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                // Image has finished loading
+                                return child;
+                              } else {
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(width: 10),

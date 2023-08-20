@@ -37,7 +37,19 @@ class _MyListingsState extends State<MyListings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(StringConstants.my_listings_screen_title)),
+      appBar: AppBar(
+        title: Text(StringConstants.my_listings_screen_title),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.black, size: 30),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
+      ),
       body: FutureBuilder(
         future: dataListFuture,
         builder: (context, snapshot) {
