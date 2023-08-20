@@ -104,7 +104,12 @@ class _UserProfileState extends State<UserProfile> {
               },
               child: ClipOval(
                   child: userImage != null
-                      ? Image(image: FileImage(userImage!))
+                      ? Image(
+                          image: FileImage(userImage!),
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.cover,
+                        )
                       : Image.network(
                           _user!.imageSignedUrl!,
                           width: 150,
