@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
-import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';

@@ -142,22 +142,53 @@ class BottomDrawer {
             ),
             child: Column(
               children: [
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      children: const [
-                        SizedBox(height: 20),
-                        Text('Food Filter',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'times new roman',
-                            )),
-                      ],
-                    )
+                    SizedBox(height: 20),
+                    // Text('Food Filter',
+                    //     style: TextStyle(
+                    //       color: Colors.black,
+                    //       fontSize: 20,
+                    //       fontWeight: FontWeight.bold,
+                    //       fontFamily: 'times new roman',
+                    //     )),
+                    TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Site under development'),
+                              content: Text(
+                                  'On this selection, you can apply filters to the food items displayed on the dashboard.'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          child: Text('Apply Filter',
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'times new roman',
+                              )),
+                        ))
                   ],
                 ),
                 SizedBox(height: 20),
