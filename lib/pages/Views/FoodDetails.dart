@@ -321,46 +321,8 @@ class _FoodDetailsState extends State<FoodDetails> {
               ),
               onPressed: widget.foodItem.isRequestedByLoggedInUser == "N"
                   ? () async {
-                      var response =
-                          await service.requestFood(widget.foodItem.foodId);
-                      if (response) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(
-                                StringConstants.food_details_request_button),
-                            content: Text(
-                                StringConstants.food_details_request_success),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // Make server call to request food
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Navigator(
-                                        onGenerateRoute: (settings) {
-                                          return MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MyRequests());
-                                        },
-                                      ),
-                                    ),
-                                  );
-
-                                  // TODO:- clear the form fields
-                                  // TODO:- clear the image
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        // show error message
-                        SnackbarHelper.showSnackBar(context,
-                            StringConstants.food_details_request_failed);
-                      }
+                      // Explicitly pass the context to the async function
+                      await _handleFoodRequest(context);
                     }
                   : null,
               child: const Text('Request This',
@@ -380,6 +342,40 @@ class _FoodDetailsState extends State<FoodDetails> {
         'https://www.food.gov.uk/business-guidance/allergen-guidance-for-food-businesses');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
+    }
+  }
+
+  Future<void> _handleFoodRequest(BuildContext context) async {
+    var response = await service.requestFood(widget.foodItem.foodId);
+
+    if (response) {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(StringConstants.food_details_request_button),
+          content: Text(StringConstants.food_details_request_success),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Clear form fields
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/myRequests',
+                  (route) => false,
+                );
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Show error message
+      SnackbarHelper.showSnackBar(
+        context,
+        StringConstants.food_details_request_failed,
+      );
     }
   }
 }
