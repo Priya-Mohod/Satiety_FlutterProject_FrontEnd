@@ -14,6 +14,7 @@ class FoodItem {
   final double longitude;
   final String addedByUserImageUrl;
   final int addedByUserId;
+  final String isRequestedByLoggedInUser;
 
   FoodItem({
     required this.foodId,
@@ -29,6 +30,7 @@ class FoodItem {
     required this.longitude,
     required this.addedByUserImageUrl,
     required this.addedByUserId,
+    required this.isRequestedByLoggedInUser,
   });
 
   // Factory method to create a FoodItem from JSON
@@ -47,6 +49,7 @@ class FoodItem {
       longitude: json['longitude'],
       addedByUserImageUrl: json['addedByUserImageUrl'],
       addedByUserId: json['addedByUserId'],
+      isRequestedByLoggedInUser: json['isRequestedByLoggedInUser'],
     );
   }
 }

@@ -124,8 +124,8 @@ class _UserProfileState extends State<UserProfile> {
             Container(
               child: TextButton(
                 onPressed: () {
-                  int userId = _user!.userId!;
-                  Navigator.pushReplacement(
+                  int userId = _user!.userId;
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => PublicProfile(userId: userId),

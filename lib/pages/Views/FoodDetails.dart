@@ -319,46 +319,50 @@ class _FoodDetailsState extends State<FoodDetails> {
                 elevation: 15,
                 minimumSize: const Size(250, 50),
               ),
-              onPressed: () async {
-                var response =
-                    await service.requestFood(widget.foodItem.foodId);
-                if (response) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(StringConstants.food_details_request_button),
-                      content:
-                          Text(StringConstants.food_details_request_success),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            // Make server call to request food
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Navigator(
-                                  onGenerateRoute: (settings) {
-                                    return MaterialPageRoute(
-                                        builder: (context) => MyRequests());
-                                  },
-                                ),
-                              ),
-                            );
+              onPressed: widget.foodItem.isRequestedByLoggedInUser == "N"
+                  ? () async {
+                      var response =
+                          await service.requestFood(widget.foodItem.foodId);
+                      if (response) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                                StringConstants.food_details_request_button),
+                            content: Text(
+                                StringConstants.food_details_request_success),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Make server call to request food
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Navigator(
+                                        onGenerateRoute: (settings) {
+                                          return MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyRequests());
+                                        },
+                                      ),
+                                    ),
+                                  );
 
-                            // TODO:- clear the form fields
-                            // TODO:- clear the image
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  // show error message
-                  SnackbarHelper.showSnackBar(
-                      context, StringConstants.food_details_request_failed);
-                }
-              },
+                                  // TODO:- clear the form fields
+                                  // TODO:- clear the image
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // show error message
+                        SnackbarHelper.showSnackBar(context,
+                            StringConstants.food_details_request_failed);
+                      }
+                    }
+                  : null,
               child: const Text('Request This',
                   style: TextStyle(
                     fontSize: 30,
