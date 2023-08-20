@@ -8,6 +8,7 @@ import 'package:satietyfrontend/pages/Messegepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
+import 'package:satietyfrontend/pages/Views/ClickableLabel.dart';
 
 import '../Constants/Drawers.dart';
 import '../Constants/StringConstants.dart';
@@ -105,47 +106,76 @@ class _MyRequestsState extends State<MyRequests> {
                                 ),
                               ),
                               SizedBox(height: 8),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 4),
-                                ),
-                                onPressed: () async {
-                                  // Handle cancel request
-                                  bool result = await viewModel
-                                      .onRequestCancelClick(request.requestId);
-                                  if (result) {
-                                    // Show alert dialog
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text('Cancel'),
-                                        content: Text(StringConstants
-                                            .my_requests_request_cancelled),
-                                        actions: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              refreshData();
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('OK'),
+                              Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 4),
+                                    ),
+                                    onPressed: () async {
+                                      // Handle cancel request
+                                      bool result =
+                                          await viewModel.onRequestCancelClick(
+                                              request.requestId);
+                                      if (result) {
+                                        // Show alert dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text('Cancel'),
+                                            content: Text(StringConstants
+                                                .my_requests_request_cancelled),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  refreshData();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('OK'),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    // Show SnackbarHelper
-                                    SnackbarHelper.showSnackBar(
-                                      context,
-                                      StringConstants
-                                          .my_listings_error_cancel_request,
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  'Cancel Request',
-                                  style: TextStyle(fontSize: 12),
-                                ),
+                                        );
+                                      } else {
+                                        // Show SnackbarHelper
+                                        SnackbarHelper.showSnackBar(
+                                          context,
+                                          StringConstants
+                                              .my_listings_error_cancel_request,
+                                        );
+                                      }
+                                    },
+                                    child: Text(
+                                      'Cancel Request',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  ClickableLabel(
+                                    label: 'Connect Supplier',
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text('Site under development'),
+                                          content: Text(
+                                              'On this selection, you can connect with the user soon'),
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    isEnabled: request.acceptedFlag ==
+                                        'Y', // Pass the isEnabled condition
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -169,23 +199,6 @@ class _MyRequestsState extends State<MyRequests> {
                 },
               );
             }
-          }
-        },
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/ListViewPage');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
-          } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(
-                context, '/ForumPage'); // TODO: Change this to Ads Page
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
           }
         },
       ),
