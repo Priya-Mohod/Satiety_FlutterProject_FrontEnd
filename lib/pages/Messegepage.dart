@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'Constants/Drawers.dart';
 import 'Constants/bottomNavigationBar.dart';
 
@@ -40,24 +41,20 @@ class _MessegePageState extends State<MessegePage> {
           ),
         ],
       ),
-      //endDrawer: CustomEndDrawer(),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/ListViewPage');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
-          } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, '/BookmarksPage');
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
-          }
-        },
+      endDrawer: SideDrawer(),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Text(
+            'Here, you can see list of your conversation with supplier/consumer.\n\n\n Site under developement.',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 23,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
-      body: Center(),
     );
   }
 }
