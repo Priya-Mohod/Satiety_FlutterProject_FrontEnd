@@ -14,7 +14,7 @@ class FoodItem {
   final double longitude;
   final String addedByUserImageUrl;
   final int addedByUserId;
-  final String isRequestedByLoggedInUser;
+  final String? isRequestedByLoggedInUser;
 
   FoodItem({
     required this.foodId,
