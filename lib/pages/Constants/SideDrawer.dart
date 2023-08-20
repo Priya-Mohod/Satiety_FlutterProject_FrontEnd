@@ -63,13 +63,14 @@ class _SideDrawerState extends State<SideDrawer> {
                   ClipOval(
                     child: Image.network(
                       currentUser?.imageSignedUrl ?? '',
-                      height: 60,
-                      width: 60,
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                           'images/account.png',
-                          height: 40,
-                          width: 40,
+                          height: 60,
+                          width: 60,
                         );
                       },
                       loadingBuilder: (BuildContext context, Widget child,
