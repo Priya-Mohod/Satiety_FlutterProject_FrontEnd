@@ -132,7 +132,7 @@ class ListingScreen extends StatelessWidget {
                           builder: (context) => AlertDialog(
                             title: Text('Site under development'),
                             content: Text(
-                                'On this selection, you can connect with the user soon'),
+                                'On this selection, you can connect with the consumer soon'),
                             actions: [
                               ElevatedButton(
                                 onPressed: () {
