@@ -53,4 +53,20 @@ class UserStorageService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('customURL');
   }
+
+  static Future<void> saveCustomURL(String url) async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setString('customURL', url);
+  }
+
+  static Future<String?> getCustomURL() async {
+    final pref = await SharedPreferences.getInstance();
+    final url = pref.getString('customURL');
+    return url;
+  }
+
+  static Future<void> removeCustomURL() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('customURL');
+  }
 }
