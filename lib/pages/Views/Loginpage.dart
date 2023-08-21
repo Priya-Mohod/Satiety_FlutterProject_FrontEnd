@@ -109,6 +109,9 @@ class _LoginPageState extends State<LoginPage> {
                 InkWell(
                   onTap: () async {
                     if (_formfield.currentState!.validate()) {
+                      String currentURL = await viewModel.getUrlInUse();
+                      // ignore: use_build_context_synchronously
+                      SnackbarHelper.showSnackBar(context, currentURL);
                       print("Email: ${emailController.text}");
                       print("Password: ${passwordController.text}");
 
@@ -200,14 +203,14 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text("Add Custom URL"),
                 ),
-                // SizedBox(height: 30),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     UserStorageService.removeCustomURL();
-                //     SnackbarHelper("Custom URL cleared successfully");
-                //   },
-                //   child: const Text("Clear Custom URL"),
-                // ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    UserStorageService.removeCustomURL();
+                    SnackbarHelper("Custom URL cleared successfully");
+                  },
+                  child: const Text("Clear Custom URL"),
+                ),
               ],
             )),
       )),
