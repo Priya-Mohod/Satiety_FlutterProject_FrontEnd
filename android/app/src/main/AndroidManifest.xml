@@ -2,7 +2,7 @@
     package="com.example.satietyfrontend">
 
    <application
-        android:label="satietyfrontend"
+        android:label="Satiety"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
