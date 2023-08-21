@@ -223,7 +223,8 @@ class _PublicProfileState extends State<PublicProfile> {
                         thickness: 1,
                       ),
                       SizedBox(height: 90),
-                      Text('Profile work is inprogress...',
+                      Text(
+                          'Site under development, profile work in progress...',
                           style: TextStyle(
                             fontSize: 20,
                           )),
