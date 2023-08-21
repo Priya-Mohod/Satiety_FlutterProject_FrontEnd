@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Constants/URLConstants.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 
 import '../Services/UserStorageService.dart';
@@ -12,7 +13,18 @@ class CustomURL extends StatefulWidget {
 class _CustomURLState extends State<CustomURL> {
   final _formfield = GlobalKey<FormState>();
   final urlController = TextEditingController();
-  bool passwordVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    UserStorageService.getCustomURL().then((value) {
+      if (value != null) {
+        urlController.text = value;
+      } else {
+        urlController.text = URLConstants.url;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,5 +86,3 @@ class _CustomURLState extends State<CustomURL> {
     );
   }
 }
-
-class SnackBarHelper {}
