@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Constants/StringConstants.dart';
 import '../Constants/URLConstants.dart';
+import '../Services/UserStorageService.dart';
 import '../Views/SnackbarHelper.dart';
 
 class Service {
@@ -31,6 +32,10 @@ class Service {
         "username": email,
         "password": password,
       };
+      String? customURL = await UserStorageService.getCustomURL();
+      if (customURL != null) {
+        url = customURL;
+      }
       final response = await http.post(
         Uri.parse('$url/authenticateUser'),
         headers: {'Content-Type': 'application/json'},
@@ -58,6 +63,10 @@ class Service {
       double latitude,
       double longitude,
       bool isRegister) async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      url = customURL;
+    }
     var request = http.MultipartRequest('POST',
         Uri.parse(isRegister ? '$url/registerUser' : '$url/updateUser'));
     var multipartFile;

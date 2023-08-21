@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
 //import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
+import 'package:satietyfrontend/pages/Views/CustomURL.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 import '../Constants/StringConstants.dart';
+import '../Constants/URLConstants.dart';
 import '../ViewModels/LoginViewModel.dart';
 import '../ViewModels/UserProfileViewModel.dart';
 
@@ -184,7 +187,27 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 50),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomURL(),
+                      ),
+                    );
+                  },
+                  child: const Text("Add Custom URL"),
+                ),
+                // SizedBox(height: 30),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     UserStorageService.removeCustomURL();
+                //     SnackbarHelper("Custom URL cleared successfully");
+                //   },
+                //   child: const Text("Clear Custom URL"),
+                // ),
               ],
             )),
       )),
