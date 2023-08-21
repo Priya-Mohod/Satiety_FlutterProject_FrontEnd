@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
-import 'package:satietyfrontend/pages/Messegepage.dart';
+import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
@@ -64,12 +65,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        home: const LoginPage(),
+        //home: const LoginPage(),
+        home: ListViewPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
           '/ForumPage': (context) => ForumPage(),
-          '/MessegePage': (context) => MessegePage(),
+          '/MessegePage': (context) => MessagePage(),
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
@@ -78,9 +80,8 @@ class MyApp extends StatelessWidget {
           '/SupplierLocationMap': (context) =>
               SupplierLocationMap(selectedLocation: LatLng(0, 0)),
           '/Profile': (context) => UserProfile(),
-          '/PublicProfile': (context) => PublicProfile(
-                userId: 1,
-              ),
+          '/PublicProfile': (context) => PublicProfile(userId: 1),
+          '/AdsPage': (context) => AdvertisePage(),
         });
   }
 }
