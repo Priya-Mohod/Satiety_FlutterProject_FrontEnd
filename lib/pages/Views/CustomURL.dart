@@ -72,10 +72,8 @@ class _CustomURLState extends State<CustomURL> {
                     if (_formfield.currentState!.validate()) {
                       UserStorageService.saveCustomURL(urlController.text);
                       SnackbarHelper("URL saved successfully");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
+                      // pop screen
+                      Navigator.pop(context);
                     }
                   },
                   child: const Text('Submit'),
