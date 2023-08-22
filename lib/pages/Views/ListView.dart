@@ -21,6 +21,7 @@ import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../Constants/Drawers.dart';
+import '../Constants/SelectedPageProvider.dart';
 import '../Constants/SideDrawer.dart';
 import '../Constants/bottomNavigationBar.dart';
 
@@ -79,7 +80,8 @@ class _ListViewPageState extends State<ListViewPage> {
   @override
   Widget build(BuildContext context) {
     // Get the foodList from the FoodListViewModel
-    final foodList = Provider.of<FoodListViewModel>(context).foodList;
+    final selectedPageProvider =
+        Provider.of<SelectedPageProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -106,16 +108,26 @@ class _ListViewPageState extends State<ListViewPage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
         onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/ListViewPage');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/ForumPage');
+          if (index == 0 &&
+              selectedPageProvider.selectedPage != StringConstants.Dashboard) {
+            selectedPageProvider.setSelectedPage(StringConstants.Dashboard);
+            Navigator.pushReplacementNamed(context, StringConstants.Dashboard);
+          } else if (index == 1 &&
+              selectedPageProvider.selectedPage != StringConstants.Forum) {
+            selectedPageProvider.setSelectedPage(StringConstants.Forum);
+            Navigator.pushReplacementNamed(context, StringConstants.Forum);
           } else if (index == 2) {
             BottomDrawer.showBottomDrawer(context);
-          } else if (index == 3) {
-            Navigator.pushReplacementNamed(context, '/AdsPage');
-          } else if (index == 4) {
-            Navigator.pushReplacementNamed(context, '/MessegePage');
+          } else if (index == 3 &&
+              selectedPageProvider.selectedPage != StringConstants.AdsPage) {
+            selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
+            Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
+          } else if (index == 4 &&
+              selectedPageProvider.selectedPage !=
+                  StringConstants.MessagePage) {
+            selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
+            Navigator.pushReplacementNamed(
+                context, StringConstants.MessagePage);
           }
         },
       ),
