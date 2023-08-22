@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Constants/URLConstants.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,15 @@ class LoginViewModel with ChangeNotifier {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<String> getUrlInUse() async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      return customURL;
+    } else {
+      return URLConstants.url;
     }
   }
 

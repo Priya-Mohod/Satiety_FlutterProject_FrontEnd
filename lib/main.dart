@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
@@ -18,6 +19,7 @@ import 'package:satietyfrontend/pages/Constants/Drawers.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -54,6 +56,8 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
   // This widget is the root of your application.
+  bool isLoggedIn = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,8 +69,23 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           brightness: Brightness.light,
         ),
-        //home: const LoginPage(),
-        home: ListViewPage(),
+        home: FutureBuilder<Widget?>(
+          future: getFirstPage(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // While the future is still loading, return a loading indicator or placeholder
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Handle errors
+              return Text('Landing Page Error: ${snapshot.error}');
+            } else {
+              // Future is complete, return the determined landing page
+              return snapshot.data ??
+                  LoginPage(); // Use LoginPage as a default if data is null
+            }
+          },
+        ),
+        //home: ListViewPage(),
         routes: {
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
@@ -83,5 +102,13 @@ class MyApp extends StatelessWidget {
           '/PublicProfile': (context) => PublicProfile(userId: 1),
           '/AdsPage': (context) => AdvertisePage(),
         });
+  }
+
+  Future<Widget?> getFirstPage() async {
+    if (await UserStorageService.isUserLoggedIn()) {
+      return ListViewPage();
+    } else {
+      return null;
+    }
   }
 }

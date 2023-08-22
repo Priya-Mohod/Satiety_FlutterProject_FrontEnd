@@ -23,10 +23,19 @@ class UserStorageService {
     return null;
   }
 
+  static Future<bool> isUserLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('authToken')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static Future<void> removeUserFromSharedPreferances() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('authToken');
-    await prefs.remove(_keyUser);
+    prefs.remove(_keyUser);
   }
 
   static Future<void> saveCustomURL(String url) async {
