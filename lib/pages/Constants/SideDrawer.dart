@@ -142,7 +142,12 @@ class _SideDrawerState extends State<SideDrawer> {
               onTap: () {
                 // Close the drawer and navigate to the home page
                 Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/ListViewPage');
+                //Navigator.pushReplacementNamed(context, '/ListViewPage');
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/ListViewPage',
+                  (route) => false,
+                );
               }),
           ListTile(
             leading: Icon(Icons.forum),
@@ -150,7 +155,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/ForumPage',
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -159,7 +169,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/myList');
+              //Navigator.pushReplacementNamed(context, '/myList');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/myList',
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -168,7 +183,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/myRequests');
+              //Navigator.pushReplacementNamed(context, '/myRequests');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/myRequests',
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -177,7 +197,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/Profile');
+              //Navigator.pushReplacementNamed(context, '/Profile');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/Profile',
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -186,7 +211,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/ForumPage',
+                (route) => false,
+              );
             },
           ),
           // ListTile(
@@ -204,7 +234,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/ForumPage',
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -213,7 +248,12 @@ class _SideDrawerState extends State<SideDrawer> {
             onTap: () {
               // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/ForumPage',
+                (route) => false,
+              );
             },
           ),
           DrawerHeader(
