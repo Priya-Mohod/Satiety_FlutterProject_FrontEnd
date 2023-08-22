@@ -56,6 +56,7 @@ dependencies:
   retry:
   full_screen_image: ^2.0.0
   cached_network_image: ^3.2.3
+  flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
   android: true
@@ -66,6 +67,11 @@ flutter_native_splash:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/SatietyLogo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
