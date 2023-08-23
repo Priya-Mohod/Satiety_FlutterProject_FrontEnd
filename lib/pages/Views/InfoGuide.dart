@@ -36,7 +36,7 @@ class _InfoGuideState extends State<InfoGuide> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('How to use the app',
+              Text('Icon Guide',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 25,

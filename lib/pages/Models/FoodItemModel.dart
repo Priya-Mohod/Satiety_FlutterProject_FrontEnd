@@ -14,7 +14,11 @@ class FoodItem {
   final double longitude;
   final String addedByUserImageUrl;
   final int addedByUserId;
+  final String? allergies;
   final String? isRequestedByLoggedInUser;
+  final String? addedTime;
+  // final DateTime? availableFrom;
+  // final DateTime? availableTo;
 
   FoodItem({
     required this.foodId,
@@ -24,6 +28,7 @@ class FoodItem {
     required this.foodSignedUrl,
     required this.foodAmount,
     required this.foodType,
+    required this.allergies,
     required this.addedByUserName,
     required this.foodAddress,
     required this.latitude,
@@ -31,6 +36,9 @@ class FoodItem {
     required this.addedByUserImageUrl,
     required this.addedByUserId,
     required this.isRequestedByLoggedInUser,
+    required this.addedTime,
+    // required this.availableFrom,
+    // required this.availableTo,
   });
 
   // Factory method to create a FoodItem from JSON
@@ -43,6 +51,7 @@ class FoodItem {
       foodSignedUrl: json['foodSignedUrl'],
       foodAmount: json['foodAmount'],
       foodType: json['foodType'],
+      allergies: json['allergies'],
       addedByUserName: json['addedByUserName'],
       foodAddress: json['foodAddress'],
       latitude: json['latitude'],
@@ -50,6 +59,9 @@ class FoodItem {
       addedByUserImageUrl: json['addedByUserImageUrl'],
       addedByUserId: json['addedByUserId'],
       isRequestedByLoggedInUser: json['isRequestedByLoggedInUser'],
+      addedTime: json['addedTime'],
+      // availableFrom: json['availableFrom'],
+      // availableTo: json['availableTo'],
     );
   }
 }

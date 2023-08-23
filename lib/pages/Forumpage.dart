@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Constants/Drawers.dart';
+import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'Constants/bottomNavigationBar.dart';
 
 class ForumPage extends StatefulWidget {
@@ -60,6 +61,7 @@ class _ForumPageState extends State<ForumPage> {
           }
         },
       ),
+      endDrawer: SideDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(

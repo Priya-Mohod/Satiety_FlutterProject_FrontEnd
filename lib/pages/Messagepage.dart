@@ -17,7 +17,7 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messeges',
+        title: Text('Messages',
             style: TextStyle(
               color: Colors.black,
               fontSize: 25,
