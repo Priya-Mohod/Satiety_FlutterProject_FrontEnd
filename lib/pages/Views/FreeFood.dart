@@ -617,8 +617,9 @@ class _AddFreeFoodState extends State<AddFreeFood> {
                             print(customAllergyController.text);
                             String customAllergyText_inController =
                                 customAllergyController.text;
+                            selectedAllergies.remove('Others');
                             allergyContentString +=
-                                customAllergyText_inController;
+                                " : " + customAllergyText_inController;
                             print(allergyContentString);
                           }
                           print(allergyContentString);
