@@ -83,8 +83,9 @@ class ListingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: ListView.builder(
         itemCount: dataList!.length,
         itemBuilder: (context, index) {
           final foodItem = dataList![index].foodItem;
@@ -170,6 +171,12 @@ class ListingScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    // Simulate an async operation, e.g., fetching new data
+    await Future.delayed(Duration(seconds: 1));
+    refreshCallback();
   }
 
   Widget buildButtons(BuildContext context, FoodRequest request) {

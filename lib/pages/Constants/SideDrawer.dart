@@ -6,6 +6,9 @@ import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
 import 'package:retry/retry.dart';
 
+import 'SelectedPageProvider.dart';
+import 'StringConstants.dart';
+
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});
 
@@ -15,6 +18,7 @@ class SideDrawer extends StatefulWidget {
 
 class _SideDrawerState extends State<SideDrawer> {
   User? currentUser;
+
   final retryOptions = RetryOptions(
     maxAttempts: 3,
     delayFactor: Duration(seconds: 2),
@@ -38,6 +42,9 @@ class _SideDrawerState extends State<SideDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedPageProvider =
+        Provider.of<SelectedPageProvider>(context, listen: false);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -138,82 +145,144 @@ class _SideDrawerState extends State<SideDrawer> {
           ),
           ListTile(
               leading: Icon(Icons.home),
-              title: Text('Home'),
+              title: Text(StringConstants.Dashboard_title),
               onTap: () {
-                // Close the drawer and navigate to the home page
                 Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/ListViewPage');
+                //Navigator.pushReplacementNamed(context, '/ListViewPage');
+                if (selectedPageProvider.selectedPage !=
+                    StringConstants.Dashboard) {
+                  selectedPageProvider
+                      .setSelectedPage(StringConstants.Dashboard);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    StringConstants.Dashboard,
+                    (route) => false,
+                  );
+                }
               }),
           ListTile(
             leading: Icon(Icons.forum),
-            title: Text('Forum'),
+            title: Text(StringConstants.Forum_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.Forum_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.Forum_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.Forum,
+                  (route) => false,
+                );
+              }
             },
           ),
           ListTile(
             leading: Icon(Icons.list),
-            title: Text('My Listings'),
+            title: Text(StringConstants.MyListings_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/myList');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.MyListings_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.MyListings_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.MyListings,
+                  (route) => false,
+                );
+              }
             },
           ),
           ListTile(
             leading: Icon(Icons.remove_from_queue_outlined),
-            title: Text('My Requests'),
+            title: Text(StringConstants.MyRequests_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/myRequests');
+              //Navigator.pushReplacementNamed(context, '/myRequests');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.MyRequests_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.MyRequests_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.MyRequests,
+                  (route) => false,
+                );
+              }
             },
           ),
           ListTile(
             leading: Icon(Icons.emoji_emotions_sharp),
-            title: Text('User Profile'),
+            title: Text(StringConstants.Profile_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/Profile');
+              //Navigator.pushReplacementNamed(context, '/Profile');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.Profile_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.Profile_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.Profile,
+                  (route) => false,
+                );
+              }
             },
           ),
           ListTile(
             leading: Icon(Icons.notifications_active),
-            title: Text('Notifications'),
+            title: Text(StringConstants.Notifications_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.Notifications_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.Notifications_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.Notifications,
+                  (route) => false,
+                );
+              }
             },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.location_on),
-          //   title: Text('Location'),
-          //   onTap: () {
-          //     // Close the drawer and navigate to the forum page
-          //     Navigator.pop(context);
-          //     Navigator.pushReplacementNamed(context, '/ForumPage');
-          //   },
-          // ),
           ListTile(
             leading: Icon(Icons.supervised_user_circle_sharp),
-            title: Text('Users near me'),
+            title: Text(StringConstants.UsersNearMe_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.UsersNearMe_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.UsersNearMe_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.UsersNearMe,
+                  (route) => false,
+                );
+              }
             },
           ),
           ListTile(
             leading: Icon(Icons.help_outline),
-            title: Text('Help center'),
+            title: Text(StringConstants.HelpCenter_title),
             onTap: () {
-              // Close the drawer and navigate to the forum page
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/ForumPage');
+              //Navigator.pushReplacementNamed(context, '/ForumPage');
+              if (selectedPageProvider.selectedPage !=
+                  StringConstants.HelpCenter_title) {
+                selectedPageProvider
+                    .setSelectedPage(StringConstants.HelpCenter_title);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  StringConstants.HelpCenter,
+                  (route) => false,
+                );
+              }
             },
           ),
           DrawerHeader(

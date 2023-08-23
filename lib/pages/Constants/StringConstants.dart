@@ -1,4 +1,34 @@
 class StringConstants {
+  // -- Routes
+  static String Dashboard = '/ListViewPage';
+  static String Login = '/Login';
+  static String Register = '/Register';
+  static String OTPValidation = '/ValidateOTP';
+  static String Forum = '/ForumPage';
+  static String MyListings = '/myList';
+  static String MyRequests = '/myRequests';
+  static String Profile = '/Profile';
+  static String PublicProfile = '/PublicProfile';
+  static String AdsPage = '/AdsPage';
+  static String Notifications = '/ForumPage';
+  static String UsersNearMe = '/ForumPage';
+  static String HelpCenter = '/ForumPage';
+  static String MessagePage = '/MessegePage';
+  static String SupplierLocationMap = '/SupplierLocationMap';
+
+  // -- Page Titles
+  static String Dashboard_title = 'Home';
+  static String Login_title = 'Login';
+  static String Register_title = 'Register';
+  static String OTPValidation_title = 'OTP Validation';
+  static String Forum_title = 'Forum';
+  static String MyListings_title = 'MyListings';
+  static String MyRequests_title = 'MyRequests';
+  static String Profile_title = 'Profile';
+  static String Notifications_title = 'Notifications';
+  static String UsersNearMe_title = 'Users Near Me';
+  static String HelpCenter_title = 'Help Center';
+
   // -- General
   static String exception_error = 'Error connecting server, please try again';
   static String internet_error = 'Please check your internet connection!';
@@ -40,7 +70,7 @@ class StringConstants {
   static String login_error =
       'Error occurred while logging in, please try again';
 
-  // -- List View Screen
+  // -- List View Scree
   static String list_view_screen_title = 'Food List';
 
   // -- Post Ad
