@@ -4,7 +4,9 @@ import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
+import 'package:satietyfrontend/pages/Views/ChatPage.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
@@ -47,7 +49,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FoodListViewModel()),
         ChangeNotifierProvider(create: (_) => RequestProvider()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
-        ChangeNotifierProvider(create: (_) => SelectedPageProvider())
+        ChangeNotifierProvider(create: (_) => SelectedPageProvider()),
+        ChangeNotifierProvider(create: (_) => ChatViewModel()),
       ],
       child: MyApp(),
     ),
@@ -103,6 +106,7 @@ class MyApp extends StatelessWidget {
           '/Profile': (context) => UserProfile(),
           '/PublicProfile': (context) => PublicProfile(userId: 1),
           '/AdsPage': (context) => AdvertisePage(),
+          '/ChatPage': (context) => ChatPage(),
         });
   }
 

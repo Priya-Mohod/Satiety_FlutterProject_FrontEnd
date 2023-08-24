@@ -373,6 +373,27 @@ class Service {
     }
   }
 
+  // Chat Request
+  Future<Response?> fetchChatData(int foodRequestId) async {
+    try {
+      var request = http.MultipartRequest(
+          'GET', Uri.parse('$url/getConversationsForFoodRequest'));
+      request.fields['foodRequestId'] = '$foodRequestId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        final streamedResponse = await http.Response.fromStream(response);
+        return streamedResponse;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+    }
+
+    return null;
+  }
+
   // Server call
   Future<http.StreamedResponse?> makeServerRequest(
       MultipartRequest request) async {

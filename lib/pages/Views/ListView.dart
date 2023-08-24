@@ -14,6 +14,7 @@ import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
+import 'package:satietyfrontend/pages/Views/ChatPage.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/InfoGuide.dart';
@@ -167,6 +168,18 @@ class _ListViewPageState extends State<ListViewPage> {
                                     )),
                               ],
                             )),
+                        ElevatedButton(
+                          onPressed: () {
+                            // show chat page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(),
+                              ),
+                            );
+                          },
+                          child: const Text("Chat Screen"),
+                        ),
                       ],
                     ),
                   ),
