@@ -18,7 +18,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           backgroundColor: Colors.cyan,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.forum, size: 40),
+          icon: Icon(Icons.forum_outlined, size: 40),
           label: 'Forum',
           backgroundColor: Colors.cyan,
         ),
@@ -33,7 +33,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           backgroundColor: Colors.cyan,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.message, size: 40),
+          icon: Icon(Icons.email, size: 40),
           label: 'Messeges',
           backgroundColor: Colors.cyan,
         ),
