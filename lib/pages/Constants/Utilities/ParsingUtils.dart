@@ -13,12 +13,4 @@ class ParsingUtils {
     double miles = value * 0.621371;
     return parseDoubleTo1Point(miles);
   }
-
-  static String convertDoubleToString(double value) {
-    return value.toString();
-  }
-
-  static double convertStringToDouble(String value) {
-    return double.parse(value);
-  }
 }
