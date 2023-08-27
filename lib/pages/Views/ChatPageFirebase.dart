@@ -25,7 +25,6 @@ class ChatPageFirebase extends StatefulWidget {
 class _ChatPageFirebaseState extends State<ChatPageFirebase> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
-  var currentUserEmail = '';
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
@@ -38,11 +37,6 @@ class _ChatPageFirebaseState extends State<ChatPageFirebase> {
   @override
   void initState() {
     super.initState();
-    setup();
-  }
-
-  void setup() async {
-    currentUserEmail = await getCurrentUserEmail();
   }
 
   @override
@@ -156,14 +150,5 @@ class _ChatPageFirebaseState extends State<ChatPageFirebase> {
         ],
       ),
     );
-  }
-
-  Future<String> getCurrentUserEmail() async {
-    User? localUser = await UserStorageService.getUserFromSharedPreferances();
-    if (localUser != null) {
-      return localUser.email;
-    } else {
-      return '';
-    }
   }
 }
