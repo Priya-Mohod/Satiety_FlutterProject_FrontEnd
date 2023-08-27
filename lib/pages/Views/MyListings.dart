@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import '../Constants/Drawers.dart';
 import '../Constants/SideDrawer.dart';
@@ -126,22 +127,14 @@ class ListingScreen extends StatelessWidget {
                   children: requestsList.map<Widget>((request) {
                     return ListTile(
                       onTap: () {
-                        // Show Dialog
-                        // In Progress, You can connect with user here
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Site under development'),
-                            content: Text(
-                                'On this selection, you can connect with the consumer soon'),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatPageFirebase(
+                              senderEmail: request.supplierEmail ?? '',
+                              receiverEmail: request.consumerEmail ?? '',
+                              foodId: request.requestId.toString(),
+                            ),
                           ),
                         );
                       },

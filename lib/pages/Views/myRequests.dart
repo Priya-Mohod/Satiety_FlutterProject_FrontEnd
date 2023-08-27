@@ -7,6 +7,7 @@ import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
+import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 import 'package:satietyfrontend/pages/Views/ClickableLabel.dart';
 
 import '../Constants/Drawers.dart';
@@ -168,21 +169,20 @@ class _MyRequestsState extends State<MyRequests> {
                                     ClickableLabel(
                                       label: 'Connect Supplier',
                                       onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title:
-                                                Text('Site under development'),
-                                            content: Text(
-                                                'On this selection, you can connect with the supplier soon'),
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('OK'),
-                                              ),
-                                            ],
+                                        print(
+                                            'passing data from my request ${request.consumerEmail}');
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChatPageFirebase(
+                                              senderEmail:
+                                                  request.consumerEmail ?? '',
+                                              receiverEmail:
+                                                  request.supplierEmail ?? '',
+                                              foodId:
+                                                  request.requestId.toString(),
+                                            ),
                                           ),
                                         );
                                       },
