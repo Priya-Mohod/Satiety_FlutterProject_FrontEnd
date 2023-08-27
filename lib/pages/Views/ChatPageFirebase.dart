@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:satietyfrontend/pages/Constants/DateTimeUtils.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DateTimeUtils.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 
@@ -10,12 +10,14 @@ class ChatPageFirebase extends StatefulWidget {
   final String senderEmail;
   final String receiverEmail;
   final String foodId;
+  final String foodName;
 
   const ChatPageFirebase({
     Key? key,
     required this.senderEmail,
     required this.receiverEmail,
     required this.foodId,
+    required this.foodName,
   }) : super(key: key);
 
   @override
@@ -43,7 +45,7 @@ class _ChatPageFirebaseState extends State<ChatPageFirebase> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ChatPageFirebase'),
+        title: Text(widget.foodName),
       ),
       body: Column(
         children: [
@@ -127,12 +129,6 @@ class _ChatPageFirebaseState extends State<ChatPageFirebase> {
       color: Colors.white,
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.photo),
-            iconSize: 25.0,
-            color: Theme.of(context).primaryColor,
-            onPressed: () {},
-          ),
           Expanded(
             child: TextField(
               controller: _messageController,

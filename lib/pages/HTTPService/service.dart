@@ -169,6 +169,7 @@ class Service {
     // Food Food Type - // Veggies - Veg / Non-Veg / Vegan /
     request.fields['foodType'] = foodType;
     // Food Amount - Free / Chargeable
+    // TODO : Move this parsing into ViewModel
     double amount = 0.0;
     if (foodAmount.isNotEmpty) {
       double doubleValue = double.parse(foodAmount);

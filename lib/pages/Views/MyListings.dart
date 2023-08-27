@@ -134,6 +134,7 @@ class ListingScreen extends StatelessWidget {
                               senderEmail: request.supplierEmail ?? '',
                               receiverEmail: request.consumerEmail ?? '',
                               foodId: request.requestId.toString(),
+                              foodName: foodItem.foodName,
                             ),
                           ),
                         );

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:satietyfrontend/pages/Constants/Utilities/ParsingUtils.dart';
+
 class FoodItem {
   final int foodId;
   final String foodName;
@@ -17,6 +19,7 @@ class FoodItem {
   final String? allergies;
   final String? isRequestedByLoggedInUser;
   final String? addedTime;
+  final String? distanceInKm;
   // final DateTime? availableFrom;
   // final DateTime? availableTo;
 
@@ -37,6 +40,7 @@ class FoodItem {
     required this.addedByUserId,
     required this.isRequestedByLoggedInUser,
     required this.addedTime,
+    required this.distanceInKm,
     // required this.availableFrom,
     // required this.availableTo,
   });
@@ -60,6 +64,9 @@ class FoodItem {
       addedByUserId: json['addedByUserId'],
       isRequestedByLoggedInUser: json['isRequestedByLoggedInUser'],
       addedTime: json['addedTime'],
+      distanceInKm: json['distanceInKm'] != null
+          ? ParsingUtils.parseDoubleTo1Point(json['distanceInKm'])
+          : '',
       // availableFrom: json['availableFrom'],
       // availableTo: json['availableTo'],
     );
