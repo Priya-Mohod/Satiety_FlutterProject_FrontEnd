@@ -177,7 +177,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                                   Icon(
                                     Icons.watch_later_outlined,
                                     size: 20,
-                                    color: Colors.grey[600],
+                                    //color: Colors.grey[600],
                                   ),
                                   SizedBox(width: 5),
                                   if (dateTimeComponents['differenceInDays'] ==
