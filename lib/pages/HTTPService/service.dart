@@ -120,12 +120,18 @@ class Service {
     return false;
   }
 
-  Future<Response?> fetchFoodData() async {
+  Future<Response?> fetchFoodData(
+    String distanceFilter,
+  ) async {
     try {
-      Map<String, String> headers = await getRequestHeader();
-      final response =
-          await http.get(Uri.parse('$url/getAllFood'), headers: headers);
-      return response;
+      var request = http.MultipartRequest('GET', Uri.parse('$url/getAllFood'));
+      request.fields['distanceFilter'] = distanceFilter;
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return convertStreamedResponseToResponse(response);
+      } else {
+        return null;
+      }
     } catch (e) {
       // Handle any exceptions
       print('Exception: $e');
@@ -302,8 +308,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/getMyListings'));
       var response = await makeServerRequest(request);
       if (response != null && response.statusCode == 200) {
-        final streamedResponse = await http.Response.fromStream(response);
-        return streamedResponse;
+        return convertStreamedResponseToResponse(response);
       } else {
         return null;
       }
@@ -322,8 +327,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/getMyRequests'));
       var response = await makeServerRequest(request);
       if (response != null && response.statusCode == 200) {
-        final streamedResponse = await http.Response.fromStream(response);
-        return streamedResponse;
+        return convertStreamedResponseToResponse(response);
       } else {
         return null;
       }
@@ -432,5 +436,13 @@ class Service {
       'Authorization': authToken,
     };
     return headers;
+  }
+
+  //
+
+  Future<Response?> convertStreamedResponseToResponse(
+      http.StreamedResponse httpResponse) async {
+    final response = await http.Response.fromStream(httpResponse);
+    return response;
   }
 }

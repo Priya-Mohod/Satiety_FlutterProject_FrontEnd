@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 
 class BottomDrawer {
@@ -126,9 +127,12 @@ class BottomDrawer {
     );
   }
 
-  static void showFilterDrawer(BuildContext context) {
-    final ScrollController controller = ScrollController();
-    showModalBottomSheet(
+  Future<String?> showFilterDrawer(BuildContext context) async {
+    final ScrollController _controller = ScrollController();
+    bool _showScrollbar = false;
+
+    var distanceSelected = '';
+    return await showModalBottomSheet<String>(
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
@@ -149,31 +153,9 @@ class BottomDrawer {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
-                    // Text('Food Filter',
-                    //     style: TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 20,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontFamily: 'times new roman',
-                    //     )),
                     TextButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text('Site under development'),
-                              content: Text(
-                                  'On this selection, you can apply filters to the food items displayed on the dashboard.'),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
+                          Navigator.of(context).pop(distanceSelected);
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -204,6 +186,207 @@ class BottomDrawer {
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Maximum Distance:',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Scrollbar(
+                          thickness: 10,
+                          thumbVisibility: true,
+                          controller: _controller,
+                          radius: Radius.circular(20),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: SingleChildScrollView(
+                              controller: _controller,
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '5';
+                                              },
+                                              child: Text(
+                                                '5 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '7';
+                                              },
+                                              child: Text(
+                                                '7 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '9';
+                                              },
+                                              child: Text(
+                                                '9 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '12';
+                                              },
+                                              child: Text(
+                                                '12 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '15';
+                                              },
+                                              child: Text(
+                                                '15 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '20';
+                                              },
+                                              child: Text(
+                                                '20 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                minimumSize: const Size(40, 30),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                distanceSelected = '30';
+                                              },
+                                              child: Text(
+                                                '30 km',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Row(
@@ -582,193 +765,7 @@ class BottomDrawer {
                                                 ]))
                                           ])),
                                 ])),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Maximum Distance:',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Scrollbar(
-                          thickness: 10,
-                          thumbVisibility: true,
-                          controller: controller,
-                          radius: Radius.circular(20),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: SingleChildScrollView(
-                              controller: controller,
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '100 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '200 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '300 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '400 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '500 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '800 m',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(40, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                '1 km',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+
                         /*Row(
                           children: [
                             Column(

@@ -38,9 +38,10 @@ class ListViewPage extends StatefulWidget {
 
 class _ListViewPageState extends State<ListViewPage> {
   final ScrollController controller = ScrollController();
+  var appliedDistanceFilter = '';
   Future initializedData() async {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
-        .fetchFoodData();
+        .fetchFoodData(appliedDistanceFilter);
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously
@@ -157,8 +158,12 @@ class _ListViewPageState extends State<ListViewPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            onPressed: () {
-                              BottomDrawer.showFilterDrawer(context);
+                            onPressed: () async {
+                              final selectedFilter = await BottomDrawer()
+                                  .showFilterDrawer(context);
+                              if (selectedFilter != null)
+                                appliedDistanceFilter = selectedFilter;
+                              _refresh();
                             },
                             child: Row(
                               children: [
@@ -473,24 +478,3 @@ class _ListViewPageState extends State<ListViewPage> {
     //});
   }
 }
-
-
-
-// loadingBuilder: (BuildContext context,
-                                      //     Widget child,
-                                      //     ImageChunkEvent? loadingProgress) {
-                                      //   if (loadingProgress == null)
-                                      //     return child;
-                                      //   return Center(
-                                      //     child: CircularProgressIndicator(
-                                      //       value: loadingProgress
-                                      //                   .expectedTotalBytes !=
-                                      //               null
-                                      //           ? loadingProgress
-                                      //                   .cumulativeBytesLoaded /
-                                      //               loadingProgress
-                                      //                   .expectedTotalBytes!
-                                      //           : null,
-                                      //     ),
-                                      //   );
-                                      // },

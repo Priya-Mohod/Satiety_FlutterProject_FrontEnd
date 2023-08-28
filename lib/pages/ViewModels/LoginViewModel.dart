@@ -12,9 +12,6 @@ import '../Services/UserStorageService.dart';
 class LoginViewModel with ChangeNotifier {
   Service service = Service();
   Future<bool> loginUser(String email, String password) async {
-    // Make the API call and handle the response
-    // You can use http package or any other API library here
-    // Update the state using notifyListeners()
     // TODO : Remove this method once Logout is implemented
     UserStorageService.removeUserFromSharedPreferances();
     var response = await service.loginUser(email, password);
