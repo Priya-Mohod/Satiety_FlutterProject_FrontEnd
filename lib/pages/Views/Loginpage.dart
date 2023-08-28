@@ -8,6 +8,7 @@ import 'package:satietyfrontend/pages/Models/UserModel.dart';
 //import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
+import 'package:satietyfrontend/pages/Views/ChatPage.dart';
 import 'package:satietyfrontend/pages/Views/CustomURL.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';

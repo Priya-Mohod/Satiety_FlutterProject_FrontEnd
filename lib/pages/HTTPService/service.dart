@@ -169,6 +169,7 @@ class Service {
     // Food Food Type - // Veggies - Veg / Non-Veg / Vegan /
     request.fields['foodType'] = foodType;
     // Food Amount - Free / Chargeable
+    // TODO : Move this parsing into ViewModel
     double amount = 0.0;
     if (foodAmount.isNotEmpty) {
       double doubleValue = double.parse(foodAmount);
@@ -371,6 +372,27 @@ class Service {
 
       return false;
     }
+  }
+
+  // Chat Request
+  Future<Response?> fetchChatData(int foodRequestId) async {
+    try {
+      var request = http.MultipartRequest(
+          'GET', Uri.parse('$url/getConversationsForFoodRequest'));
+      request.fields['foodRequestId'] = '$foodRequestId';
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        final streamedResponse = await http.Response.fromStream(response);
+        return streamedResponse;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+    }
+
+    return null;
   }
 
   // Server call

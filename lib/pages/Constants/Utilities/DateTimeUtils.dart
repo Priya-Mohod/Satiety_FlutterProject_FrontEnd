@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+
 class DateTimeUtils {
   static Map<String, dynamic> parseDateTime(String dateTimeString) {
     DateTime parsedDateTime = DateTime.parse(dateTimeString);
@@ -25,5 +28,15 @@ class DateTimeUtils {
       'differenceInDays': differenceInDays,
       'dateTime': parsedDateTime, // Add this line to return the DateTime object
     };
+  }
+
+  static String getFormattedDate(Timestamp timestamp) {
+    // Define your date format with AM/PM using DateFormat
+    final DateFormat formatter = DateFormat('MMM dd, yyyy hh:mm a');
+
+    // Format the Timestamp to a string
+    final String formattedDate = formatter.format(timestamp.toDate());
+
+    return formattedDate;
   }
 }

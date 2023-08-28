@@ -18,7 +18,6 @@ class MyRequestsViewModel {
         //List<Map<String, dynamic>> data = jsonDecode(response.body);
         final serverResponse = json.decode(response.body);
         return mapServerResponse(serverResponse);
-        print(serverResponse);
       } else if (response != null) {
         // Handle error response
         print('Error: ${response.statusCode}');

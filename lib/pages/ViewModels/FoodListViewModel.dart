@@ -22,10 +22,10 @@ class FoodListViewModel with ChangeNotifier {
         return true;
       } else if (response != null) {
         // Handle error response
-        print('Error: ${response.statusCode}');
+        print('Fetch food data - Error: ${response.statusCode}');
       } else {
         // Unable to send data to server
-        print('Unable to send data to server');
+        print('Fetch food data - Unable to get data from server');
       }
       return false;
     } catch (e) {

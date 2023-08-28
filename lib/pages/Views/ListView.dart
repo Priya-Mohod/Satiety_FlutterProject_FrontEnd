@@ -10,10 +10,14 @@ import 'package:provider/provider.dart';
 import 'package:retry/retry.dart';
 import 'package:satietyfrontend/pages/Constants/ImageLoader/ImageLoader.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/ParsingUtils.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
+import 'package:satietyfrontend/pages/Views/ChatPage.dart';
+import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/InfoGuide.dart';
@@ -384,7 +388,16 @@ class _ListViewPageState extends State<ListViewPage> {
                                                       size: 20,
                                                       color: Colors.grey[700]),
                                                   SizedBox(width: 3),
-                                                  Text('1.1 km',
+                                                  Text(
+                                                      DevelopementConfig().getShowInKM
+                                                          ? (foodItem.distanceInKm ??
+                                                                  '') +
+                                                              ' km'
+                                                          : (ParsingUtils
+                                                                  .convertKmToMiles(
+                                                                      foodItem
+                                                                          .distanceInKm)) +
+                                                              ' mi',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:

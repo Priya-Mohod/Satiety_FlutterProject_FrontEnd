@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Constants/FirebaseSetup.dart';
 import 'package:satietyfrontend/pages/Constants/URLConstants.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +23,7 @@ class LoginViewModel with ChangeNotifier {
       String token = responseJson['token'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('authToken', token);
+      FirebaseSetup().addData({'email': email}, 'user');
       return true;
     } else {
       return false;
@@ -35,24 +38,4 @@ class LoginViewModel with ChangeNotifier {
       return URLConstants.url;
     }
   }
-
-  //  Future<void> getUserDataUsingEmail(String email) async {
-  //   if (await AppUtil().getUserDataUsingEmail(email) == true) {
-  //     // ignore: use_build_context_synchronously
-  //     Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => ListViewPage(),
-  //         ));
-  //   } else {
-  //     SnackBar(
-  //       content: Text(StringConstants.login_user_not_found,
-  //           style: const TextStyle(
-  //             color: Colors.black,
-  //             fontWeight: FontWeight.bold,
-  //             fontSize: 20,
-  //           )),
-  //     );
-  //   }
-  // }
 }

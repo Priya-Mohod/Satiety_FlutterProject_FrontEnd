@@ -7,7 +7,7 @@ import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
-import 'package:satietyfrontend/pages/Views/ClickableLabel.dart';
+import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 
 import '../Constants/Drawers.dart';
 import '../Constants/StringConstants.dart';
@@ -165,30 +165,30 @@ class _MyRequestsState extends State<MyRequests> {
                                       ),
                                     ),
                                     SizedBox(width: 8),
-                                    ClickableLabel(
-                                      label: 'Connect Supplier',
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title:
-                                                Text('Site under development'),
-                                            content: Text(
-                                                'On this selection, you can connect with the supplier soon'),
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('OK'),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatPageFirebase(
+                                                senderEmail:
+                                                    request.consumerEmail ?? '',
+                                                receiverEmail:
+                                                    request.supplierEmail ?? '',
+                                                foodId: request.requestId
+                                                    .toString(),
+                                                foodName:
+                                                    request.foodItem!.foodName,
                                               ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      isEnabled: request.acceptedFlag ==
-                                          'Y', // Pass the isEnabled condition
-                                    ),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.chat_outlined,
+                                          size: 30,
+                                          color: Colors.cyan,
+                                        )),
                                   ],
                                 ),
                               ],

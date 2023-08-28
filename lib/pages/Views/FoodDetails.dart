@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:satietyfrontend/pages/Constants/DateTimeUtils.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DateTimeUtils.dart';
 import 'package:satietyfrontend/pages/Constants/ImageLoader/ImageLoader.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';

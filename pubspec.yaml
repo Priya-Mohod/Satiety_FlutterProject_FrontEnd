@@ -57,6 +57,7 @@ dependencies:
   full_screen_image: ^2.0.0
   cached_network_image: ^3.2.3
   flutter_launcher_icons: ^0.13.1
+  cloud_firestore: ^4.9.0
 
 flutter_native_splash:
   android: true
