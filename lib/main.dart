@@ -35,11 +35,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // var firebaseApp = await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
 
@@ -55,6 +50,7 @@ void main() async {
       child: MyApp(),
     ),
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 }
 
 class MyApp extends StatelessWidget {
