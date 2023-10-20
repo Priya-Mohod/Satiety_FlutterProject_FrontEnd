@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
-import '../Constants/Drawers.dart';
 import '../Constants/SideDrawer.dart';
 import '../Constants/StringConstants.dart';
-import '../Constants/bottomNavigationBar.dart';
-import '../Models/FoodItemModel.dart';
 import '../Models/FoodRequestsModel.dart';
 import '../ViewModels/MyListingsViewModel.dart';
 

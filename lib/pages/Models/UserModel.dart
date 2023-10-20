@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:io';
 
 class User {
   final int userId;

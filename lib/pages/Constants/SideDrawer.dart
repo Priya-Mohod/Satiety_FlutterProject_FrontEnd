@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/UserModel.dart';
 import '../Services/UserStorageService.dart';
 import 'package:retry/retry.dart';
@@ -56,8 +55,8 @@ class _SideDrawerState extends State<SideDrawer> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color.fromARGB(255, 22, 220, 210)!,
-                  Color.fromARGB(255, 245, 248, 248)!,
+                  Color.fromARGB(255, 22, 220, 210),
+                  Color.fromARGB(255, 245, 248, 248),
                 ],
               ),
             ),
@@ -293,8 +292,8 @@ class _SideDrawerState extends State<SideDrawer> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color.fromARGB(255, 22, 220, 210)!,
-                  Color.fromARGB(255, 245, 248, 248)!,
+                  Color.fromARGB(255, 22, 220, 210),
+                  Color.fromARGB(255, 245, 248, 248),
                 ],
               ),
             ),

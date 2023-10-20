@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +5,6 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Constants/StringConstants.dart';

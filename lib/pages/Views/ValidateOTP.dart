@@ -1,11 +1,8 @@
 // create staful widget
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
-import 'package:satietyfrontend/pages/Views/ListView.dart';
 
-import '../Services/Utility.dart';
 import 'SnackbarHelper.dart';
 
 class ValidateOTP extends StatefulWidget {
@@ -62,7 +59,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
                   if (otp.length == _otpCodeLength) {
                     // Perform the action for a valid OTP (e.g., verify with server)
                     bool result = await service.verifyUserOTP(
-                        userEmail, int.parse(otp)) as bool;
+                        userEmail, int.parse(otp));
 
                     String messageUser = result
                         ? 'Welcome to satiety family!'

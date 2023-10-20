@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:satietyfrontend/pages/Models/UserModel.dart';

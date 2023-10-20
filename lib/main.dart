@@ -14,20 +14,15 @@ import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
-import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
-import 'package:satietyfrontend/pages/Constants/Drawers.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
-import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:provider/provider.dart';
+import 'pages/Screens/HomeScreen.dart';
 import 'pages/ViewModels/FoodListViewModel.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -81,8 +76,9 @@ class MyApp extends StatelessWidget {
               return Text('Landing Page Error: ${snapshot.error}');
             } else {
               // Future is complete, return the determined landing page
-              return snapshot.data ??
-                  LoginPage(); // Use LoginPage as a default if data is null
+              // return snapshot.data ??
+              //     LoginPage(); // Use LoginPage as a default if data is null
+              return HomeScreen();
             }
           },
         ),

@@ -1,23 +1,16 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-import 'package:satietyfrontend/pages/Models/UserModel.dart';
 //import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
-import 'package:satietyfrontend/pages/Views/ChatPage.dart';
 import 'package:satietyfrontend/pages/Views/CustomURL.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 import '../Constants/StringConstants.dart';
-import '../Constants/URLConstants.dart';
 import '../ViewModels/LoginViewModel.dart';
-import '../ViewModels/UserProfileViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -75,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (!emailValidator) {
                       return "Please enter a valid email";
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 20),
@@ -104,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (value.length < 6) {
                       return "Password must be at least 6 characters";
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 50),

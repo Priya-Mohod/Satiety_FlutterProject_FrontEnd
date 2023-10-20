@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/URLConstants.dart';
-import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 
 import '../Services/UserStorageService.dart';
 import 'SnackbarHelper.dart';

@@ -7,13 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 
-import '../Constants/Drawers.dart';
 import '../Constants/LocationManager.dart';
 import '../Constants/SideDrawer.dart';
-import '../Constants/bottomNavigationBar.dart';
 import '../Models/UserModel.dart';
 import '../ViewModels/UserProfileViewModel.dart';
-import 'DualImageWidget.dart';
 import 'SnackbarHelper.dart';
 import 'SupplierLocationMap.dart';
 
@@ -199,6 +196,7 @@ class _UserProfileState extends State<UserProfile> {
                 } else if (!emailValidator) {
                   return StringConstants.register_enter_valid_email;
                 }
+                return null;
               },
               onChanged: (value) => {
                 isEmailExists = false,

@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
-import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
-import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 
-import '../Constants/Drawers.dart';
 import '../Constants/StringConstants.dart';
-import '../Constants/bottomNavigationBar.dart';
 import '../ViewModels/MyRequestsViewModel.dart';
 import 'SnackbarHelper.dart';
 

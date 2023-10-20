@@ -1,6 +1,4 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Constants/SideDrawer.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/PublicProfileViewModel.dart';
-import 'package:full_screen_image/full_screen_image.dart';
 
 class PublicProfile extends StatefulWidget {
   // const PublicProfile({super.key});

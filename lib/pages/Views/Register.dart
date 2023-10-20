@@ -1,13 +1,8 @@
-import 'dart:ffi';
 import 'dart:io';
 // import 'dart:html';
-import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/TermsAndCondition.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
@@ -18,7 +13,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../Constants/LocationManager.dart';
 import '../Constants/StringConstants.dart';
-import 'ListView.dart';
 import 'SnackbarHelper.dart';
 import 'SupplierLocationMap.dart';
 
@@ -161,6 +155,7 @@ class _RegisterState extends State<Register> {
                     if (value!.isEmpty) {
                       return "Please enter your name";
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 10),
@@ -199,6 +194,7 @@ class _RegisterState extends State<Register> {
                     } else if (!emailValidator) {
                       return StringConstants.register_enter_valid_email;
                     }
+                    return null;
                   },
                   onChanged: (value) => {
                     isEmailExists = false,
@@ -292,6 +288,7 @@ class _RegisterState extends State<Register> {
                     } else if (value.length < 6) {
                       return "Password must be at least 6 characters";
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 05),
@@ -321,6 +318,7 @@ class _RegisterState extends State<Register> {
                     if (value!.isEmpty) {
                       return "Please confirm your password";
                     }
+                    return null;
                   },
                 ),
                 SizedBox(height: 10),

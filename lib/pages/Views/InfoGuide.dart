@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
-import 'package:satietyfrontend/pages/Views/ListView.dart';
 
 class InfoGuide extends StatefulWidget {
   const InfoGuide({super.key});

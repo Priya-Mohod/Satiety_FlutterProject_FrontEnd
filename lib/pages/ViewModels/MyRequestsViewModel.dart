@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/FoodRequestsModel.dart';
 
 import '../HTTPService/service.dart';

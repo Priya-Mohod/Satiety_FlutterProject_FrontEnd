@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
-import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
-import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 
 class BottomDrawer {
   static void showBottomDrawer(BuildContext context) {
