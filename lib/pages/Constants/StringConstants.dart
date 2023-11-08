@@ -1,5 +1,6 @@
 class StringConstants {
   // -- Routes
+  static String Home = '/HomeScreen';
   static String Dashboard = '/ListViewPage';
   static String Login = '/Login';
   static String Register = '/Register';
