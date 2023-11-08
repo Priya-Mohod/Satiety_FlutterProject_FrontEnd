@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
         ],
@@ -108,7 +110,7 @@ class MyApp extends StatelessWidget {
 
   Future<Widget?> getFirstPage() async {
     if (await UserStorageService.isUserLoggedIn()) {
-      return ListViewPage();
+      return RootScreen();
     } else {
       return null;
     }
