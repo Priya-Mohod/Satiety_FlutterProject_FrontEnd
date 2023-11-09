@@ -3,11 +3,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
+import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
+import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
+import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/ChatPage.dart';
+import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
@@ -15,20 +20,15 @@ import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
-import 'package:satietyfrontend/pages/Views/SplashScreen.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
-import 'package:satietyfrontend/pages/Constants/Drawers.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
-import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:provider/provider.dart';
+import 'pages/Screens/HomeScreen.dart';
 import 'pages/ViewModels/FoodListViewModel.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -63,7 +63,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
         ],
@@ -84,16 +83,22 @@ class MyApp extends StatelessWidget {
             } else {
               // Future is complete, return the determined landing page
               return snapshot.data ??
-                  LoginPage(); // Use LoginPage as a default if data is null
+                  RootScreen(); // Use LoginPage as a default if data is null
+              //return CustomBottomBar();
             }
           },
         ),
         //home: ListViewPage(),
         routes: {
+          '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
+          '/UserAccountScreen': (context) => UserAccountScreen(),
+          '/HomeScreen': (context) => HomeScreen(),
+          '/LoginScreen': (context) => LoginScreen(),
+          '/VerifyOTPScreen': (context) => VerifyOTPScreen(),
           '/ListViewPage': (context) => ListViewPage(),
           '/AddFreeFood': (context) => AddFreeFood(),
           '/ForumPage': (context) => ForumPage(),
-          '/MessegePage': (context) => MessagePage(),
+          '/MessagePage': (context) => MessagePage(),
           '/Register': (context) => Register(),
           '/Login': (context) => LoginPage(),
           '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),

@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class UserAccountScreen extends StatefulWidget {
   _UserAccountScreenState createState() => _UserAccountScreenState();
@@ -15,62 +18,63 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            // Replace 'banner.jpg' with your image asset
-            child: Image.asset('images/banner.webp'),
+          Stack(
+            children: [
+              Container(
+                // Replace 'banner.jpg' with your image asset
+                child: Image.asset('images/banner.webp'),
+              ),
+              Positioned(
+                top: 40, // Adjust the position of the back button
+                left: 10, // Adjust the position of the back button
+                child: IconButton(
+                  icon: Icon(CupertinoIcons.back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 20), // Adjust the height as needed
           Text(
             'Welcome to Satiety!',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20), // Adjust the height as needed
-          Flexible(
+          const SizedBox(height: 20), // Adjust the height as needed
+          SizedBox(
+            width: double.infinity,
+            height: 50,
             child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            TextField(
-                              controller: _phoneNumberController,
-                              decoration: InputDecoration(
-                                  hintText: 'Enter Phone Number'),
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Add logic to verify OTP here
-                                verifyPhoneNumber(_phoneNumberController.text);
-                              },
-                              child: Text('Verify OTP'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                style: ButtonStyle(
-                  minimumSize:
-                      MaterialStateProperty.all(Size(double.infinity, 50)),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                ),
-                child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-            ),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: CustomButton(
+                    text: "Login",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    })),
           ),
-          SizedBox(height: 0), // Adjust the height as needed
+          // Flexible(
+          //   child: Container(
+          //     width: double.infinity,
+          //     padding: EdgeInsets.symmetric(horizontal: 16.0),
+          //     child: ElevatedButton(
+          //       onPressed: () {},
+          //       style: ButtonStyle(
+          //         minimumSize:
+          //             MaterialStateProperty.all(Size(double.infinity, 50)),
+          //         backgroundColor: MaterialStateProperty.all(Colors.blue),
+          //       ),
+          //       child: Text(
+          //         'Login',
+          //         style: TextStyle(fontSize: 18, color: Colors.white),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 0), // Adjust the height as needed
           Container(
             padding: EdgeInsets.all(20.0),
             child: RichText(
