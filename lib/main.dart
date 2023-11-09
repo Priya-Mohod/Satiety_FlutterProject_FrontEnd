@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
             } else {
               // Future is complete, return the determined landing page
               return snapshot.data ??
-                  LoginPage(); // Use LoginPage as a default if data is null
+                  RootScreen(); // Use LoginPage as a default if data is null
               //return CustomBottomBar();
             }
           },

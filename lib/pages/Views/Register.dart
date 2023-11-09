@@ -2,15 +2,18 @@ import 'dart:ffi';
 import 'dart:io';
 // import 'dart:html';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/TermsAndCondition.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
+import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
@@ -152,14 +155,18 @@ class _RegisterState extends State<Register> {
                 // -- Last Name --
                 TextFormField(
                   controller: firstNameController,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 16),
                   decoration: const InputDecoration(
                     hintText: 'Enter your name',
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: Icon(CupertinoIcons.person),
                   ),
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    print(value!);
+                    var enteredName = value;
+                    if (enteredName.isEmpty) {
                       return "Please enter your name";
+                    } else {
+                      return null;
                     }
                   },
                 ),
@@ -167,7 +174,7 @@ class _RegisterState extends State<Register> {
                 // -- Email --
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 16),
                   key: _emailField,
                   controller: emailController,
                   decoration: InputDecoration(
@@ -178,7 +185,7 @@ class _RegisterState extends State<Register> {
                     //     //fontWeight: FontWeight.bold,
                     //     fontSize: 20),
                     prefixIcon: const Icon(
-                      Icons.email,
+                      CupertinoIcons.mail,
                       size: 30,
                     ),
                     errorText: isEmailValid
@@ -221,20 +228,19 @@ class _RegisterState extends State<Register> {
                 // -- Phone --
                 TextFormField(
                   keyboardType: TextInputType.phone,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 16),
                   controller: phoneController,
                   key: _phoneField,
                   maxLength: 10,
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
                   decoration: const InputDecoration(
                     labelText: "Phone",
-                    prefixIcon: Icon(Icons.phone),
+                    prefixIcon: Icon(CupertinoIcons.phone),
                   ),
                   validator: (value) {
                     if (isPhoneExists) {
                       return StringConstants.register_phone_exists_message;
                     }
-
                     if (value == null || value.isEmpty) {
                       return StringConstants.register_phone_number_empty;
                     } else if (value.length != 10) {
@@ -264,115 +270,6 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                // -- Password --
-                TextFormField(
-                  keyboardType: TextInputType.visiblePassword,
-                  style: TextStyle(fontSize: 20),
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: const Icon(Icons.lock),
-                    suffix: InkWell(
-                      onTap: () {
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
-                      },
-                      child: Icon(
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your password";
-                    } else if (value.length < 6) {
-                      return "Password must be at least 6 characters";
-                    }
-                  },
-                ),
-                const SizedBox(height: 05),
-                // -- Confirm Password --
-                TextFormField(
-                  controller: confirmPasswordController,
-                  style: TextStyle(fontSize: 20),
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Confirm Password",
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please confirm your password";
-                    }
-                  },
-                ),
-                SizedBox(height: 10),
-                // show map here to select address
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(fontSize: 20),
-                  controller: userAddressController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: StringConstants.post_ad_user_address,
-                    prefixIcon: Icon(Icons.add_location),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 200,
-                  child: GoogleMap(
-                    onMapCreated: (GoogleMapController controller) {
-                      // Show snackbar while getting location
-                      SnackbarHelper.showSnackBar(
-                          context, StringConstants.location_update);
-                      _mapController = controller;
-                      setState(() {
-                        markers.clear();
-                        markers.add(Marker(
-                          markerId: MarkerId(userCoordinates.toString()),
-                          position: userCoordinates,
-                          infoWindow: InfoWindow(
-                            title: "Selected Location",
-                          ),
-                        ));
-                      });
-                    },
-                    initialCameraPosition: CameraPosition(
-                      target: userCoordinates,
-                      zoom: 15,
-                    ),
-                    markers: markers,
-                    onTap: (LatLng location) async {
-                      userCoordinates = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SupplierLocationMap(
-                              selectedLocation: userCoordinates),
-                        ),
-                      );
-                      setMarker_AnimateCamera_userLocation(userCoordinates);
-                    },
-                  ),
-                ),
-
                 const SizedBox(height: 20),
                 // -- Terms & condition --
                 CheckboxListTile(
@@ -382,18 +279,6 @@ class _RegisterState extends State<Register> {
                       isChecked = value!;
                     });
                   },
-                  // title: InkWell(
-                  //   onTap: _launchURL,
-                  //   child: const Text(
-                  //     'Click here to open a website',
-                  //     style: TextStyle(
-                  //       fontSize: 25,
-                  //       color: Colors.cyan,
-                  //       //decoration: TextDecoration.underline,
-                  //     ),
-                  //   ),
-                  // ),
-
                   title: TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -405,140 +290,28 @@ class _RegisterState extends State<Register> {
                     child: const Text(
                       'I agree to the terms and conditions',
                       style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.cyan,
+                        fontSize: 12,
+                        color: ThemeColors.primaryColor,
                         //decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
-                const SizedBox(height: 10),
                 // -- Register Button --
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 60, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: CustomButton(
+                      text: 'Register',
+                      onPressed: () {
+                        _registerUser(context);
+                      },
+                    ),
                   ),
-                  onPressed: () async {
-                    // TODO : Remove this code after testing
-                    // Remove user auth token from system
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.remove('authToken');
-
-                    if (_formfield.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Processing Data',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
-                        ),
-                      );
-
-                      // check if password and confirm password are same
-                      if (passwordController.text !=
-                          confirmPasswordController.text) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Password and Confirm Password are not same'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      // check if user has selected terms and conditions
-                      if (isChecked == false) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please agree to the terms and conditions'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      var response = await service.registerUser(
-                          userImage,
-                          firstNameController.text,
-                          lastNameController.text,
-                          passwordController.text,
-                          phoneController.text,
-                          emailController.text,
-                          pincodeController.text,
-                          addressController.text,
-                          userCoordinates.latitude,
-                          userCoordinates.longitude,
-                          true);
-
-                      // show alert dialog on condition
-                      if (response) {
-                        // ignore: use_build_context_synchronously
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Register',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                )),
-                            content: const Text(
-                                'Registration Completed successfully'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ValidateOTP(
-                                            userEmail: emailController.text),
-                                      ));
-                                  // TODO:- clear the form fields
-                                  // TODO:- clear the image
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        // ignore: use_build_context_synchronously
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Register'),
-                            content: const Text(
-                                'There was an error, please try again!'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // hide the alert dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  // autofocus: const CheckBox(isChecked: false).isChecked(),
-                  child: const Text('Register',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      )),
                 ),
-                const SizedBox(height: 10),
                 // -- Redirecting to Login Page --
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -546,7 +319,7 @@ class _RegisterState extends State<Register> {
                     const Text("Already a part of Satiety family?",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
+                          fontSize: 14,
                         )),
                     TextButton(
                       onPressed: () {
@@ -559,7 +332,7 @@ class _RegisterState extends State<Register> {
                       },
                       child: const Text(
                         "Login",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ],
@@ -570,6 +343,98 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  // -- Register user
+  void _registerUser(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('authToken');
+
+    if (_formfield.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Processing Data',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              )),
+        ),
+      );
+
+      // check if user has selected terms and conditions
+      if (isChecked == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please agree to the terms and conditions'),
+          ),
+        );
+        return;
+      }
+
+      var response = await service.registerUser(
+          userImage,
+          firstNameController.text,
+          lastNameController.text,
+          passwordController.text,
+          phoneController.text,
+          emailController.text,
+          pincodeController.text,
+          addressController.text,
+          userCoordinates.latitude,
+          userCoordinates.longitude,
+          true);
+
+      // show alert dialog on condition
+      if (response) {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Register',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                )),
+            content: const Text('Registration Completed successfully'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ValidateOTP(userEmail: emailController.text),
+                      ));
+                  // TODO:- clear the form fields
+                  // TODO:- clear the image
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Register'),
+            content: const Text('There was an error, please try again!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  // hide the alert dialog
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 
   void _showImagePickerOptions() {
