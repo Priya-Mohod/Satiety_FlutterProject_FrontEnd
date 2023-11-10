@@ -16,6 +16,7 @@ import 'package:satietyfrontend/pages/Views/HorizontalFilterBar.dart';
 //import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/SearchBarView.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
+import 'package:satietyfrontend/pages/Views/Widgets/CustomSearchBar.dart';
 //import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 //import 'package:satietyfrontend/pages/Views/myRequests.dart';
 
@@ -75,8 +76,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          CustomHeader(),
-          SearchBarView(onSearchTextChanged: (String text) {}, height: 80),
+          SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: Padding(
+              // margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+              padding: const EdgeInsets.all(10.0),
+              child:
+                  CustomSearchBar(searchText: 'Search', onSearch: (value) {}),
+            ),
+          ),
+
+          //  SearchBarView(onSearchTextChanged: (String text) {}, height: 60),
           HorizontalFilterBar(
             options: [
               'Free',
@@ -120,32 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: CustomBottomBar(
-        currentIndex: Pages.Home.index,
-        onTap: (index) {
-          if (index == Pages.Home.index &&
-              selectedPageProvider.selectedPage != StringConstants.Home) {
-            selectedPageProvider.setSelectedPage(StringConstants.Home);
-            Navigator.pushReplacementNamed(context, StringConstants.Home);
-          } else if (index == Pages.MyListings.index &&
-              selectedPageProvider.selectedPage != StringConstants.MyListings) {
-            selectedPageProvider.setSelectedPage(StringConstants.MyListings);
-            Navigator.pushReplacementNamed(context, StringConstants.MyListings);
-          } else if (index == Pages.Add.index) {
-            // BottomDrawer.showBottomDrawer(context);
-          } else if (index == Pages.MyRequests.index &&
-              selectedPageProvider.selectedPage != StringConstants.AdsPage) {
-            selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
-            Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
-          } else if (index == Pages.MyRequests.index &&
-              selectedPageProvider.selectedPage !=
-                  StringConstants.MessagePage) {
-            selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
-            Navigator.pushReplacementNamed(
-                context, StringConstants.MessagePage);
-          }
-        },
       ),
     );
   }

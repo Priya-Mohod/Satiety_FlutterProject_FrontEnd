@@ -51,7 +51,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                           controller: _searchController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Try Sus, Wagholi etc',
+                            hintText: 'Try Hinjewadi, Wagholi etc',
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 10.0),
                           ),
