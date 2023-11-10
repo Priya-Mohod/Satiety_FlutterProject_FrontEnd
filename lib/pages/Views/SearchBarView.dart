@@ -40,12 +40,12 @@ class _SearchBarView extends State<SearchBarView> {
               // Perform search operation
             },
           ),
-          IconButton(
-            icon: Icon(Icons.mic),
-            onPressed: () {
-              // Perform voice search operation
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.mic),
+          //   onPressed: () {
+          //     // Perform voice search operation
+          //   },
+          // ),
         ],
       ),
     );
