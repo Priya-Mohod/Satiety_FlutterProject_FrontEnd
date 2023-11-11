@@ -4,6 +4,7 @@ import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
+import 'package:satietyfrontend/pages/Screens/LaunchScreen.dart';
 import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
@@ -28,6 +29,7 @@ import 'package:satietyfrontend/pages/ViewModels/requestProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/Screens/HomeScreen.dart';
 import 'pages/ViewModels/FoodListViewModel.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -39,6 +41,11 @@ void main() async {
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
 
+  // Check App running for first time
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+  bool isOTPVerified = prefs.getBool('isOTPVerified') ?? false;
+
   runApp(
     MultiProvider(
       providers: [
@@ -48,69 +55,82 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SelectedPageProvider()),
         ChangeNotifierProvider(create: (_) => ChatViewModel()),
       ],
-      child: MyApp(),
+      child: MyApp(
+        isFirstTime: isFirstTime,
+        isOTPVerified: isOTPVerified,
+      ),
     ),
   );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final bool isFirstTime;
+  final bool isOTPVerified;
+  MyApp({super.key, required this.isFirstTime, required this.isOTPVerified});
   final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
   // This widget is the root of your application.
   bool isLoggedIn = true;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
-        ],
-        title: 'Satiety',
-        theme: ThemeData(
-          primarySwatch: Colors.cyan,
-          brightness: Brightness.light,
-        ),
-        home: FutureBuilder<Widget?>(
-          future: getFirstPage(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // While the future is still loading, return a loading indicator or placeholder
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              // Handle errors
-              return Text('Landing Page Error: ${snapshot.error}');
-            } else {
-              // Future is complete, return the determined landing page
-              return snapshot.data ??
-                  LoginPage(); // Use LoginPage as a default if data is null
-              //return CustomBottomBar();
-            }
-          },
-        ),
-        //home: ListViewPage(),
-        routes: {
-          '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
-          '/UserAccountScreen': (context) => UserAccountScreen(),
-          '/HomeScreen': (context) => HomeScreen(),
-          '/LoginScreen': (context) => LoginScreen(),
-          '/VerifyOTPScreen': (context) => VerifyOTPScreen(),
-          '/ListViewPage': (context) => ListViewPage(),
-          '/AddFreeFood': (context) => AddFreeFood(),
-          '/ForumPage': (context) => ForumPage(),
-          '/MessagePage': (context) => MessagePage(),
-          '/Register': (context) => Register(),
-          '/Login': (context) => LoginPage(),
-          '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
-          '/myList': (context) => MyListings(),
-          '/myRequests': (context) => MyRequests(),
-          '/SupplierLocationMap': (context) =>
-              SupplierLocationMap(selectedLocation: LatLng(0, 0)),
-          '/Profile': (context) => UserProfile(),
-          '/PublicProfile': (context) => PublicProfile(userId: 1),
-          '/AdsPage': (context) => AdvertisePage(),
-          '/ChatPage': (context) => ChatPage(),
-        });
+    if (isFirstTime || !isOTPVerified) {
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setBool('isFirstTime', false);
+      });
+
+      return MaterialApp(home: LaunchScreen());
+    } else {
+      return MaterialApp(
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: _firebaseAnalytics),
+          ],
+          title: 'Satiety',
+          theme: ThemeData(
+            primarySwatch: Colors.cyan,
+            brightness: Brightness.light,
+          ),
+          home: FutureBuilder<Widget?>(
+            future: getFirstPage(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // While the future is still loading, return a loading indicator or placeholder
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                // Handle errors
+                return Text('Landing Page Error: ${snapshot.error}');
+              } else {
+                // Future is complete, return the determined landing page
+                return snapshot.data ??
+                    LoginPage(); // Use LoginPage as a default if data is null
+                //return CustomBottomBar();
+              }
+            },
+          ),
+          //home: ListViewPage(),
+          routes: {
+            '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
+            '/UserAccountScreen': (context) => UserAccountScreen(),
+            '/HomeScreen': (context) => HomeScreen(),
+            '/LoginScreen': (context) => LoginScreen(),
+            '/VerifyOTPScreen': (context) => VerifyOTPScreen(),
+            '/ListViewPage': (context) => ListViewPage(),
+            '/AddFreeFood': (context) => AddFreeFood(),
+            '/ForumPage': (context) => ForumPage(),
+            '/MessagePage': (context) => MessagePage(),
+            '/Register': (context) => Register(),
+            '/Login': (context) => LoginPage(),
+            '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),
+            '/myList': (context) => MyListings(),
+            '/myRequests': (context) => MyRequests(),
+            '/SupplierLocationMap': (context) =>
+                SupplierLocationMap(selectedLocation: LatLng(0, 0)),
+            '/Profile': (context) => UserProfile(),
+            '/PublicProfile': (context) => PublicProfile(userId: 1),
+            '/AdsPage': (context) => AdvertisePage(),
+            '/ChatPage': (context) => ChatPage(),
+          });
+    }
   }
 
   Future<Widget?> getFirstPage() async {

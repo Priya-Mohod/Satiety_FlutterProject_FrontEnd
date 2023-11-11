@@ -105,7 +105,7 @@ class ListingScreen extends StatelessWidget {
                       clipper:
                           MyCustomShapeClipper(), // Define your custom clipper
                       child: Image.network(
-                        foodItem.foodSignedUrl ?? 'images/a.png',
+                        foodItem.foodSignedUrl ?? 'assets/a.png',
                         fit: BoxFit.cover,
                       ),
                     ),

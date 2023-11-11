@@ -117,7 +117,7 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                              'images/account.png',
+                              'assets/account.png',
                               height: 150,
                               width: 150,
                             );

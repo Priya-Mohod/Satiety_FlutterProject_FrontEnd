@@ -22,7 +22,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
             children: [
               Container(
                 // Replace 'banner.jpg' with your image asset
-                child: Image.asset('images/banner.webp'),
+                child: Image.asset('assets/banner.webp'),
               ),
               Positioned(
                 top: 40, // Adjust the position of the back button
@@ -49,6 +49,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: CustomButton(
                     text: "Login",
+                    buttonFont: 16.0,
                     onPressed: () {
                       Navigator.push(
                           context,

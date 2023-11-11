@@ -264,7 +264,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 errorBuilder: (context, error,
                                                     stackTrace) {
                                                   return Image.asset(
-                                                    'images/account.png',
+                                                    'assets/account.png',
                                                     height: 120,
                                                     width: 130,
                                                     fit: BoxFit.cover,
@@ -324,7 +324,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                       errorBuilder: (context,
                                                           error, stackTrace) {
                                                         return Image.asset(
-                                                          'images/account.png',
+                                                          'assets/account.png',
                                                           height: 30,
                                                           width: 30,
                                                         );

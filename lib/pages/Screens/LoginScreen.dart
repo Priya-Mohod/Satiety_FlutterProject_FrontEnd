@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
 import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: BoxShape.circle,
                           color: ThemeColors.primaryColor),
                       // Replace 'banner.jpg' with your image asset
-                      child: Image.asset('images/SatietyLogo.png'),
+                      child: Image.asset('assets/SatietyLogo.png'),
                     ),
                   ),
                 ),
@@ -67,6 +68,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                  ),
+                ),
+                Positioned(
+                  top: 50, // Adjust the position of the back button
+                  right: 10, // Adjust the position of the back button
+                  child: SizedBox(
+                    width: 80,
+                    height: 30,
+                    child: CustomButton(
+                        text: "Skip",
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      GetUserLocationScreen()));
+                        },
+                        buttonFont: 12.0),
                   ),
                 ),
               ],
@@ -151,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 50,
                 child: CustomButton(
                     text: 'Get OTP',
+                    buttonFont: 16.0,
                     onPressed: () {
                       // *** Make server call to check if user already registered
                       // If not registered, show registration screen first

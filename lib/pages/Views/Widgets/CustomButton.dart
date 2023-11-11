@@ -4,8 +4,13 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final double buttonFont;
 
-  const CustomButton({super.key, required this.text, required this.onPressed});
+  const CustomButton(
+      {super.key,
+      required this.text,
+      required this.onPressed,
+      required this.buttonFont});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,6 @@ class CustomButton extends StatelessWidget {
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25.0))),
         ),
-        child: Text(text, style: const TextStyle(fontSize: 16)));
+        child: Text(text, style: TextStyle(fontSize: buttonFont)));
   }
 }

@@ -306,6 +306,7 @@ class _RegisterState extends State<Register> {
                     height: 50,
                     child: CustomButton(
                       text: 'Register',
+                      buttonFont: 16.0,
                       onPressed: () {
                         _registerUser(context);
                       },
