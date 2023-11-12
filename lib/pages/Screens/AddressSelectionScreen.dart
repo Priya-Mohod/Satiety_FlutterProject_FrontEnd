@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:http/http.dart' as http;
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
 class AddressSelectionScreen extends StatefulWidget {
@@ -13,14 +16,22 @@ class AddressSelectionScreen extends StatefulWidget {
 
 class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   TextEditingController _searchController = TextEditingController();
-  List<dynamic> suggestions = ["ABC", "XYZ", "PQR", "CVDFG"];
+  // *** assign array from system preferences
+  List<Position> suggestions = [];
   final apiKey = DevelopementConfig().GOOGLE_MAP_KEY;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getRecentLocations();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: ThemeColors.primaryColor,
         elevation: 1,
         leading: IconButton(
             onPressed: () {
@@ -63,7 +74,8 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                             } else {
                               fetchSuggestions(query).then((apiSuggestions) {
                                 setState(() {
-                                  suggestions = apiSuggestions;
+                                  suggestions =
+                                      apiSuggestions as List<Position>;
                                   print(suggestions);
                                 });
                               }).catchError((error) {
@@ -141,7 +153,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                             iconSize: 10,
                           ),
                           Text(
-                            suggestions[index],
+                            suggestions[index].latitude.toString(),
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.bold),
                           ),
@@ -152,6 +164,17 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> getRecentLocations() async {
+    List<Position> recentLocations =
+        await UserStorageService.retrieveRecentLocationsFromPreferences();
+
+    setState(() {
+      print("recent locations");
+      print(recentLocations);
+      suggestions = recentLocations;
+    });
   }
 
   void _selectAddress() {

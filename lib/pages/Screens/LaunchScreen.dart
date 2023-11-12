@@ -30,7 +30,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
       autoPlay: true,
       looping: true,
       allowFullScreen: true,
-      allowMuting: false,
+      allowMuting: true,
       showControls: false,
       showControlsOnInitialize: false,
       showOptions: false,
@@ -59,6 +59,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                   text: 'Get Started',
                   buttonFont: 20,
                   onPressed: () {
+                    _videoPlayerController.pause();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -78,5 +79,13 @@ class _LaunchScreenState extends State<LaunchScreen> {
     _videoPlayerController.dispose();
     _chewieController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.isCurrent ?? false) {
+      _chewieController.play();
+    }
   }
 }

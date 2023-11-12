@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: CustomButton(
                         text: "Skip",
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
@@ -175,12 +175,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       // *** Make server call to check if user already registered
                       // If not registered, show registration screen first
                       // If already registered, show verify OTP screen
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Register()));
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => VerifyOTPScreen()));
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => Register()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VerifyOTPScreen()));
                     }),
               ),
             )
