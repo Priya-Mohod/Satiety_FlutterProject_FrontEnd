@@ -36,13 +36,22 @@ class LocationManager {
     return locationData;
   }
 
-  Future<String> getAddressFromCoordinates(
+  static Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
-    List<Placemark> placemark =
-        await placemarkFromCoordinates(latitude, longitude);
-    Placemark place = placemark[0];
-    String userAddress =
-        "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
-    return userAddress;
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String userAddress =
+            "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+        return userAddress;
+      } else {
+        return "Address not found";
+      }
+    } catch (e) {
+      return "Error fetching address";
+    }
   }
 }

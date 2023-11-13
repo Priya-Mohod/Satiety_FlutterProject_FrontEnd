@@ -19,6 +19,7 @@ class GetUserLocationScreen extends StatefulWidget {
 }
 
 class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
+  PermissionStatus locationStatus = PermissionStatus.denied;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +143,12 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
   void _checkAndShowLocationSheet() async {
     Position? currentPosition;
     // bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
+    await Permission.location.request();
     var locationStatus = await Permission.location.status;
+    // setState(() {
+    //   locationStatus = status;
+    // });
+
     print("locationStatus");
     print(locationStatus);
     if (locationStatus.isGranted == false) {
@@ -199,7 +205,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
         // *** Once we get current user location, set it to user's location system pref
         UserStorageService.saveLocationToPreferences(currentPosition);
         // Update the location array of user, to set it in recent used locations
-        UserStorageService.saveRecentLocationsToPreferences([currentPosition]);
+        UserStorageService.saveRecentLocationToPreferences(currentPosition);
         // set the flag that we got the location - we can check the location array
         // display Root Screen after all configuration
         Navigator.pushReplacement(

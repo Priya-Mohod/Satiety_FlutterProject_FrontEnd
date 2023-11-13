@@ -101,26 +101,52 @@ class UserStorageService {
     return null;
   }
 
-// Save the list of recent user locations to shared preferences
-  static Future<void> saveRecentLocationsToPreferences(
-      List<Position> locations) async {
+  static Future<void> saveRecentLocationToPreferences(Position location) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Convert the list of Position objects to a list of Map<String, dynamic>
-    List<Map<String, dynamic>> locationsData = locations.map((position) {
-      return {
-        'latitude': position.latitude,
-        'longitude': position.longitude,
-        'altitude': position.altitude,
-        'accuracy': position.accuracy,
-        'heading': position.heading,
-        'timestamp': position.timestamp!.millisecondsSinceEpoch,
-      };
-    }).toList();
+    // Retrieve the existing list from shared preferences
+    List<String>? existingLocations = prefs.getStringList('recentLocations');
 
-    // Save the list to shared preferences
-    prefs.setStringList('recentLocations',
-        locationsData.map((json) => json.toString()).toList());
+    // Convert the new location to a Map<String, dynamic>
+    Map<String, dynamic> newLocationData = {
+      'latitude': location.latitude,
+      'longitude': location.longitude,
+      'altitude': location.altitude,
+      'accuracy': location.accuracy,
+      'heading': location.heading,
+      'timestamp': location.timestamp!.millisecondsSinceEpoch,
+    };
+
+    if (existingLocations != null) {
+      // Check if the same latitude and longitude already exist
+      bool locationExists = existingLocations.any((String entry) {
+        Map<String, dynamic> entryData = jsonDecode(entry);
+        double entryLatitude = entryData['latitude'];
+        double entryLongitude = entryData['longitude'];
+        return entryLatitude == location.latitude &&
+            entryLongitude == location.longitude;
+      });
+
+      if (locationExists) {
+        // If the same location exists, remove it from the list
+        existingLocations.removeWhere((String entry) {
+          Map<String, dynamic> entryData = jsonDecode(entry);
+          double entryLatitude = entryData['latitude'];
+          double entryLongitude = entryData['longitude'];
+          return entryLatitude == location.latitude &&
+              entryLongitude == location.longitude;
+        });
+      }
+
+      // Add the new location to the beginning of the existing list
+      existingLocations.insert(0, jsonEncode(newLocationData));
+    } else {
+      // If no existing list, create a new list with the new location
+      existingLocations = [jsonEncode(newLocationData)];
+    }
+
+    // Save the updated list to shared preferences
+    prefs.setStringList('recentLocations', existingLocations);
   }
 
 // Retrieve the list of recent user locations from shared preferences
@@ -135,7 +161,9 @@ class UserStorageService {
       // Convert the list of strings back to a list of Map<String, dynamic>
       List<Map<String, dynamic>> parsedLocations =
           locationsData.map((String json) {
-        return Map<String, dynamic>.from(jsonDecode(json));
+        print("Json object is");
+        print(json);
+        return jsonDecode(json) as Map<String, dynamic>;
       }).toList();
 
       // Convert the list of Map<String, dynamic> back to a list of Position objects

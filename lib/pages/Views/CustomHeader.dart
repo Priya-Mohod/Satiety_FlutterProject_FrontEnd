@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 
 class CustomHeader extends StatefulWidget {
@@ -93,7 +95,23 @@ class LocationIcon extends StatelessWidget {
   }
 }
 
-class AddressInfo extends StatelessWidget {
+class AddressInfo extends StatefulWidget {
+  const AddressInfo({super.key});
+  @override
+  State<AddressInfo> createState() => _AddressInfoState();
+}
+
+class _AddressInfoState extends State<AddressInfo> {
+  String addressHeading = "";
+  String addressSubHeading = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadAddress();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -110,7 +128,7 @@ class AddressInfo extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  "Address 1 asfkjahdkjhakjdhkahsd",
+                  addressHeading,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -118,13 +136,44 @@ class AddressInfo extends StatelessWidget {
             ],
           ),
           Text(
-            '123, Main Street, City, State',
+            addressSubHeading,
             style: TextStyle(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
+  }
+
+  Future<void> loadAddress() async {
+    // Retrieve the stored location from system preferences
+    var storedLocation =
+        await UserStorageService.retrieveLocationFromPreferences();
+
+    if (storedLocation != null) {
+      // Get the address using the retrieved location
+      String locationAddress = await LocationManager.getAddressFromCoordinates(
+        storedLocation.latitude,
+        storedLocation.longitude,
+      );
+
+      setState(() {
+        // Update the address in the state
+        addressSubHeading = locationAddress;
+
+        // Split the address string using comma as a separator
+        List<String> addressComponents = addressSubHeading.split(', ');
+
+// Extract header and subheader
+        addressHeading = addressComponents.take(2).join(', ');
+        addressSubHeading = addressComponents.skip(2).join(', ');
+      });
+    } else {
+      setState(() {
+        // Handle the case where there is no stored location
+        addressHeading = "No location stored";
+      });
+    }
   }
 }
 

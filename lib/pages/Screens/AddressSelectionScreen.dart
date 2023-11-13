@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:http/http.dart' as http;
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 
@@ -126,39 +129,60 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
               ],
             ),
             Divider(color: Colors.grey, thickness: 1.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Recent Searches",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             Expanded(
                 child: ListView.builder(
                     itemCount: suggestions.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (index == 0) {
-                        return Container(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            'SEARCH RESULTS',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.normal),
-                          ),
-                        );
-                      }
+                      double latitude = suggestions[index].latitude;
+                      double longitude = suggestions[index].longitude;
+
                       return ListTile(
-                          title: Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(CupertinoIcons.location_fill,
-                                color: Colors.redAccent),
-                            onPressed: () {
-                              // Add functionality for location icon here
-                              _selectAddress();
-                            },
-                            iconSize: 10,
-                          ),
-                          Text(
-                            suggestions[index].latitude.toString(),
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ));
+                        leading: Icon(
+                          CupertinoIcons.location,
+                          size: 18,
+                        ),
+                        title: FutureBuilder(
+                          future: LocationManager.getAddressFromCoordinates(
+                              latitude, longitude),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Text("Loading...");
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else {
+                              return Text(snapshot.data.toString());
+                            }
+                          },
+                        ),
+                        onTap: () => {
+                          // Selection of location from recent searches
+                          print('selecting object'),
+                          UserStorageService.saveLocationToPreferences(Position(
+                              longitude: suggestions[index].longitude,
+                              latitude: suggestions[index].latitude,
+                              timestamp: suggestions[index].timestamp,
+                              accuracy: suggestions[index].accuracy,
+                              altitude: suggestions[index].altitude,
+                              heading: suggestions[index].heading,
+                              speed: suggestions[index].speed,
+                              speedAccuracy: suggestions[index].speedAccuracy)),
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RootScreen())),
+                        },
+                      );
                     }))
           ],
         ),

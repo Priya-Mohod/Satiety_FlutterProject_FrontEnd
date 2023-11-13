@@ -518,7 +518,7 @@ class _UserProfileState extends State<UserProfile> {
       CameraUpdate.newLatLng(userCoordinates),
     );
 
-    _addressController.text = await LocationManager().getAddressFromCoordinates(
+    _addressController.text = await LocationManager.getAddressFromCoordinates(
         userCoordinates.latitude, userCoordinates.longitude);
   }
 }

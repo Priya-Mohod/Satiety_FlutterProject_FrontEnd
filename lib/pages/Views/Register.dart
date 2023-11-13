@@ -102,8 +102,8 @@ class _RegisterState extends State<Register> {
       CameraUpdate.newLatLng(userCoordinates),
     );
 
-    userAddressController.text = await LocationManager()
-        .getAddressFromCoordinates(
+    userAddressController.text =
+        await LocationManager.getAddressFromCoordinates(
             userCoordinates.latitude, userCoordinates.longitude);
   }
 

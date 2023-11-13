@@ -126,8 +126,8 @@ class _AddFreeFoodState extends State<AddFreeFood> {
       CameraUpdate.newLatLng(userCoordinates),
     );
 
-    foodAddressController.text = await LocationManager()
-        .getAddressFromCoordinates(
+    foodAddressController.text =
+        await LocationManager.getAddressFromCoordinates(
             userCoordinates.latitude, userCoordinates.longitude);
   }
 

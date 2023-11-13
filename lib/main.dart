@@ -43,6 +43,7 @@ void main() async {
 
   // Check App running for first time
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
   bool isOTPVerified = prefs.getBool('isOTPVerified') ?? false;
 
