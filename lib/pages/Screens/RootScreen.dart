@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Screens/HomeScreen.dart';
@@ -21,9 +22,9 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    //  LoadingIndicator.instance.hide();
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    //_checkAndShowLocationSheet();
   }
 
   @override

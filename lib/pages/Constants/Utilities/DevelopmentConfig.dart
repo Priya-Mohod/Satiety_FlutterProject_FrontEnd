@@ -2,7 +2,8 @@ class DevelopementConfig {
   final bool showInKM = true;
   // getter for showInKM
   bool get getShowInKM => showInKM;
-  final GOOGLE_MAP_KEY = 'AIzaSyCm411YYshv9mIkZwTzheLVd-2-S2YMpsc';
+  final GOOGLE_MAP_KEY = 'AIzaSyDFkgk7N-JkiLHOEDowS6LH7q-bIP1nRF0';
+  //final apiKey = 'AIzaSyDFkgk7N-JkiLHOEDowS6LH7q-bIP1nRF0';
 }
 
 enum Pages { Home, MyListings, Add, MyRequests, Messages }

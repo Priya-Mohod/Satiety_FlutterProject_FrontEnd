@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:http/http.dart' as http;
@@ -19,8 +19,9 @@ class AddressSelectionScreen extends StatefulWidget {
 
 class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   TextEditingController _searchController = TextEditingController();
+  String searchTitle = "Recent locations";
   // *** assign array from system preferences
-  List<Position> suggestions = [];
+  List<dynamic> suggestions = [];
   final apiKey = DevelopementConfig().GOOGLE_MAP_KEY;
 
   @override
@@ -69,16 +70,17 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 10.0),
                           ),
-                          onChanged: (String query) {
+                          onChanged: (String query) async {
+                            searchTitle = "Search Result";
                             if (query.isEmpty) {
                               setState(() {
                                 suggestions = [];
                               });
                             } else {
-                              fetchSuggestions(query).then((apiSuggestions) {
+                              LocationManager.fetchSuggestions(query)
+                                  .then((apiSuggestions) {
                                 setState(() {
-                                  suggestions =
-                                      apiSuggestions as List<Position>;
+                                  suggestions = apiSuggestions;
                                   print(suggestions);
                                 });
                               }).catchError((error) {
@@ -101,12 +103,11 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                   icon: Icon(CupertinoIcons.location_fill,
                       color: Colors.redAccent),
                   onPressed: () {
-                    // Add functionality for location icon here
-                    _useMyCurrentLocation();
+                    _getUserCurrentLocationAndDisplayRootScreen();
                   },
                 ),
                 GestureDetector(
-                  onTap: () => {_useMyCurrentLocation()},
+                  onTap: () => {_getUserCurrentLocationAndDisplayRootScreen()},
                   child: Text(
                     "Use my current location",
                     style: TextStyle(
@@ -132,7 +133,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Recent Searches",
+                searchTitle,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -143,46 +144,51 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                 child: ListView.builder(
                     itemCount: suggestions.length,
                     itemBuilder: (BuildContext context, int index) {
-                      double latitude = suggestions[index].latitude;
-                      double longitude = suggestions[index].longitude;
-
-                      return ListTile(
-                        leading: Icon(
-                          CupertinoIcons.location,
-                          size: 18,
-                        ),
-                        title: FutureBuilder(
-                          future: LocationManager.getAddressFromCoordinates(
-                              latitude, longitude),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Text("Loading...");
-                            } else if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            } else {
-                              return Text(snapshot.data.toString());
-                            }
+                      double latitude = 0.0;
+                      double longitude = 0.0;
+                      if (suggestions[index] is Position) {
+                        latitude = suggestions[index].latitude;
+                        longitude = suggestions[index].longitude;
+                        return ListTile(
+                          leading: Icon(
+                            CupertinoIcons.location,
+                            size: 18,
+                          ),
+                          title: FutureBuilder(
+                            future: LocationManager.getAddressFromCoordinates(
+                                latitude, longitude),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Text("Loading...");
+                              } else if (snapshot.hasError) {
+                                return Text("Error: ${snapshot.error}");
+                              } else {
+                                return Text(snapshot.data.toString());
+                              }
+                            },
+                          ),
+                          onTap: () => {
+                            // Selection of location from recent searches
+                            _selectRecentLocation(suggestions[index]),
                           },
-                        ),
-                        onTap: () => {
-                          // Selection of location from recent searches
-                          print('selecting object'),
-                          UserStorageService.saveLocationToPreferences(Position(
-                              longitude: suggestions[index].longitude,
-                              latitude: suggestions[index].latitude,
-                              timestamp: suggestions[index].timestamp,
-                              accuracy: suggestions[index].accuracy,
-                              altitude: suggestions[index].altitude,
-                              heading: suggestions[index].heading,
-                              speed: suggestions[index].speed,
-                              speedAccuracy: suggestions[index].speedAccuracy)),
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RootScreen())),
-                        },
-                      );
+                        );
+                      } else {
+                        print("suggestions - location search $suggestions");
+
+                        return ListTile(
+                          leading: Icon(
+                            CupertinoIcons.location,
+                            size: 18,
+                          ),
+                          title: Text(suggestions[index]["description"]),
+                          onTap: () => {
+                            print(suggestions[index]['place_id']),
+                            _getPlaceDetails_SaveToPref_ShowRootScreen(
+                                suggestions[index]['place_id']),
+                          },
+                        );
+                      }
                     }))
           ],
         ),
@@ -201,30 +207,66 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
     });
   }
 
-  void _selectAddress() {
-    // Select address
+  void _getPlaceDetails_SaveToPref_ShowRootScreen(String placeId) async {
+    Map<String, dynamic> placeDetails =
+        await LocationManager.getPlaceDetails(placeId);
+    print("Searched Location Details $placeDetails");
 
-    // Open maps with selected address
+    double latitude =
+        placeDetails['geometry']['location']['lat'] ?? 0.0; // Default value 0.0
+    double longitude =
+        placeDetails['geometry']['location']['lng'] ?? 0.0; // Default value 0.0
+    double altitude = placeDetails['altitude'] ?? 0.0; // Default value 0.0
+    double accuracy = placeDetails['accuracy'] ?? 0.0; // Default value 0.0
+    double heading = placeDetails['heading'] ?? 0.0; // Default value 0.0
+    double speed = placeDetails['speed'] ?? 0.0; // Default value 0.0
+    double speedAccuracy = placeDetails['speed_accuracy'] ?? 0.0;
 
-    // On maps confirm location
+    Position currentPosition = Position(
+        latitude: latitude,
+        longitude: longitude,
+        timestamp: DateTime.now(),
+        accuracy: accuracy,
+        altitude: altitude,
+        heading: heading,
+        speed: speed,
+        speedAccuracy: speedAccuracy);
+
+    _saveLocation_showRootScreen(currentPosition);
   }
 
-  void _useMyCurrentLocation() {
-    print("Use my current location");
+  void _saveLocation_showRootScreen(Position currentPosition) async {
+    await UserStorageService.saveLocationToPreferences(currentPosition);
+    await UserStorageService.saveRecentLocationToPreferences(currentPosition);
+
+    _showRootScreen();
   }
 
-  Future<List<dynamic>> fetchSuggestions(String input) async {
-    final url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
-        '?input=$input'
-        '&key=$apiKey';
+  void _selectRecentLocation(dynamic lastLocation) {
+    LoadingIndicator.show(context);
+    print('selecting object');
 
-    final response = await http.get(Uri.parse(url));
-    final data = json.decode(response.body);
+    Position currentPosition = Position(
+        longitude: lastLocation.longitude,
+        latitude: lastLocation.latitude,
+        timestamp: lastLocation.timestamp,
+        accuracy: lastLocation.accuracy,
+        altitude: lastLocation.altitude,
+        heading: lastLocation.heading,
+        speed: lastLocation.speed,
+        speedAccuracy: lastLocation.speedAccuracy);
 
-    if (data['status'] == 'OK') {
-      return data['predictions'];
-    } else {
-      throw Exception('Failed to fetch suggestions');
-    }
+    _saveLocation_showRootScreen(currentPosition);
+  }
+
+  void _showRootScreen() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => RootScreen()));
+  }
+
+  void _getUserCurrentLocationAndDisplayRootScreen() {
+    // Add functionality for location icon here
+    LoadingIndicator.show(context);
+    LocationManager.getLocation(context);
   }
 }

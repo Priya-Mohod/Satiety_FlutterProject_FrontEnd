@@ -51,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
         .fetchFoodData(appliedDistanceFilter);
     print(result);
-    if (result == false) {
-      // ignore: use_build_context_synchronously
-      SnackbarHelper.showSnackBar(context, StringConstants.server_error);
-    }
+    // if (result == false) {
+    //   // ignore: use_build_context_synchronously
+    //   SnackbarHelper.showSnackBar(context, StringConstants.server_error);
+    // }
   }
 
   Future<void> getCurrentUser() async {

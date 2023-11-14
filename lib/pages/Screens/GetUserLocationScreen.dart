@@ -5,6 +5,8 @@ import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart'
     hide PermissionStatus;
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
+import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
@@ -58,10 +60,8 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                   text: 'Get Current Location',
                   buttonFont: 18.0,
                   onPressed: () {
-                    // Check if location is on
-                    // _checkAndShowLocationSheet();
-                    // ***
-                    getLocation();
+                    LoadingIndicator.show(context);
+                    LocationManager.getLocation(context);
                   }),
             ),
           ),
@@ -71,6 +71,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
           GestureDetector(
             onTap: () {
               // Navigate to another screen when the text is clicked
+              LoadingIndicator.show(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -88,133 +89,5 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
         ],
       ),
     );
-  }
-
-  Future<void> getLocation() async {
-    bool locationEnabled = await isLocationEnabled();
-
-    if (!locationEnabled) {
-      showLocationServiceAlertDialog(context);
-      return;
-    }
-
-    _checkAndShowLocationSheet();
-
-    Location location = Location();
-    try {
-      LocationData currentLocation = await location.getLocation();
-      print('Latitude: ${currentLocation.latitude}');
-      print('Longitude: ${currentLocation.longitude}');
-
-      // Get location permission
-    } catch (e) {
-      print('Error getting location: $e');
-    }
-  }
-
-  Future<bool> isLocationEnabled() async {
-    Location location = Location();
-
-    bool _serviceEnabled;
-    _serviceEnabled = await location.serviceEnabled();
-    return _serviceEnabled;
-  }
-
-  void showLocationServiceAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Location Service Disabled'),
-          content: Text('Please enable location services to use this feature.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _checkAndShowLocationSheet() async {
-    Position? currentPosition;
-    // bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
-    await Permission.location.request();
-    var locationStatus = await Permission.location.status;
-    // setState(() {
-    //   locationStatus = status;
-    // });
-
-    print("locationStatus");
-    print(locationStatus);
-    if (locationStatus.isGranted == false) {
-      showModalBottomSheet(
-        context: context,
-        isDismissible: true,
-        builder: (context) => Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (locationStatus == PermissionStatus.denied)
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Location permission is disabled!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Please provide location permission to continue.',
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Open device settings to enable location
-                            openAppSettings();
-                          },
-                          child: Text('Enable Location Permission'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      );
-    } else if (locationStatus.isGranted == true) {
-      // location permission is granted
-      // get the user's current location
-      //if (isLocationEnabled == true) {
-      print("User location enabled");
-      currentPosition = await Geolocator.getCurrentPosition();
-
-      if (currentPosition != null) {
-        // *** Once we get current user location, set it to user's location system pref
-        UserStorageService.saveLocationToPreferences(currentPosition);
-        // Update the location array of user, to set it in recent used locations
-        UserStorageService.saveRecentLocationToPreferences(currentPosition);
-        // set the flag that we got the location - we can check the location array
-        // display Root Screen after all configuration
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => RootScreen()));
-      }
-      // } else {
-      //   print("User location disabled");
-      //   await Permission.location.request();
-      // }
-    }
   }
 }

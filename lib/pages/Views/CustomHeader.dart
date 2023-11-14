@@ -103,11 +103,12 @@ class AddressInfo extends StatefulWidget {
 
 class _AddressInfoState extends State<AddressInfo> {
   String addressHeading = "";
-  String addressSubHeading = "";
+  String addressSubHeading = "sub heading";
 
   @override
   void initState() {
     // TODO: implement initState
+    print("Custom Header - Init State");
     super.initState();
     loadAddress();
   }
@@ -150,23 +151,26 @@ class _AddressInfoState extends State<AddressInfo> {
     var storedLocation =
         await UserStorageService.retrieveLocationFromPreferences();
 
+    print("coordinates stored in defaults - $storedLocation");
     if (storedLocation != null) {
       // Get the address using the retrieved location
       String locationAddress = await LocationManager.getAddressFromCoordinates(
         storedLocation.latitude,
         storedLocation.longitude,
       );
+      print("Address Fetched using coordinates - $locationAddress");
 
       setState(() {
         // Update the address in the state
         addressSubHeading = locationAddress;
-
         // Split the address string using comma as a separator
         List<String> addressComponents = addressSubHeading.split(', ');
-
-// Extract header and subheader
-        addressHeading = addressComponents.take(2).join(', ');
+        print("Address in header $addressComponents");
+        // Extract header and subheader
         addressSubHeading = addressComponents.skip(2).join(', ');
+        addressHeading = addressComponents.take(2).join(', ');
+        print("heading $addressHeading");
+        print("Subheading $addressSubHeading");
       });
     } else {
       setState(() {
