@@ -160,7 +160,8 @@ class _ListViewPageState extends State<ListViewPage> {
                             ),
                             onPressed: () async {
                               final selectedFilter = await BottomDrawer()
-                                  .showFilterDrawer(context);
+                                  .showFilterDrawer(
+                                      context, {''}, (selectedValue) {});
                               if (selectedFilter != null)
                                 appliedDistanceFilter = selectedFilter;
                               _refresh();

@@ -13,6 +13,7 @@ class CustomSearchBar extends StatefulWidget {
 }
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
+  TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,6 +33,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         ],
       ),
       child: TextField(
+        controller: _controller,
         onChanged: (value) {
           widget.onSearch(value);
         },
@@ -39,6 +41,18 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           hintText: 'Search',
           prefixIcon: Icon(CupertinoIcons.search, color: Colors.grey),
           border: InputBorder.none,
+          suffixIcon: _controller.text.length > 0
+              ? IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      widget.onSearch('');
+                      _controller.clear();
+                      FocusScope.of(context).unfocus();
+                    });
+                  },
+                )
+              : null,
         ),
       ),
     );

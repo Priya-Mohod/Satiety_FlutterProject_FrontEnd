@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
+import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Services/Utility.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/Cards/HomeScreenCard.dart';
-import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/CustomHeader.dart';
 //import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/HorizontalFilterBar.dart';
@@ -28,6 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController controller = ScrollController();
   var appliedDistanceFilter = '';
+  var searchItemKeyword = '';
   User? currentUser;
 
   @override
@@ -51,10 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
         .fetchFoodData(appliedDistanceFilter);
     print(result);
-    // if (result == false) {
-    //   // ignore: use_build_context_synchronously
-    //   SnackbarHelper.showSnackBar(context, StringConstants.server_error);
-    // }
+    if (result == false) {
+      // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, StringConstants.server_error);
+    }
   }
 
   Future<void> getCurrentUser() async {
@@ -71,8 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedPageProvider =
-        Provider.of<SelectedPageProvider>(context, listen: false);
     return Scaffold(
       body: Column(
         children: [
@@ -82,8 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               // margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
               padding: const EdgeInsets.all(10.0),
-              child:
-                  CustomSearchBar(searchText: 'Search', onSearch: (value) {}),
+              child: CustomSearchBar(
+                  searchText: 'Search',
+                  onSearch: (value) {
+                    setState(() {
+                      searchItemKeyword = value;
+                    });
+                  }),
             ),
           ),
 
@@ -108,7 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Consumer<FoodListViewModel>(
               builder: (context, foodListViewModel, child) {
-                final foodList = foodListViewModel.foodList;
+                List<FoodItem> foodList = foodListViewModel.foodList;
+                if (searchItemKeyword.isNotEmpty &&
+                    searchItemKeyword.length > 0) {
+                  // Apply search on food list
+                  foodList = foodList
+                      .where((foodItem) => foodItem.foodName
+                          .toLowerCase()
+                          .contains(searchItemKeyword.toLowerCase()))
+                      .toList();
+                }
                 return RefreshIndicator(
                   onRefresh: _refresh,
                   child: Scrollbar(

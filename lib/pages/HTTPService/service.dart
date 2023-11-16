@@ -124,8 +124,13 @@ class Service {
     String distanceFilter,
   ) async {
     try {
+      var storedLocation =
+          await UserStorageService.retrieveLocationFromPreferences();
       var request = http.MultipartRequest('GET', Uri.parse('$url/getAllFood'));
       request.fields['distanceFilter'] = distanceFilter;
+      request.fields['latitude'] = storedLocation!.latitude.toString();
+      request.fields['longitude'] = storedLocation.longitude.toString();
+
       var response = await makeServerRequest(request);
       if (response != null && response.statusCode == 200) {
         return convertStreamedResponseToResponse(response);

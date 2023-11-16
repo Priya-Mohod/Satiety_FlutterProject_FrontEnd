@@ -58,7 +58,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
       bottomNavigationBar: CustomBottomBar(
         currentIndex: selectedPage.index,
         onTap: (index) {
-          if (index == Pages.Home.index && selectedPage != Pages.Home) {
+          if (index == Pages.Home.index) {
             // Set selected page as Home
             //selectedPageProvider.setSelectedPage(StringConstants.Home);
             //Navigator.pushReplacementNamed(context, StringConstants.Home);

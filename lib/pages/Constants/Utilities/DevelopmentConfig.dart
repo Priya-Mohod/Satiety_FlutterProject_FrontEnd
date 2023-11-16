@@ -6,4 +6,4 @@ class DevelopementConfig {
   //final apiKey = 'AIzaSyDFkgk7N-JkiLHOEDowS6LH7q-bIP1nRF0';
 }
 
-enum Pages { Home, MyListings, Add, MyRequests, Messages }
+enum Pages { Home, MyListings, Add, MyRequests, Messages, Unknown }

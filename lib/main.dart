@@ -13,7 +13,6 @@ import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/ChatPage.dart';
-import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/FreeFood.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';

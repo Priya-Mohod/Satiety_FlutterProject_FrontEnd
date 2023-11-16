@@ -13,10 +13,10 @@ class LoadingIndicator {
         return WillPopScope(
           onWillPop: () async => false,
           child: Center(
-            child: SpinKitWaveSpinner(
-              waveColor: ThemeColors.primaryColor,
+            child: SpinKitPulsingGrid(
+              //waveColor: ThemeColors.primaryColor,
               color: ThemeColors.primaryColor,
-              size: 150.0,
+              size: 100.0,
             ),
           ),
         );
@@ -25,6 +25,8 @@ class LoadingIndicator {
   }
 
   static void hide() {
-    Navigator.of(globalKey.currentContext!).pop();
+    if (globalKey.currentContext != null) {
+      Navigator.of(globalKey.currentContext!).pop();
+    }
   }
 }

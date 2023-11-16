@@ -4,6 +4,20 @@ import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 
+// class BottomDrawer extends StatefulWidget {
+//   const BottomDrawer({super.key});
+
+//   @override
+//   _BottomDrawerState createState() => _BottomDrawerState();
+// }
+
+// class _BottomDrawerState extends State<BottomDrawer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+
 class BottomDrawer {
   static void showBottomDrawer(BuildContext context) {
     showModalBottomSheet(
@@ -127,7 +141,10 @@ class BottomDrawer {
     );
   }
 
-  Future<String?> showFilterDrawer(BuildContext context) async {
+  Future<String?> showFilterDrawer(
+      BuildContext context,
+      Set<String> selectedFilter,
+      Function(Set<String>) onFilterSelected) async {
     final ScrollController _controller = ScrollController();
     bool _showScrollbar = false;
 
@@ -414,8 +431,14 @@ class BottomDrawer {
                                                 ElevatedButton(
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.grey[300],
+                                                      backgroundColor: (selectedFilter
+                                                                  .contains(
+                                                                      "Free") &&
+                                                              selectedFilter
+                                                                  .contains(
+                                                                      "Chargeable"))
+                                                          ? Colors.yellow
+                                                          : Colors.grey[300],
                                                       minimumSize:
                                                           const Size(40, 30),
                                                       shape:
@@ -425,7 +448,12 @@ class BottomDrawer {
                                                                 .circular(20),
                                                       ),
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      _factoredSelectedFilter(
+                                                          selectedFilter,
+                                                          "Free,Chargeable",
+                                                          onFilterSelected);
+                                                    },
                                                     child: Row(
                                                       children: [
                                                         Icon(
@@ -449,7 +477,12 @@ class BottomDrawer {
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
-                                                          Colors.grey[300],
+                                                          selectedFilter
+                                                                  .contains(
+                                                                      "Free")
+                                                              ? Colors.yellow
+                                                              : Colors
+                                                                  .grey[300],
                                                       minimumSize:
                                                           const Size(50, 30),
                                                       shape:
@@ -459,7 +492,12 @@ class BottomDrawer {
                                                                 .circular(20),
                                                       ),
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      _factoredSelectedFilter(
+                                                          selectedFilter,
+                                                          "Free",
+                                                          onFilterSelected);
+                                                    },
                                                     child: Row(
                                                       children: [
                                                         Icon(
@@ -484,7 +522,11 @@ class BottomDrawer {
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
-                                                          Colors.grey[300],
+                                                          selectedFilter.contains(
+                                                                  "Chargeable")
+                                                              ? Colors.yellow
+                                                              : Colors
+                                                                  .grey[300],
                                                       minimumSize:
                                                           const Size(50, 30),
                                                       shape:
@@ -494,7 +536,12 @@ class BottomDrawer {
                                                                 .circular(20),
                                                       ),
                                                     ),
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      _factoredSelectedFilter(
+                                                          selectedFilter,
+                                                          "Chargeable",
+                                                          onFilterSelected);
+                                                    },
                                                     child: Row(children: [
                                                       Icon(
                                                         Icons
@@ -541,8 +588,14 @@ class BottomDrawer {
                                                   ElevatedButton(
                                                       style: ElevatedButton
                                                           .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.grey[300],
+                                                        backgroundColor: (selectedFilter
+                                                                    .contains(
+                                                                        "Available") &&
+                                                                selectedFilter
+                                                                    .contains(
+                                                                        "Just Gone"))
+                                                            ? Colors.yellow
+                                                            : Colors.grey[300],
                                                         minimumSize:
                                                             const Size(40, 30),
                                                         shape:
@@ -552,7 +605,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Available,Just Gone",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(
                                                         children: [
                                                           // Icon(
@@ -575,7 +633,11 @@ class BottomDrawer {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.grey[300],
+                                                            selectedFilter.contains(
+                                                                    "Available")
+                                                                ? Colors.yellow
+                                                                : Colors
+                                                                    .grey[300],
                                                         minimumSize:
                                                             const Size(50, 30),
                                                         shape:
@@ -585,7 +647,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Available",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(
                                                         children: [
                                                           // Icon(
@@ -608,7 +675,11 @@ class BottomDrawer {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.grey[300],
+                                                            selectedFilter.contains(
+                                                                    "Just Gone")
+                                                                ? Colors.yellow
+                                                                : Colors
+                                                                    .grey[300],
                                                         minimumSize:
                                                             const Size(50, 30),
                                                         shape:
@@ -618,7 +689,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Just Gone",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(children: [
                                                         // Icon(
                                                         //   Icons.currency_rupee_rounded,
@@ -664,8 +740,14 @@ class BottomDrawer {
                                                   ElevatedButton(
                                                       style: ElevatedButton
                                                           .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.grey[300],
+                                                        backgroundColor: (selectedFilter
+                                                                    .contains(
+                                                                        "Veg") &&
+                                                                selectedFilter
+                                                                    .contains(
+                                                                        "Non-Veg"))
+                                                            ? Colors.yellow
+                                                            : Colors.grey[300],
                                                         minimumSize:
                                                             const Size(40, 30),
                                                         shape:
@@ -675,7 +757,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Veg,Non-Veg",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(
                                                         children: [
                                                           Icon(
@@ -699,7 +786,12 @@ class BottomDrawer {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.grey[300],
+                                                            selectedFilter
+                                                                    .contains(
+                                                                        "Veg")
+                                                                ? Colors.yellow
+                                                                : Colors
+                                                                    .grey[300],
                                                         minimumSize:
                                                             const Size(50, 30),
                                                         shape:
@@ -709,7 +801,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Veg",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(
                                                         children: [
                                                           Icon(
@@ -734,7 +831,12 @@ class BottomDrawer {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.grey[300],
+                                                            selectedFilter
+                                                                    .contains(
+                                                                        "Non-Veg")
+                                                                ? Colors.yellow
+                                                                : Colors
+                                                                    .grey[300],
                                                         minimumSize:
                                                             const Size(50, 30),
                                                         shape:
@@ -744,7 +846,12 @@ class BottomDrawer {
                                                                   .circular(20),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _factoredSelectedFilter(
+                                                            selectedFilter,
+                                                            "Non-Veg",
+                                                            onFilterSelected);
+                                                      },
                                                       child: Row(children: [
                                                         Icon(
                                                           Icons
@@ -807,5 +914,20 @@ class BottomDrawer {
             ));
       },
     );
+  }
+
+  Set<String> _factoredSelectedFilter(Set<String> selectedFilter,
+      String checkString, Function(Set<String>) onFilterSelected) {
+    // if checkString has "," then check both the string
+    List<String> stringParts = checkString.split(',');
+    for (int i = 0; i < stringParts.length; i++) {
+      if (selectedFilter.contains(stringParts[i])) {
+        selectedFilter.remove(stringParts[i]);
+      } else {
+        selectedFilter.add(stringParts[i]);
+      }
+    }
+    onFilterSelected(selectedFilter);
+    return selectedFilter;
   }
 }

@@ -18,11 +18,9 @@ class _LaunchScreenState extends State<LaunchScreen> {
   @override
   void initState() {
     super.initState();
-    // _videoPlayerController =
-    //     VideoPlayerController.asset('assets/SatietyAd.mp4');
     _videoPlayerController = VideoPlayerController.networkUrl(
       Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+        'https://satiety-ad.s3.ap-south-1.amazonaws.com/trimmed-satiety-ad-removed-audio.mp4',
       ),
     );
     _chewieController = ChewieController(
