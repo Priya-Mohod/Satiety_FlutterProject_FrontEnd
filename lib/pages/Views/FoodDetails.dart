@@ -130,7 +130,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
-                                  'images/account.png',
+                                  'assets/account.png',
                                   height: 60,
                                   width: 60,
                                 );

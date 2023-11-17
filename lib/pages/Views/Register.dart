@@ -102,8 +102,8 @@ class _RegisterState extends State<Register> {
       CameraUpdate.newLatLng(userCoordinates),
     );
 
-    userAddressController.text = await LocationManager()
-        .getAddressFromCoordinates(
+    userAddressController.text =
+        await LocationManager.getAddressFromCoordinates(
             userCoordinates.latitude, userCoordinates.longitude);
   }
 
@@ -306,6 +306,7 @@ class _RegisterState extends State<Register> {
                     height: 50,
                     child: CustomButton(
                       text: 'Register',
+                      buttonFont: 16.0,
                       onPressed: () {
                         _registerUser(context);
                       },

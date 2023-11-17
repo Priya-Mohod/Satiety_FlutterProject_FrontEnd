@@ -41,7 +41,7 @@ class _ListViewPageState extends State<ListViewPage> {
   var appliedDistanceFilter = '';
   Future initializedData() async {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
-        .fetchFoodData(appliedDistanceFilter);
+        .fetchFoodData({"": ""}); // *** add distance filter dict
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously
@@ -122,7 +122,7 @@ class _ListViewPageState extends State<ListViewPage> {
             selectedPageProvider.setSelectedPage(StringConstants.Forum);
             Navigator.pushReplacementNamed(context, StringConstants.Forum);
           } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
+            //   BottomDrawer.showBottomDrawer(context);
           } else if (index == 3 &&
               selectedPageProvider.selectedPage != StringConstants.AdsPage) {
             selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
@@ -159,11 +159,14 @@ class _ListViewPageState extends State<ListViewPage> {
                               ),
                             ),
                             onPressed: () async {
+                              /* *** commenting because BottomDrawer converted into stateful widget
                               final selectedFilter = await BottomDrawer()
-                                  .showFilterDrawer(context);
+                                  .showFilterDrawer(
+                                      context, {''}, (selectedValue) {});
                               if (selectedFilter != null)
                                 appliedDistanceFilter = selectedFilter;
                               _refresh();
+                              */
                             },
                             child: Row(
                               children: [
@@ -264,7 +267,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 errorBuilder: (context, error,
                                                     stackTrace) {
                                                   return Image.asset(
-                                                    'images/account.png',
+                                                    'assets/account.png',
                                                     height: 120,
                                                     width: 130,
                                                     fit: BoxFit.cover,
@@ -324,7 +327,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                       errorBuilder: (context,
                                                           error, stackTrace) {
                                                         return Image.asset(
-                                                          'images/account.png',
+                                                          'assets/account.png',
                                                           height: 30,
                                                           width: 30,
                                                         );

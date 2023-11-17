@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Screens/HomeScreen.dart';
@@ -20,9 +22,9 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    //  LoadingIndicator.instance.hide();
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    _checkAndShowLocationSheet();
   }
 
   @override
@@ -34,7 +36,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _checkAndShowLocationSheet();
+      // _checkAndShowLocationSheet();
     }
   }
 
@@ -42,12 +44,21 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: CustomHeader(),
+        backgroundColor: ThemeColors.primaryColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            LocationIcon(),
+            Expanded(child: AddressInfo()),
+            AccountIcon(),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomBar(
         currentIndex: selectedPage.index,
         onTap: (index) {
-          if (index == Pages.Home.index && selectedPage != Pages.Home) {
+          if (index == Pages.Home.index) {
             // Set selected page as Home
             //selectedPageProvider.setSelectedPage(StringConstants.Home);
             //Navigator.pushReplacementNamed(context, StringConstants.Home);
@@ -92,65 +103,5 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
         ],
       ),
     );
-  }
-
-  void _checkAndShowLocationSheet() async {
-    Position? currentPosition;
-    bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
-    var locationStatus = await Permission.location.status;
-    print("locationStatus");
-    print(locationStatus);
-    // if (locationStatus == PermissionStatus.denied) {
-    //   // You can show a dialog or bottom sheet to explain why you need the location
-    //   // and ask the user for permission.
-    //   await Permission.location.request();
-    // }
-    // if (isLocationEnabled) {
-    //   currentPosition = await Geolocator.getCurrentPosition();
-    // }
-    if (locationStatus.isGranted == false) {
-      showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        builder: (context) => Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (locationStatus == PermissionStatus.denied)
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Location is disabled!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Please enable device location to continue.',
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Open device settings to enable location
-                            openAppSettings();
-                          },
-                          child: Text('Enable Location'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      );
-    }
   }
 }

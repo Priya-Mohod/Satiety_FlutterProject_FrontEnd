@@ -117,7 +117,7 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                              'images/account.png',
+                              'assets/account.png',
                               height: 150,
                               width: 150,
                             );
@@ -518,7 +518,7 @@ class _UserProfileState extends State<UserProfile> {
       CameraUpdate.newLatLng(userCoordinates),
     );
 
-    _addressController.text = await LocationManager().getAddressFromCoordinates(
+    _addressController.text = await LocationManager.getAddressFromCoordinates(
         userCoordinates.latitude, userCoordinates.longitude);
   }
 }

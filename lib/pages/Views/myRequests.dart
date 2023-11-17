@@ -201,7 +201,7 @@ class _MyRequestsState extends State<MyRequests> {
                                 //     MyCustomShapeClipper(), // Define your custom clipper
                                 child: Image.network(
                                   request.foodItem!.foodSignedUrl ??
-                                      'images/a.png',
+                                      'assets/a.png',
                                   fit: BoxFit.cover,
                                 ),
                               ),

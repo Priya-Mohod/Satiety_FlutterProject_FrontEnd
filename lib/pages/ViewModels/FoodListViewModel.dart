@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'dart:convert';
 import '../Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
@@ -11,10 +12,10 @@ class FoodListViewModel with ChangeNotifier {
   Service service = Service();
 
   // Method to fetch data from the server and update the _foodList
-  Future<bool> fetchFoodData(String distanceFilter) async {
+  Future<bool> fetchFoodData(Map<String, String> filterDict) async {
     try {
       // Replace this URL with the actual URL of your server
-      final response = await service.fetchFoodData(distanceFilter);
+      final response = await service.fetchFoodData(filterDict);
       if (response != null && response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         _foodList = data.map((item) => FoodItem.fromJson(item)).toList();

@@ -36,7 +36,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                           shape: BoxShape.circle,
                           color: ThemeColors.primaryColor),
                       // Replace 'banner.jpg' with your image asset
-                      child: Image.asset('images/SatietyLogo.png'),
+                      child: Image.asset('assets/SatietyLogo.png'),
                     ),
                   ),
                 ),
@@ -90,6 +90,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                     height: 50,
                     child: CustomButton(
                         text: 'Verify',
+                        buttonFont: 16.0,
                         onPressed: () {
                           if (otpCode != null) {
                             verfiyOTP(context, otpCode!);
