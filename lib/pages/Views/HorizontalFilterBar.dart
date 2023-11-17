@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/Drawers.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 
 class HorizontalFilterBar extends StatefulWidget {
   final List<String> options;
   final Function(String) onOptionSelected;
   final double height;
+  final VoidCallback onApplyFilter;
 
   HorizontalFilterBar(
       {required this.options,
       required this.onOptionSelected,
-      required this.height});
+      required this.height,
+      required this.onApplyFilter});
 
   _HorizontalFilterBarState createState() => _HorizontalFilterBarState();
 }
 
 class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
   Set<String> selectedFilter = {''};
+  DistanceFilter selectedDistance = DistanceFilter.none;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +40,7 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
                     padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                     child: GestureDetector(
                       onTap: () async {
-                        await BottomDrawer()
-                            .showFilterDrawer(context, selectedFilter,
-                                (Set<String> selectedOptions) {
-                          setState(() {
-                            selectedFilter = selectedOptions;
-                          });
-                        });
+                        _showFilterPopUp();
                       },
                       child: Row(
                         children: [
@@ -65,11 +63,16 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
                   ),
                 GestureDetector(
                   onTap: () {
-                    widget.onOptionSelected(option);
-                    if (selectedFilter.contains(option)) {
-                      selectedFilter.remove(option);
+                    if (option == "Distance") {
+                      _showFilterPopUp();
                     } else {
-                      selectedFilter.add(option);
+                      widget.onOptionSelected(option);
+
+                      if (selectedFilter.contains(option)) {
+                        selectedFilter.remove(option);
+                      } else {
+                        selectedFilter.add(option);
+                      }
                     }
                     setState(() {});
                   },
@@ -107,6 +110,30 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
           }).toList(),
         ),
       ),
+    );
+  }
+
+  void _showFilterPopUp() async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return BottomDrawer(
+          selectedFilter: selectedFilter,
+          distanceSelected: selectedDistance,
+          onFilterSelected: (Set<String> selectedOptions,
+              DistanceFilter distanceSelectedInFilter) {
+            // set the selected distance filter
+            // selectedDistance = distanceSelectedInFilter;
+            selectedDistance = distanceSelectedInFilter;
+            setState(() {
+              selectedFilter = selectedOptions;
+            });
+          },
+          onApplyFilter: () {
+            widget.onApplyFilter();
+          },
+        );
+      },
     );
   }
 }

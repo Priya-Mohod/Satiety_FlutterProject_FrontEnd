@@ -53,7 +53,7 @@ class _ForumPageState extends State<ForumPage> {
           } else if (index == 1) {
             Navigator.pushReplacementNamed(context, '/ForumPage');
           } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
+            // BottomDrawer.showBottomDrawer(context);
           } else if (index == 3) {
             Navigator.pushReplacementNamed(context, '/AdsPage');
           } else if (index == 4) {

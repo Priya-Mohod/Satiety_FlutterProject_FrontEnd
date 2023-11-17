@@ -122,7 +122,7 @@ class _ListViewPageState extends State<ListViewPage> {
             selectedPageProvider.setSelectedPage(StringConstants.Forum);
             Navigator.pushReplacementNamed(context, StringConstants.Forum);
           } else if (index == 2) {
-            BottomDrawer.showBottomDrawer(context);
+            //   BottomDrawer.showBottomDrawer(context);
           } else if (index == 3 &&
               selectedPageProvider.selectedPage != StringConstants.AdsPage) {
             selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
@@ -159,12 +159,14 @@ class _ListViewPageState extends State<ListViewPage> {
                               ),
                             ),
                             onPressed: () async {
+                              /* *** commenting because BottomDrawer converted into stateful widget
                               final selectedFilter = await BottomDrawer()
                                   .showFilterDrawer(
                                       context, {''}, (selectedValue) {});
                               if (selectedFilter != null)
                                 appliedDistanceFilter = selectedFilter;
                               _refresh();
+                              */
                             },
                             child: Row(
                               children: [

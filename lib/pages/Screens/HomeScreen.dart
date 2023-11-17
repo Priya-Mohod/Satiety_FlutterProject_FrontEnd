@@ -108,6 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
               print('Selected option: $selectedOption');
             },
             height: 50,
+            onApplyFilter: () {
+              initializedData();
+              setState(() {});
+            },
           ),
           // Add other widgets for the body of the HomeScreen here
           Expanded(

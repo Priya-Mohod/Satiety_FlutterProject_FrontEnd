@@ -7,3 +7,5 @@ class DevelopementConfig {
 }
 
 enum Pages { Home, MyListings, Add, MyRequests, Messages, Unknown }
+
+enum DistanceFilter { five, seven, nine, twelve, fifteen, twenty, thirty, none }
