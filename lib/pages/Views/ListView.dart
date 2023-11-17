@@ -41,7 +41,7 @@ class _ListViewPageState extends State<ListViewPage> {
   var appliedDistanceFilter = '';
   Future initializedData() async {
     var result = await Provider.of<FoodListViewModel>(context, listen: false)
-        .fetchFoodData(appliedDistanceFilter);
+        .fetchFoodData({"": ""}); // *** add distance filter dict
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously

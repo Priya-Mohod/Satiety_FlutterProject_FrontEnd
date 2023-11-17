@@ -12,10 +12,10 @@ class FoodListViewModel with ChangeNotifier {
   Service service = Service();
 
   // Method to fetch data from the server and update the _foodList
-  Future<bool> fetchFoodData(String distanceFilter) async {
+  Future<bool> fetchFoodData(Map<String, String> filterDict) async {
     try {
       // Replace this URL with the actual URL of your server
-      final response = await service.fetchFoodData(distanceFilter);
+      final response = await service.fetchFoodData(filterDict);
       if (response != null && response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         _foodList = data.map((item) => FoodItem.fromJson(item)).toList();

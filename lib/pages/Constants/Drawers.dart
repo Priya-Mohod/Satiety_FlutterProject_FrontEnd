@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:satietyfrontend/pages/Constants/FilterConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
@@ -9,7 +10,7 @@ class BottomDrawer extends StatefulWidget {
   Set<String> selectedFilter;
   final Function(Set<String>, DistanceFilter) onFilterSelected;
   DistanceFilter distanceSelected;
-  final Function onApplyFilter;
+  final Function(Set<String>, DistanceFilter) onApplyFilter;
 
   BottomDrawer({
     required this.selectedFilter,
@@ -31,16 +32,6 @@ class _BottomDrawerState extends State<BottomDrawer> {
   final String distanceFilter_fifteen = '15';
   final String distanceFilter_twenty = '20';
   final String distanceFilter_thirty = '30';
-
-  final String foodType_all = "All_Veg_Non-Veg";
-  final String foodType_veg = "Veg";
-  final String foodType_non_veg = "Non-veg";
-  final String foodAmount_all = "All_Free_Chargeable";
-  final String foodAmount_free = "Free";
-  final String foodAmount_chargeable = "Chargeable";
-  final String foodAvailability_all = "All_Available_Just Gone";
-  final String foodAvailability_available = "Available";
-  final String foodAvailability_just_gone = "Just Gone";
 
   @override
   Widget build(BuildContext context) {
@@ -309,52 +300,61 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                       Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(children: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: (widget
-                                                              .selectedFilter
-                                                              .contains(
-                                                                  foodAmount_free) &&
-                                                          widget.selectedFilter
-                                                              .contains(
-                                                                  foodAmount_chargeable))
-                                                      ? Colors.yellow
-                                                      : Colors.grey[300],
-                                                  minimumSize:
-                                                      const Size(40, 30),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  _factoredSelectedFilter(
-                                                      foodAmount_all);
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.refresh_sharp,
-                                                      size: 20,
-                                                      color: Colors.amber[900],
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Text('All',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        )),
-                                                  ],
-                                                )),
-                                            SizedBox(width: 10),
+                                            // -- All button --
+                                            // ElevatedButton(
+                                            //     style: ElevatedButton.styleFrom(
+                                            //       backgroundColor: (widget
+                                            //                   .selectedFilter
+                                            //                   .contains(
+                                            //                       FilterConstants
+                                            //                           .foodAmount_free
+                                            //                           .value) &&
+                                            //               widget.selectedFilter
+                                            //                   .contains(
+                                            //                       FilterConstants
+                                            //                           .foodAmount_chargeable
+                                            //                           .value))
+                                            //           ? Colors.yellow
+                                            //           : Colors.grey[300],
+                                            //       minimumSize:
+                                            //           const Size(40, 30),
+                                            //       shape: RoundedRectangleBorder(
+                                            //         borderRadius:
+                                            //             BorderRadius.circular(
+                                            //                 20),
+                                            //       ),
+                                            //     ),
+                                            //     onPressed: () {
+                                            //       _factoredSelectedFilter(
+                                            //           FilterConstants
+                                            //               .foodAmount_all
+                                            //               .value);
+                                            //     },
+                                            //     child: Row(
+                                            //       children: [
+                                            //         Icon(
+                                            //           Icons.refresh_sharp,
+                                            //           size: 20,
+                                            //           color: Colors.amber[900],
+                                            //         ),
+                                            //         SizedBox(width: 10),
+                                            //         Text('All',
+                                            //             style: TextStyle(
+                                            //               fontSize: 20,
+                                            //               fontWeight:
+                                            //                   FontWeight.bold,
+                                            //             )),
+                                            //       ],
+                                            //     )),
+                                            //SizedBox(width: 10),
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: widget
                                                           .selectedFilter
                                                           .contains(
-                                                              foodAmount_free)
+                                                              FilterConstants
+                                                                  .foodAmount_free
+                                                                  .value)
                                                       ? Colors.yellow
                                                       : Colors.grey[300],
                                                   minimumSize:
@@ -367,7 +367,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                 ),
                                                 onPressed: () {
                                                   _factoredSelectedFilter(
-                                                      foodAmount_free);
+                                                      FilterConstants
+                                                          .foodAmount_free
+                                                          .value);
                                                 },
                                                 child: Row(
                                                   children: [
@@ -391,8 +393,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: widget
                                                           .selectedFilter
-                                                          .contains(
-                                                              foodAmount_chargeable)
+                                                          .contains(FilterConstants
+                                                              .foodAmount_chargeable
+                                                              .value)
                                                       ? Colors.yellow
                                                       : Colors.grey[300],
                                                   minimumSize:
@@ -405,7 +408,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                 ),
                                                 onPressed: () {
                                                   _factoredSelectedFilter(
-                                                      foodAmount_chargeable);
+                                                      FilterConstants
+                                                          .foodAmount_chargeable
+                                                          .value);
                                                 },
                                                 child: Row(children: [
                                                   Icon(
@@ -447,50 +452,56 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(0.0),
                                             child: Row(children: [
-                                              ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: (widget
-                                                                .selectedFilter
-                                                                .contains(
-                                                                    foodAvailability_available) &&
-                                                            widget
-                                                                .selectedFilter
-                                                                .contains(
-                                                                    foodAvailability_just_gone))
-                                                        ? Colors.yellow
-                                                        : Colors.grey[300],
-                                                    minimumSize:
-                                                        const Size(40, 30),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    _factoredSelectedFilter(
-                                                        foodAvailability_all);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      // Icon(
-                                                      //   Icons.refresh_sharp,
-                                                      //   size: 20,
-                                                      //   color: Colors.amber[900],
-                                                      // ),
-                                                      // SizedBox(width: 10),
-                                                      Text('All',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          )),
-                                                    ],
-                                                  )),
+                                              // -- All Button --
+                                              // ElevatedButton(
+                                              //     style:
+                                              //         ElevatedButton.styleFrom(
+                                              //       backgroundColor: (widget
+                                              //                   .selectedFilter
+                                              //                   .contains(FilterConstants
+                                              //                       .foodAvailability_available
+                                              //                       .value) &&
+                                              //               widget
+                                              //                   .selectedFilter
+                                              //                   .contains(
+                                              //                       FilterConstants
+                                              //                           .foodAvailability_just_gone
+                                              //                           .value))
+                                              //           ? Colors.yellow
+                                              //           : Colors.grey[300],
+                                              //       minimumSize:
+                                              //           const Size(40, 30),
+                                              //       shape:
+                                              //           RoundedRectangleBorder(
+                                              //         borderRadius:
+                                              //             BorderRadius.circular(
+                                              //                 20),
+                                              //       ),
+                                              //     ),
+                                              //     onPressed: () {
+                                              //       _factoredSelectedFilter(
+                                              //           FilterConstants
+                                              //               .foodAvailability_all
+                                              //               .value);
+                                              //     },
+                                              //     child: Row(
+                                              //       children: [
+                                              //         // Icon(
+                                              //         //   Icons.refresh_sharp,
+                                              //         //   size: 20,
+                                              //         //   color: Colors.amber[900],
+                                              //         // ),
+                                              //         // SizedBox(width: 10),
+                                              //         // Text('All',
+                                              //         //     style: TextStyle(
+                                              //         //       fontSize: 20,
+                                              //         //       fontWeight:
+                                              //         //           FontWeight.bold,
+                                              //         //     )),
+                                              //       ],
+                                              //     )),
                                               SizedBox(width: 10),
                                               ElevatedButton(
                                                   style:
@@ -498,7 +509,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     backgroundColor: widget
                                                             .selectedFilter
                                                             .contains(
-                                                                foodAvailability_available)
+                                                                FilterConstants
+                                                                    .foodAvailability_available
+                                                                    .value)
                                                         ? Colors.yellow
                                                         : Colors.grey[300],
                                                     minimumSize:
@@ -512,7 +525,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   ),
                                                   onPressed: () {
                                                     _factoredSelectedFilter(
-                                                        foodAvailability_available);
+                                                        FilterConstants
+                                                            .foodAvailability_available
+                                                            .value);
                                                   },
                                                   child: Row(
                                                     children: [
@@ -537,7 +552,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     backgroundColor: widget
                                                             .selectedFilter
                                                             .contains(
-                                                                foodAvailability_just_gone)
+                                                                FilterConstants
+                                                                    .foodAvailability_just_gone
+                                                                    .value)
                                                         ? Colors.yellow
                                                         : Colors.grey[300],
                                                     minimumSize:
@@ -551,7 +568,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   ),
                                                   onPressed: () {
                                                     _factoredSelectedFilter(
-                                                        foodAvailability_just_gone);
+                                                        FilterConstants
+                                                            .foodAvailability_just_gone
+                                                            .value);
                                                   },
                                                   child: Row(children: [
                                                     // Icon(
@@ -591,51 +610,57 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(0.0),
                                             child: Row(children: [
-                                              ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: (widget
-                                                                .selectedFilter
-                                                                .contains(
-                                                                    foodType_veg) &&
-                                                            widget
-                                                                .selectedFilter
-                                                                .contains(
-                                                                    foodType_non_veg))
-                                                        ? Colors.yellow
-                                                        : Colors.grey[300],
-                                                    minimumSize:
-                                                        const Size(40, 30),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    _factoredSelectedFilter(
-                                                        foodType_all);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.refresh_sharp,
-                                                        size: 20,
-                                                        color:
-                                                            Colors.amber[900],
-                                                      ),
-                                                      SizedBox(width: 10),
-                                                      Text('All',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          )),
-                                                    ],
-                                                  )),
+                                              // -- All Button --
+                                              // ElevatedButton(
+                                              //     style:
+                                              //         ElevatedButton.styleFrom(
+                                              //       backgroundColor: (widget
+                                              //                   .selectedFilter
+                                              //                   .contains(FilterConstants
+                                              //                       .foodType_veg
+                                              //                       .value) &&
+                                              //               widget
+                                              //                   .selectedFilter
+                                              //                   .contains(
+                                              //                       FilterConstants
+                                              //                           .foodType_non_veg
+                                              //                           .value))
+                                              //           ? Colors.yellow
+                                              //           : Colors.grey[300],
+                                              //       minimumSize:
+                                              //           const Size(40, 30),
+                                              //       shape:
+                                              //           RoundedRectangleBorder(
+                                              //         borderRadius:
+                                              //             BorderRadius.circular(
+                                              //                 20),
+                                              //       ),
+                                              //     ),
+                                              //     onPressed: () {
+                                              //       _factoredSelectedFilter(
+                                              //           FilterConstants
+                                              //               .foodType_all
+                                              //               .value);
+                                              //     },
+                                              //     child: Row(
+                                              //       children: [
+                                              //         Icon(
+                                              //           Icons.refresh_sharp,
+                                              //           size: 20,
+                                              //           color:
+                                              //               Colors.amber[900],
+                                              //         ),
+                                              //         SizedBox(width: 10),
+                                              //         Text('All',
+                                              //             style: TextStyle(
+                                              //               fontSize: 20,
+                                              //               fontWeight:
+                                              //                   FontWeight.bold,
+                                              //             )),
+                                              //       ],
+                                              //     )),
                                               SizedBox(width: 10),
                                               ElevatedButton(
                                                   style:
@@ -643,7 +668,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     backgroundColor: widget
                                                             .selectedFilter
                                                             .contains(
-                                                                foodType_veg)
+                                                                FilterConstants
+                                                                    .foodType_veg
+                                                                    .value)
                                                         ? Colors.yellow
                                                         : Colors.grey[300],
                                                     minimumSize:
@@ -657,7 +684,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   ),
                                                   onPressed: () {
                                                     _factoredSelectedFilter(
-                                                        foodType_veg);
+                                                        FilterConstants
+                                                            .foodType_veg
+                                                            .value);
                                                   },
                                                   child: Row(
                                                     children: [
@@ -683,7 +712,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     backgroundColor: widget
                                                             .selectedFilter
                                                             .contains(
-                                                                foodType_non_veg)
+                                                                FilterConstants
+                                                                    .foodType_non_veg
+                                                                    .value)
                                                         ? Colors.yellow
                                                         : Colors.grey[300],
                                                     minimumSize:
@@ -697,7 +728,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   ),
                                                   onPressed: () {
                                                     _factoredSelectedFilter(
-                                                        foodType_non_veg);
+                                                        FilterConstants
+                                                            .foodType_non_veg
+                                                            .value);
                                                   },
                                                   child: Row(children: [
                                                     Icon(
@@ -727,7 +760,8 @@ class _BottomDrawerState extends State<BottomDrawer> {
                 SizedBox(height: 20),
                 TextButton(
                     onPressed: () {
-                      widget.onApplyFilter();
+                      widget.onApplyFilter(
+                          widget.selectedFilter, widget.distanceSelected);
                       Navigator.of(context).pop(widget.distanceSelected);
                     },
                     child: Container(
@@ -755,10 +789,10 @@ class _BottomDrawerState extends State<BottomDrawer> {
   void _selectDistanceFilter(DistanceFilter distanceSelected) {
     if (widget.distanceSelected == distanceSelected) {
       widget.distanceSelected = DistanceFilter.none;
-      widget.selectedFilter.remove("Distance");
+      widget.selectedFilter.remove(FilterConstants.filter_distance.value);
     } else {
       widget.distanceSelected = distanceSelected;
-      widget.selectedFilter.add("Distance");
+      widget.selectedFilter.add(FilterConstants.filter_distance.value);
     }
 
     reloadScreen_notifyParentAboutSelection();
@@ -773,40 +807,41 @@ class _BottomDrawerState extends State<BottomDrawer> {
   }
 
   void _factoredSelectedFilter(String checkString) {
-    // if checkString has "," then check both the string
-    // if key is "All_Free_Chargeable",
-    // check if key exists, remove the key and its options
-    // if key not exist, add the key and its options
-
-    if (checkString == foodAmount_all) {
+    /*
+    if (checkString == FilterConstants.foodAmount_all.value) {
       if (widget.selectedFilter.contains(checkString)) {
         widget.selectedFilter.remove(checkString);
-        widget.selectedFilter.remove(foodAmount_free);
-        widget.selectedFilter.remove(foodAmount_chargeable);
+        widget.selectedFilter.remove(FilterConstants.foodAmount_free.value);
+        widget.selectedFilter
+            .remove(FilterConstants.foodAmount_chargeable.value);
       } else {
         widget.selectedFilter.add(checkString);
-        widget.selectedFilter.add(foodAmount_free);
-        widget.selectedFilter.add(foodAmount_chargeable);
+        widget.selectedFilter.add(FilterConstants.foodAmount_free.value);
+        widget.selectedFilter.add(FilterConstants.foodAmount_chargeable.value);
       }
-    } else if (checkString == foodAvailability_all) {
+    } else if (checkString == FilterConstants.foodAvailability_all.value) {
       if (widget.selectedFilter.contains(checkString)) {
         widget.selectedFilter.remove(checkString);
-        widget.selectedFilter.remove(foodAvailability_available);
-        widget.selectedFilter.remove(foodAvailability_just_gone);
+        widget.selectedFilter
+            .remove(FilterConstants.foodAvailability_available.value);
+        widget.selectedFilter
+            .remove(FilterConstants.foodAvailability_just_gone.value);
       } else {
         widget.selectedFilter.add(checkString);
-        widget.selectedFilter.add(foodAvailability_available);
-        widget.selectedFilter.add(foodAvailability_just_gone);
+        widget.selectedFilter
+            .add(FilterConstants.foodAvailability_available.value);
+        widget.selectedFilter
+            .add(FilterConstants.foodAvailability_just_gone.value);
       }
-    } else if (checkString == foodType_all) {
+    } else if (checkString == FilterConstants.foodType_all.value) {
       if (widget.selectedFilter.contains(checkString)) {
         widget.selectedFilter.remove(checkString);
-        widget.selectedFilter.remove(foodType_veg);
-        widget.selectedFilter.remove(foodType_non_veg);
+        widget.selectedFilter.remove(FilterConstants.foodType_veg.value);
+        widget.selectedFilter.remove(FilterConstants.foodType_non_veg.value);
       } else {
         widget.selectedFilter.add(checkString);
-        widget.selectedFilter.add(foodType_veg);
-        widget.selectedFilter.add(foodType_non_veg);
+        widget.selectedFilter.add(FilterConstants.foodType_veg.value);
+        widget.selectedFilter.add(FilterConstants.foodType_non_veg.value);
       }
     } else {
       if (widget.selectedFilter.contains(checkString)) {
@@ -816,28 +851,40 @@ class _BottomDrawerState extends State<BottomDrawer> {
       }
     }
     // check if both keys are present then add add key
-    if (checkString != foodAmount_all ||
-        checkString != foodType_all ||
-        checkString != foodAvailability_all) {
+    if (checkString != FilterConstants.foodAmount_all.value ||
+        checkString != FilterConstants.foodType_all.value ||
+        checkString != FilterConstants.foodAvailability_all.value) {
       // check if both options are present then add all key
-      if (widget.selectedFilter.contains(foodAmount_free) &&
-          widget.selectedFilter.contains(foodAmount_chargeable)) {
+      if (widget.selectedFilter
+              .contains(FilterConstants.foodAmount_free.value) &&
+          widget.selectedFilter
+              .contains(FilterConstants.foodAmount_chargeable.value)) {
         // add all key
-        widget.selectedFilter.add(foodAmount_all);
+        widget.selectedFilter.add(FilterConstants.foodAmount_all.value);
+      } 
+
+      if (widget.selectedFilter
+              .contains(FilterConstants.foodAvailability_available.value) &&
+          widget.selectedFilter
+              .contains(FilterConstants.foodAvailability_just_gone.value)) {
+        // add all key
+        widget.selectedFilter.add(FilterConstants.foodAvailability_all.value);
       }
 
-      if (widget.selectedFilter.contains(foodAvailability_available) &&
-          widget.selectedFilter.contains(foodAvailability_just_gone)) {
+      if (widget.selectedFilter.contains(FilterConstants.foodType_veg.value) &&
+          widget.selectedFilter
+              .contains(FilterConstants.foodType_non_veg.value)) {
         // add all key
-        widget.selectedFilter.add(foodAvailability_all);
-      }
-
-      if (widget.selectedFilter.contains(foodType_veg) &&
-          widget.selectedFilter.contains(foodType_non_veg)) {
-        // add all key
-        widget.selectedFilter.add(foodType_all);
+        widget.selectedFilter.add(FilterConstants.foodType_all.value);
       }
     }
+    */
+    if (widget.selectedFilter.contains(checkString)) {
+      widget.selectedFilter.remove(checkString);
+    } else {
+      widget.selectedFilter.add(checkString);
+    }
+
     reloadScreen_notifyParentAboutSelection();
   }
 

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/Drawers.dart';
+import 'package:satietyfrontend/pages/Constants/FilterConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 
 class HorizontalFilterBar extends StatefulWidget {
   final List<String> options;
   final Function(String) onOptionSelected;
   final double height;
-  final VoidCallback onApplyFilter;
+  Function(Set<String>, DistanceFilter) onApplyFilter;
 
   HorizontalFilterBar(
       {required this.options,
@@ -63,7 +64,7 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
                   ),
                 GestureDetector(
                   onTap: () {
-                    if (option == "Distance") {
+                    if (option == FilterConstants.filter_distance.value) {
                       _showFilterPopUp();
                     } else {
                       widget.onOptionSelected(option);
@@ -73,6 +74,7 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
                       } else {
                         selectedFilter.add(option);
                       }
+                      widget.onApplyFilter(selectedFilter, selectedDistance);
                     }
                     setState(() {});
                   },
@@ -129,8 +131,11 @@ class _HorizontalFilterBarState extends State<HorizontalFilterBar> {
               selectedFilter = selectedOptions;
             });
           },
-          onApplyFilter: () {
-            widget.onApplyFilter();
+          onApplyFilter:
+              (Set<String> selectedFilter, DistanceFilter distanceSelected) {
+            print(selectedFilter);
+            print(selectedDistance);
+            widget.onApplyFilter(selectedFilter, selectedDistance);
           },
         );
       },

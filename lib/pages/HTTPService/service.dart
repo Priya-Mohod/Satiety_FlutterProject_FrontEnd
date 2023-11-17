@@ -120,16 +120,40 @@ class Service {
     return false;
   }
 
-  Future<Response?> fetchFoodData(
-    String distanceFilter,
-  ) async {
+  Future<Response?> fetchFoodData(Map<String, String> filterDict) async {
     try {
       var storedLocation =
           await UserStorageService.retrieveLocationFromPreferences();
       var request = http.MultipartRequest('GET', Uri.parse('$url/getAllFood'));
+      // -- get values from filterDict --
+      // get values from filter dict
+      String distanceFilter = "";
+      if (filterDict.containsKey('distanceFilter')) {
+        distanceFilter = filterDict['distanceFilter']!;
+      }
       request.fields['distanceFilter'] = distanceFilter;
       request.fields['latitude'] = storedLocation!.latitude.toString();
       request.fields['longitude'] = storedLocation.longitude.toString();
+      // -- check Food Type
+      String foodType = "";
+      if (filterDict.containsKey('foodTypeFilter')) {
+        foodType = filterDict['foodTypeFilter']!;
+      }
+      request.fields['foodTypeFilter'] = foodType;
+
+      // -- check Food Amount
+      String foodAmount = "";
+      if (filterDict.containsKey('foodAmountFilter')) {
+        foodAmount = filterDict['foodAmountFilter']!;
+      }
+      request.fields['foodAmountFilter'] = foodAmount;
+
+      // -- check Food Availability
+      String foodAvailability = "";
+      if (filterDict.containsKey('availabilityFilter')) {
+        foodAvailability = filterDict['availabilityFilter']!;
+      }
+      request.fields['availabilityFilter'] = foodAvailability;
 
       var response = await makeServerRequest(request);
       if (response != null && response.statusCode == 200) {
