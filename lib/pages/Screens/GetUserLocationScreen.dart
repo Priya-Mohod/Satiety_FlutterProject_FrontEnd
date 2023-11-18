@@ -59,9 +59,63 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
               child: CustomButton(
                   text: 'Get Current Location',
                   buttonFont: 18.0,
-                  onPressed: () {
+                  onPressed: () async {
                     LoadingIndicator.show(context);
-                    LocationManager.getLocation(context);
+                    bool isLocationPermissionAvailable =
+                        await LocationManager.getLocation(context);
+                    LoadingIndicator.hide(context);
+                    if (isLocationPermissionAvailable) {
+                      // Navigate to root screen
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RootScreen()));
+                    } else {
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        builder: (context) => Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Location permission is disabled!',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Please provide location permission to continue.',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Open device settings to enable location
+                                          openAppSettings();
+                                        },
+                                        child:
+                                            Text('Enable Location Permission'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    setState(() {});
                   }),
             ),
           ),

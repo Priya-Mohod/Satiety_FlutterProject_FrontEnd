@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
 import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
@@ -58,6 +59,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                   buttonFont: 20,
                   onPressed: () {
                     _videoPlayerController.pause();
+                    LocationManager.requestForUserPermission();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
