@@ -3,13 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
 import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool showSkipButton;
+  const LoginScreen({super.key, required this.showSkipButton});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -29,6 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
       displayName: "India",
       displayNameNoCountryCode: "IN",
       e164Key: "");
+  bool _phoneNumberError = false;
+  Service service = Service();
 
   @override
   Widget build(BuildContext context) {
@@ -70,24 +74,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-                Positioned(
-                  top: 50, // Adjust the position of the back button
-                  right: 10, // Adjust the position of the back button
-                  child: SizedBox(
-                    width: 80,
-                    height: 30,
-                    child: CustomButton(
-                        text: "Skip",
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      GetUserLocationScreen()));
-                        },
-                        buttonFont: 12.0),
+                if (widget.showSkipButton)
+                  Positioned(
+                    top: 50, // Adjust the position of the back button
+                    right: 10, // Adjust the position of the back button
+                    child: SizedBox(
+                      width: 80,
+                      height: 30,
+                      child: CustomButton(
+                          text: "Skip",
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GetUserLocationScreen()));
+                          },
+                          buttonFont: 12.0),
+                    ),
                   ),
-                ),
               ],
             ),
             const Text('Login',
@@ -103,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 cursorColor: ThemeColors.primaryColor,
                 controller: phoneNumberController,
                 keyboardType: TextInputType.phone,
+                maxLength: 10,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 style: TextStyle(
                     fontSize: 18,
@@ -111,10 +117,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   setState(() {
                     phoneNumberController.text = value;
+                    _phoneNumberError = value.length != 10;
                   });
                 },
                 decoration: InputDecoration(
                   hintText: "Enter Phone Number",
+                  errorText: (_phoneNumberError == false)
+                      ? null
+                      : "Enter valid number",
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(color: Colors.black12),
@@ -145,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
-                  suffixIcon: phoneNumberController.text.length > 9
+                  suffixIcon: phoneNumberController.text.length == 10
                       ? Container(
                           height: 25,
                           width: 25,
@@ -177,10 +187,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       // If already registered, show verify OTP screen
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => Register()));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VerifyOTPScreen()));
+                      if (phoneNumberController.text.length == 10) {
+                        // Make server call to get otp for phone number
+                        _phoneNumberError = false;
+                        _getOTPandDisplayVerifyScreen(
+                            phoneNumberController.text);
+                      } else {
+                        // show alert on screen to enter valid number
+                        setState(() {
+                          _phoneNumberError = true;
+                        });
+                      }
                     }),
               ),
             )
@@ -188,5 +205,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _getOTPandDisplayVerifyScreen(String mobileNumber) async {
+    //var response = await service.getOTPForMobileNumber(mobileNumber);
+    //if (response) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VerifyOTPScreen(mobileNumber: mobileNumber)));
+    // } else {
+    //   // Display alert of response is false
+    // }
   }
 }

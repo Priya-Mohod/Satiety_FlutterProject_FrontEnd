@@ -14,6 +14,12 @@ class UserStorageService {
     await pref.setString(_keyUser, jsonEncode(userJson));
   }
 
+  static Future<void> removeUserFromSharedPreferances() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('authToken');
+    prefs.remove(_keyUser);
+  }
+
   static Future<User?> getUserFromSharedPreferances() async {
     final pref = await SharedPreferences.getInstance();
     final userJson = pref.getString(_keyUser);
@@ -32,12 +38,6 @@ class UserStorageService {
     } else {
       return false;
     }
-  }
-
-  static Future<void> removeUserFromSharedPreferances() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('authToken');
-    prefs.remove(_keyUser);
   }
 
   static Future<void> saveCustomURL(String url) async {
@@ -94,7 +94,7 @@ class UserStorageService {
         heading: heading,
         speed: 0, // speed is set to 0 as it's not stored in shared preferences
         speedAccuracy: 0, // speedAccuracy is set to 0 as it's not stored
-        timestamp: timestamp,
+        timestamp: timestamp, altitudeAccuracy: 0, headingAccuracy: 0,
       );
     }
 
@@ -178,6 +178,8 @@ class UserStorageService {
           speed:
               0, // speed is set to 0 as it's not stored in shared preferences
           speedAccuracy: 0, // speedAccuracy is set to 0 as it's not stored
+          altitudeAccuracy: 0,
+          headingAccuracy: 0,
         );
       }).toList();
 

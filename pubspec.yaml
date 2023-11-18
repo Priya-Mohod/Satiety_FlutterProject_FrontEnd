@@ -40,7 +40,7 @@ dependencies:
   http: ^1.1.0
   url_launcher: ^6.1.11
   path_provider: ^2.0.15
-  image_picker: ^0.8.4+4
+  image_picker: ^1.0.4
   location: ^5.0.0
   geolocator: 
   geocoding:
@@ -55,7 +55,7 @@ dependencies:
   intl:
   retry:
   full_screen_image: ^2.0.0
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.0
   flutter_launcher_icons: ^0.13.1
   cloud_firestore: ^4.9.0
   country_picker: ^2.0.22

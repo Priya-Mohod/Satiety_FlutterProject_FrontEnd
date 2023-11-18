@@ -4,18 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/HTTPService/service.dart';
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
-  const VerifyOTPScreen({super.key});
+  final String mobileNumber;
+  const VerifyOTPScreen({super.key, required this.mobileNumber});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
-  String? otpCode;
+  String otpCode = "";
+  final int otpLength = 4;
+  Service service = Service();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +71,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
               child: Column(
                 children: [
                   Pinput(
-                    length: 6,
+                    length: otpLength,
                     showCursor: true,
                     defaultPinTheme: PinTheme(
                       width: 60,
@@ -78,6 +84,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     onSubmitted: (value) {
+                      print(value);
                       setState(() {
                         // *** assign to otpCode = value
                         otpCode = value;
@@ -92,8 +99,10 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         text: 'Verify',
                         buttonFont: 16.0,
                         onPressed: () {
-                          if (otpCode != null) {
-                            verfiyOTP(context, otpCode!);
+                          print(otpCode);
+                          if (otpCode.length == otpLength) {
+                            verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
+                                context, otpCode);
                           } else {
                             SnackbarHelper.showSnackBar(
                                 context, 'Enter complete code');
@@ -130,5 +139,14 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     );
   }
 
-  void verfiyOTP(BuildContext context, String optCode) {}
+  void verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
+      BuildContext context, String otpCode) {
+    // make server call with mobile number and otp to send
+    // based on response user will be navigated to root screen or register screen
+    // var response = await service.verifyOTPForMobileNumber(mobileNumber,otpCode);
+    // if (response) {
+    //  }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => RootScreen()));
+  }
 }

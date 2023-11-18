@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "nominatim"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
