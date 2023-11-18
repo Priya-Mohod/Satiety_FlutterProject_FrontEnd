@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -98,27 +99,47 @@ class LocationManager {
     }
   }
 
-  static Future<void> getLocation(BuildContext context) async {
+  static Future<bool> getLocation(BuildContext context) async {
     bool locationEnabled = await isLocationEnabled();
-
+    bool isLocationPermissionAvailable = false;
     if (!locationEnabled) {
       //   LoadingIndicator.instance.hide();
       showLocationServiceAlertDialog(context);
-      return;
+      return false;
+    }
+    var locationStatus = await Permission.location.status;
+    // isLocationPermissionAvailable =
+    //     await _checkAndShowLocationSheet(context);
+    // if location is denied
+    // if (locationStatus.isPermanentlyDenied || locationStatus.isDenied) {
+    //   isLocationPermissionAvailable = false;
+    // } else
+    if (locationStatus.isGranted) {
+      // Permission already granted, perform your operation here
+      print("Location permission already granted");
+      Position? currentPosition = await Geolocator.getCurrentPosition();
+      await UserStorageService.saveLocationToPreferences(currentPosition);
+      // Update the location array of user, to set it in recent used locations
+      await UserStorageService.saveRecentLocationToPreferences(currentPosition);
+      isLocationPermissionAvailable = true;
     }
 
-    _checkAndShowLocationSheet(context);
+    // else {
+    //   // Permission denied, handle accordingly
+    //   print("Location permission denied");
+    // }
 
-    Location.Location location = Location.Location();
-    try {
-      LocationData currentLocation = await location.getLocation();
-      print('Latitude: ${currentLocation.latitude}');
-      print('Longitude: ${currentLocation.longitude}');
+    // Location.Location location = Location.Location();
+    // try {
+    //   LocationData currentLocation = await location.getLocation();
+    //   print('Latitude: ${currentLocation.latitude}');
+    //   print('Longitude: ${currentLocation.longitude}');
 
-      // Get location permission
-    } catch (e) {
-      print('Error getting location: $e');
-    }
+    //   // Get location permission
+    // } catch (e) {
+    //   print('Error getting location: $e');
+    // }
+    return isLocationPermissionAvailable;
   }
 
   static Future<bool> isLocationEnabled() async {
@@ -149,74 +170,7 @@ class LocationManager {
     );
   }
 
-  static void _checkAndShowLocationSheet(BuildContext context) async {
-    Position? currentPosition;
+  static void requestForUserPermission() async {
     await Permission.location.request();
-    var locationStatus = await Permission.location.status;
-    print("locationStatus");
-    print(locationStatus);
-    if (locationStatus.isGranted == false) {
-      LoadingIndicator.hide();
-      showModalBottomSheet(
-        context: context,
-        isDismissible: true,
-        builder: (context) => Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (locationStatus == PermissionStatus.denied)
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Location permission is disabled!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Please provide location permission to continue.',
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Open device settings to enable location
-                            openAppSettings();
-                          },
-                          child: Text('Enable Location Permission'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      );
-    } else if (locationStatus.isGranted == true) {
-      // location permission is granted
-      // get the user's current location
-      //if (isLocationEnabled == true) {
-      print("User location enabled");
-      currentPosition = await Geolocator.getCurrentPosition();
-
-      if (currentPosition != null) {
-        // *** Once we get current user location, set it to user's location system pref
-        await UserStorageService.saveLocationToPreferences(currentPosition);
-        // Update the location array of user, to set it in recent used locations
-        await UserStorageService.saveRecentLocationToPreferences(
-            currentPosition);
-        // set the flag that we got the location - we can check the location array
-        // display Root Screen after all configuration
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => RootScreen()));
-      }
-    }
   }
 }
