@@ -76,18 +76,17 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
               // Set selected page as MyListings
               // selectedPageProvider.setSelectedPage(StringConstants.MyListings);
               // Navigator.pushReplacementNamed(context, StringConstants.MyListings);
-              showFullScreenDialog(context);
+
               setState(() {
                 selectedPage = Pages.MyListings;
               });
             } else if (index == Pages.Add.index) {
               // BottomDrawer.showBottomDrawer(context);
-              showFullScreenDialog(context);
             } else if (index == Pages.MyRequests.index &&
                 selectedPage != Pages.MyRequests) {
               // selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
               // Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
-              showFullScreenDialog(context);
+
               setState(() {
                 selectedPage = Pages.MyRequests;
               });
@@ -95,7 +94,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
                 selectedPage != Pages.Messages) {
               // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
               // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
-              showFullScreenDialog(context);
+
               setState(() {
                 selectedPage = Pages.Messages;
               });
@@ -121,23 +120,6 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
           MessagePage(),
         ],
       ),
-    );
-  }
-
-  void showFullScreenDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: Center(
-              child: Text('This is a full-screen dialog'),
-            ),
-          ),
-        );
-      },
     );
   }
 }

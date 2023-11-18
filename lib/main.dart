@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
@@ -36,6 +37,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
   await Firebase.initializeApp();
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();

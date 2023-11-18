@@ -8,6 +8,9 @@ import 'package:satietyfrontend/pages/Constants/ImageLoader/ImageLoader.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
+import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyRequests.dart';
@@ -72,16 +75,19 @@ class _FoodDetailsState extends State<FoodDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ImageLoader(
-            //   imageUrl: widget.foodItem.foodSignedUrl,
-            //   imageHeight: 350,
-            //   imageWidth: double.infinity,
-            // ),
             Image.network(
               widget.foodItem.foodSignedUrl,
               height: 350,
               fit: BoxFit.cover,
               width: double.infinity,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/account.png',
+                  height: 350,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                );
+              },
             ),
             Container(
                 color: Color.fromARGB(255, 192, 209, 212),
@@ -388,12 +394,27 @@ class _FoodDetailsState extends State<FoodDetails> {
                 elevation: 15,
                 minimumSize: const Size(250, 50),
               ),
-              onPressed: widget.foodItem.isRequestedByLoggedInUser == "N"
-                  ? () async {
-                      // Explicitly pass the context to the async function
-                      await _handleFoodRequest(context);
-                    }
-                  : null,
+              onPressed: () async {
+                User? localUser =
+                    await UserStorageService.getUserFromSharedPreferances();
+
+                if (localUser == null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(
+                          showSkipButton: false,
+                        ),
+                      ));
+                } else {
+                  widget.foodItem.isRequestedByLoggedInUser == "N"
+                      ? () async {
+                          // Explicitly pass the context to the async function
+                          await _handleFoodRequest(context);
+                        }
+                      : null;
+                }
+              },
               child: const Text('Request This',
                   style: TextStyle(
                     fontSize: 30,
