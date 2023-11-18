@@ -230,7 +230,9 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
         altitude: altitude,
         heading: heading,
         speed: speed,
-        speedAccuracy: speedAccuracy);
+        speedAccuracy: speedAccuracy,
+        altitudeAccuracy: 0,
+        headingAccuracy: 0);
 
     _saveLocation_showRootScreen(currentPosition);
   }
@@ -247,14 +249,17 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
     print('selecting object');
 
     Position currentPosition = Position(
-        longitude: lastLocation.longitude,
-        latitude: lastLocation.latitude,
-        timestamp: lastLocation.timestamp,
-        accuracy: lastLocation.accuracy,
-        altitude: lastLocation.altitude,
-        heading: lastLocation.heading,
-        speed: lastLocation.speed,
-        speedAccuracy: lastLocation.speedAccuracy);
+      longitude: lastLocation.longitude,
+      latitude: lastLocation.latitude,
+      timestamp: lastLocation.timestamp,
+      accuracy: lastLocation.accuracy,
+      altitude: lastLocation.altitude,
+      heading: lastLocation.heading,
+      speed: lastLocation.speed,
+      speedAccuracy: lastLocation.speedAccuracy,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0,
+    );
 
     _saveLocation_showRootScreen(currentPosition);
   }

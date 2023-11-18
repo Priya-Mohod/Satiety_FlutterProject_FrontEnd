@@ -61,7 +61,9 @@ class _LaunchScreenState extends State<LaunchScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
+                          builder: (context) => const LoginScreen(
+                            showSkipButton: true,
+                          ),
                         ));
                   }),
             ),

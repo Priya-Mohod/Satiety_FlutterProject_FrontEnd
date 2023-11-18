@@ -54,7 +54,9 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => LoginScreen(
+                                    showSkipButton: true,
+                                  )));
                     })),
           ),
           // Flexible(

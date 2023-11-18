@@ -9,7 +9,8 @@ import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool showSkipButton;
+  const LoginScreen({super.key, required this.showSkipButton});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -70,24 +71,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-                Positioned(
-                  top: 50, // Adjust the position of the back button
-                  right: 10, // Adjust the position of the back button
-                  child: SizedBox(
-                    width: 80,
-                    height: 30,
-                    child: CustomButton(
-                        text: "Skip",
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      GetUserLocationScreen()));
-                        },
-                        buttonFont: 12.0),
+                if (widget.showSkipButton)
+                  Positioned(
+                    top: 50, // Adjust the position of the back button
+                    right: 10, // Adjust the position of the back button
+                    child: SizedBox(
+                      width: 80,
+                      height: 30,
+                      child: CustomButton(
+                          text: "Skip",
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GetUserLocationScreen()));
+                          },
+                          buttonFont: 12.0),
+                    ),
                   ),
-                ),
               ],
             ),
             const Text('Login',

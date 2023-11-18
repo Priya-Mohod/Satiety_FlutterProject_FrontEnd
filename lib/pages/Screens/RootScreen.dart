@@ -4,7 +4,10 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/HomeScreen.dart';
+import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/CustomHeader.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
@@ -57,7 +60,9 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
       ),
       bottomNavigationBar: CustomBottomBar(
         currentIndex: selectedPage.index,
-        onTap: (index) {
+        onTap: (index) async {
+          User? localUser =
+              await UserStorageService.getUserFromSharedPreferances();
           if (index == Pages.Home.index) {
             // Set selected page as Home
             //selectedPageProvider.setSelectedPage(StringConstants.Home);
@@ -65,30 +70,44 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
             setState(() {
               selectedPage = Pages.Home;
             });
-          } else if (index == Pages.MyListings.index &&
-              selectedPage != Pages.MyListings) {
-            // Set selected page as MyListings
-            // selectedPageProvider.setSelectedPage(StringConstants.MyListings);
-            // Navigator.pushReplacementNamed(context, StringConstants.MyListings);
-            setState(() {
-              selectedPage = Pages.MyListings;
-            });
-          } else if (index == Pages.Add.index) {
-            // BottomDrawer.showBottomDrawer(context);
-          } else if (index == Pages.MyRequests.index &&
-              selectedPage != Pages.MyRequests) {
-            // selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
-            // Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
-            setState(() {
-              selectedPage = Pages.MyRequests;
-            });
-          } else if (index == Pages.MyRequests.index &&
-              selectedPage != Pages.Messages) {
-            // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
-            // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
-            setState(() {
-              selectedPage = Pages.Messages;
-            });
+          } else if (localUser != null) {
+            if (index == Pages.MyListings.index &&
+                selectedPage != Pages.MyListings) {
+              // Set selected page as MyListings
+              // selectedPageProvider.setSelectedPage(StringConstants.MyListings);
+              // Navigator.pushReplacementNamed(context, StringConstants.MyListings);
+              showFullScreenDialog(context);
+              setState(() {
+                selectedPage = Pages.MyListings;
+              });
+            } else if (index == Pages.Add.index) {
+              // BottomDrawer.showBottomDrawer(context);
+              showFullScreenDialog(context);
+            } else if (index == Pages.MyRequests.index &&
+                selectedPage != Pages.MyRequests) {
+              // selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
+              // Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
+              showFullScreenDialog(context);
+              setState(() {
+                selectedPage = Pages.MyRequests;
+              });
+            } else if (index == Pages.MyRequests.index &&
+                selectedPage != Pages.Messages) {
+              // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
+              // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
+              showFullScreenDialog(context);
+              setState(() {
+                selectedPage = Pages.Messages;
+              });
+            }
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(
+                    showSkipButton: false,
+                  ),
+                ));
           }
         },
       ),
@@ -102,6 +121,23 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
           MessagePage(),
         ],
       ),
+    );
+  }
+
+  void showFullScreenDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Text('This is a full-screen dialog'),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -112,7 +112,9 @@ class MyApp extends StatelessWidget {
             '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
             '/UserAccountScreen': (context) => UserAccountScreen(),
             '/HomeScreen': (context) => HomeScreen(),
-            '/LoginScreen': (context) => LoginScreen(),
+            '/LoginScreen': (context) => LoginScreen(
+                  showSkipButton: false,
+                ),
             '/VerifyOTPScreen': (context) => VerifyOTPScreen(),
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFreeFood(),
