@@ -51,6 +51,61 @@ class Service {
     return null;
   }
 
+  // -- On click of Get OTP button, send mobile number to server
+  Future<bool> getOTPForMobileNumber(String mobileNumber) async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      url = customURL;
+    }
+    var request = http.MultipartRequest('GET', Uri.parse('$url/getOTP'));
+    // User Firstname -
+    request.fields['mobileNumber'] = mobileNumber;
+
+    print(request);
+    var response = await makeServerRequest(request);
+
+    // Handle the response
+    if (response != null && response.statusCode == 200) {
+      // File upload successful
+      print('OTP sent successfully');
+      return true;
+      // send response back to caller function
+    } else if (response != null) {
+      // File upload failed
+      print('Error in OTP generation ${response.statusCode}');
+      return false;
+    }
+    return false;
+  }
+
+  Future<bool> verifyOTPForMobileNumber(String mobileNumber, String OTP) async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      url = customURL;
+    }
+    var request = http.MultipartRequest('GET', Uri.parse('$url/getOTP'));
+
+    // User Firstname -
+    request.fields['mobileNumber'] = mobileNumber;
+    request.fields['OTP'] = OTP;
+
+    print(request);
+    var response = await makeServerRequest(request);
+
+    // Handle the response
+    if (response != null && response.statusCode == 200) {
+      // File upload successful
+      print('OTP verified successfully');
+      return true;
+      // send response back to caller function
+    } else if (response != null) {
+      // File upload failed
+      print('Error in OTP verification ${response.statusCode}');
+      return false;
+    }
+    return false;
+  }
+
   Future<bool> registerUser(
       File? userImage,
       String firstName,
@@ -466,8 +521,6 @@ class Service {
     };
     return headers;
   }
-
-  //
 
   Future<Response?> convertStreamedResponseToResponse(
       http.StreamedResponse httpResponse) async {

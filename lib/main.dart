@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
             '/LoginScreen': (context) => LoginScreen(
                   showSkipButton: false,
                 ),
-            '/VerifyOTPScreen': (context) => VerifyOTPScreen(),
+            '/VerifyOTPScreen': (context) => VerifyOTPScreen(mobileNumber: ""),
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFreeFood(),
             '/ForumPage': (context) => ForumPage(),
