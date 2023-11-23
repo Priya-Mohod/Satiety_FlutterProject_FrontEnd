@@ -99,13 +99,11 @@ class LocationManager {
     }
   }
 
-  static Future<bool> getLocation(BuildContext context) async {
+  static Future<LocationStatus> getLocation(BuildContext context) async {
     bool locationEnabled = await isLocationEnabled();
-    bool isLocationPermissionAvailable = false;
+
     if (!locationEnabled) {
-      //   LoadingIndicator.instance.hide();
-      showLocationServiceAlertDialog(context);
-      return false;
+      return LocationStatus.deviceLocationNotON;
     }
     var locationStatus = await Permission.location.status;
     // isLocationPermissionAvailable =
@@ -121,7 +119,7 @@ class LocationManager {
       await UserStorageService.saveLocationToPreferences(currentPosition);
       // Update the location array of user, to set it in recent used locations
       await UserStorageService.saveRecentLocationToPreferences(currentPosition);
-      isLocationPermissionAvailable = true;
+      return LocationStatus.bothGranted;
     }
 
     // else {
@@ -139,7 +137,7 @@ class LocationManager {
     // } catch (e) {
     //   print('Error getting location: $e');
     // }
-    return isLocationPermissionAvailable;
+    return LocationStatus.locationPermissionDenied;
   }
 
   static Future<bool> isLocationEnabled() async {
@@ -148,26 +146,6 @@ class LocationManager {
     bool _serviceEnabled;
     _serviceEnabled = await location.serviceEnabled();
     return _serviceEnabled;
-  }
-
-  static void showLocationServiceAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Location Service Disabled'),
-          content: Text('Please enable location services to use this feature.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   static void requestForUserPermission() async {
