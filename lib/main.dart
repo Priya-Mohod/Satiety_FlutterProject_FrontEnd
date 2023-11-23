@@ -42,7 +42,6 @@ void main() async {
   await Firebase.initializeApp();
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
-  User? localUser;
   // Check App running for first time
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
