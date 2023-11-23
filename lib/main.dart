@@ -49,8 +49,6 @@ void main() async {
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
   bool isOTPVerified = prefs.getBool('isOTPVerified') ?? false;
   if (isFirstTime) await UserStorageService.removeUserFromSharedPreferances();
-  localUser = await UserStorageService.getUserFromSharedPreferances();
-  print(localUser);
 
   runApp(
     MultiProvider(
