@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/LaunchScreen.dart';
 import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
@@ -41,12 +42,15 @@ void main() async {
   await Firebase.initializeApp();
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
-
+  User? localUser;
   // Check App running for first time
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
   bool isOTPVerified = prefs.getBool('isOTPVerified') ?? false;
+  if (isFirstTime) await UserStorageService.removeUserFromSharedPreferances();
+  localUser = await UserStorageService.getUserFromSharedPreferances();
+  print(localUser);
 
   runApp(
     MultiProvider(
