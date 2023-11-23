@@ -22,6 +22,12 @@ enum FoodFilter {
   foodAvailability_just_gone
 }
 
+enum LocationStatus {
+  deviceLocationNotON,
+  locationPermissionDenied,
+  bothGranted
+}
+
 // final String foodType_all = "All_Veg_Non-Veg";
 // final String foodType_veg = "Veg";
 // final String foodType_non_veg = "Non-veg";

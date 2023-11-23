@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart'
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
@@ -61,61 +62,23 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                   buttonFont: 18.0,
                   onPressed: () async {
                     LoadingIndicator.show(context);
-                    bool isLocationPermissionAvailable =
+                    LocationStatus isLocationPermissionAvailable =
                         await LocationManager.getLocation(context);
                     LoadingIndicator.hide(context);
-                    if (isLocationPermissionAvailable) {
-                      // Navigate to root screen
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RootScreen()));
-                    } else {
-                      showModalBottomSheet(
-                        context: context,
-                        isDismissible: true,
-                        builder: (context) => Container(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Location permission is disabled!',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Please provide location permission to continue.',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(height: 10),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // Open device settings to enable location
-                                          openAppSettings();
-                                        },
-                                        child:
-                                            Text('Enable Location Permission'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
 
-                    setState(() {});
+                    switch (isLocationPermissionAvailable) {
+                      case LocationStatus.deviceLocationNotON:
+                        _showLocationServiceAlertDialog(context);
+                        break;
+                      case LocationStatus.locationPermissionDenied:
+                        _showLocationPermissionAlertDialog(context);
+                        break;
+                      default:
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RootScreen()));
+                    }
                   }),
             ),
           ),
@@ -141,6 +104,70 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void _showLocationServiceAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Location Service Disabled'),
+          content: Text('Please enable location services to use this feature.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLocationPermissionAlertDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Location permission is disabled!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Please provide location permission to continue.',
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Open device settings to enable location
+                        openAppSettings();
+                      },
+                      child: Text('Enable Location Permission'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
