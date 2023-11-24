@@ -118,7 +118,8 @@ class MyApp extends StatelessWidget {
             '/LoginScreen': (context) => LoginScreen(
                   showSkipButton: false,
                 ),
-            '/VerifyOTPScreen': (context) => VerifyOTPScreen(mobileNumber: ""),
+            '/VerifyOTPScreen': (context) => VerifyOTPScreen(
+                mobileNumber: "", verifyOTP: "", isUserExist: false),
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFreeFood(),
             '/ForumPage': (context) => ForumPage(),
