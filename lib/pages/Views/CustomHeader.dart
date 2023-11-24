@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
+import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
+import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
-import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 
 class CustomHeader extends StatefulWidget {
   @override
@@ -186,9 +187,23 @@ class AccountIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(CupertinoIcons.person_crop_circle_fill),
-      onPressed: () {
+      onPressed: () async {
+        User? localUser =
+            await UserStorageService.getUserFromSharedPreferances();
         // Add functionality for user account icon here
         // *** display user account information if logged in else show window to Login
+        if (localUser == null) {
+          // display login
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(
+                  showSkipButton: false,
+                ),
+              ));
+        } else {
+          // display account info screen
+        }
       },
     );
   }

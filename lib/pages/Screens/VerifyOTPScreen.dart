@@ -11,7 +11,13 @@ import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
   final String mobileNumber;
-  const VerifyOTPScreen({super.key, required this.mobileNumber});
+  final String verifyOTP;
+  final bool isUserExist;
+  const VerifyOTPScreen(
+      {super.key,
+      required this.mobileNumber,
+      required this.verifyOTP,
+      required this.isUserExist});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
@@ -90,6 +96,9 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         otpCode = value;
                       });
                     },
+                    onChanged: (value) {
+                      otpCode = value;
+                    },
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -141,12 +150,12 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
 
   void verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
       BuildContext context, String otpCode) {
-    // make server call with mobile number and otp to send
-    // based on response user will be navigated to root screen or register screen
-    // var response = await service.verifyOTPForMobileNumber(mobileNumber,otpCode);
-    // if (response) {
-    //  }
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RootScreen()));
+    if (widget.verifyOTP == otpCode) {
+      SnackbarHelper.showSnackBar(context, 'Phone number verified');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => RootScreen()));
+    } else {
+      SnackbarHelper.showSnackBar(context, 'Please enter correct OTP');
+    }
   }
 }

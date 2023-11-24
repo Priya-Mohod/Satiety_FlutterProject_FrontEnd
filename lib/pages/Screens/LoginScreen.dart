@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -190,8 +192,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (phoneNumberController.text.length == 10) {
                         // Make server call to get otp for phone number
                         _phoneNumberError = false;
+                        // ***
                         _getOTPandDisplayVerifyScreen(
                             phoneNumberController.text);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => VerifyOTPScreen(
+                        //             mobileNumber: "mobileNumber",
+                        //             verifyOTP: "7783",
+                        //             isUserExist: false)));
                       } else {
                         // show alert on screen to enter valid number
                         setState(() {
@@ -208,14 +218,23 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _getOTPandDisplayVerifyScreen(String mobileNumber) async {
-    //var response = await service.getOTPForMobileNumber(mobileNumber);
-    //if (response) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VerifyOTPScreen(mobileNumber: mobileNumber)));
-    // } else {
-    //   // Display alert of response is false
-    // }
+    var response = await service.getOTPForMobileNumber(mobileNumber);
+    if (response != null) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      print("OTP received");
+      print(data.keys.first);
+      print(data.values.first);
+      String otpReceived = data.keys.first;
+      bool isUserExist = data.values.first;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VerifyOTPScreen(
+                  mobileNumber: mobileNumber,
+                  verifyOTP: otpReceived,
+                  isUserExist: isUserExist)));
+    } else {
+      // Display alert of response is false
+    }
   }
 }

@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Constants/StringConstants.dart';
@@ -52,14 +49,15 @@ class Service {
   }
 
   // -- On click of Get OTP button, send mobile number to server
-  Future<bool> getOTPForMobileNumber(String mobileNumber) async {
+  Future<Response?> getOTPForMobileNumber(String mobileNumber) async {
     String? customURL = await UserStorageService.getCustomURL();
     if (customURL != null) {
       url = customURL;
     }
-    var request = http.MultipartRequest('GET', Uri.parse('$url/getOTP'));
+    var request =
+        http.MultipartRequest('GET', Uri.parse('$url/sendOtpOnMobile'));
     // User Firstname -
-    request.fields['mobileNumber'] = mobileNumber;
+    request.fields['mobile'] = mobileNumber;
 
     print(request);
     var response = await makeServerRequest(request);
@@ -68,14 +66,14 @@ class Service {
     if (response != null && response.statusCode == 200) {
       // File upload successful
       print('OTP sent successfully');
-      return true;
+      return convertStreamedResponseToResponse(response);
       // send response back to caller function
     } else if (response != null) {
       // File upload failed
       print('Error in OTP generation ${response.statusCode}');
-      return false;
+      return null;
     }
-    return false;
+    return null;
   }
 
   Future<bool> verifyOTPForMobileNumber(String mobileNumber, String OTP) async {

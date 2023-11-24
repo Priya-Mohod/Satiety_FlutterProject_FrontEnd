@@ -106,14 +106,7 @@ class LocationManager {
       return LocationStatus.deviceLocationNotON;
     }
     var locationStatus = await Permission.location.status;
-    // isLocationPermissionAvailable =
-    //     await _checkAndShowLocationSheet(context);
-    // if location is denied
-    // if (locationStatus.isPermanentlyDenied || locationStatus.isDenied) {
-    //   isLocationPermissionAvailable = false;
-    // } else
     if (locationStatus.isGranted) {
-      // Permission already granted, perform your operation here
       print("Location permission already granted");
       Position? currentPosition = await Geolocator.getCurrentPosition();
       await UserStorageService.saveLocationToPreferences(currentPosition);
@@ -121,22 +114,6 @@ class LocationManager {
       await UserStorageService.saveRecentLocationToPreferences(currentPosition);
       return LocationStatus.bothGranted;
     }
-
-    // else {
-    //   // Permission denied, handle accordingly
-    //   print("Location permission denied");
-    // }
-
-    // Location.Location location = Location.Location();
-    // try {
-    //   LocationData currentLocation = await location.getLocation();
-    //   print('Latitude: ${currentLocation.latitude}');
-    //   print('Longitude: ${currentLocation.longitude}');
-
-    //   // Get location permission
-    // } catch (e) {
-    //   print('Error getting location: $e');
-    // }
     return LocationStatus.locationPermissionDenied;
   }
 
