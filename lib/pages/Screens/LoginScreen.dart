@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
 import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
@@ -193,15 +194,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Make server call to get otp for phone number
                         _phoneNumberError = false;
                         // ***
-                        _getOTPandDisplayVerifyScreen(
-                            phoneNumberController.text);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => VerifyOTPScreen(
-                        //             mobileNumber: "mobileNumber",
-                        //             verifyOTP: "7783",
-                        //             isUserExist: false)));
+                        if (DevelopementConfig.loginUsingDummyOTP) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VerifyOTPScreen(
+                                      mobileNumber: "mobileNumber",
+                                      verifyOTP: "7783",
+                                      isUserExist: false)));
+                        } else {
+                          _getOTPandDisplayVerifyScreen(
+                              phoneNumberController.text);
+                        }
                       } else {
                         // show alert on screen to enter valid number
                         setState(() {
