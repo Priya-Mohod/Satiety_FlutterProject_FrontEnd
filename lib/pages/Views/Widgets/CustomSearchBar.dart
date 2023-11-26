@@ -18,7 +18,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 25,
-      padding: EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
@@ -38,6 +38,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           widget.onSearch(value);
         },
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 0),
           hintText: 'Search',
           prefixIcon: Icon(CupertinoIcons.search, color: Colors.grey),
           border: InputBorder.none,

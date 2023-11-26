@@ -98,7 +98,7 @@ class StringConstants {
 
   // -- My Listings
   static String my_listings_screen_title = 'My Listings';
-  static String my_listings_screen_no_listings = 'No listings found';
+  static String my_listings_screen_no_listings = 'No listings available';
   static String my_listings_error_accept_request =
       'Error accepting request, please try again';
   static String my_listings_error_decline_request = 'Error declining request';

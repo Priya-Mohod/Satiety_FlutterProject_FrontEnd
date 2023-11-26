@@ -39,11 +39,6 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
             // color: Colors.black54,
             child: Row(
               children: [
-                // ImageLoader(
-                //   imageUrl: foodItem.foodSignedUrl,
-                //   imageHeight: 120,
-                //   imageWidth: 130,
-                // ),
                 Container(
                     height: 120,
                     width: 130,
@@ -91,7 +86,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 10),
+                          SizedBox(height: 05),
                           Text(widget.foodItem.foodName,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -99,7 +94,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               )),
-                          SizedBox(height: 7),
+                          SizedBox(height: 05),
                           Container(
                             width: 200,
                             child: Row(
@@ -131,9 +126,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                                   },
                                 )),
                                 SizedBox(width: 3),
-                                Container(
-                                  width: 100,
-                                  //color: Colors.black45,
+                                Expanded(
                                   child: Text(widget.foodItem.addedByUserName,
                                       style: TextStyle(
                                         fontSize: 18,
@@ -158,7 +151,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 5),
+                          SizedBox(height: 10),
                           Row(
                             children: [
                               Icon(Icons.location_on_outlined,
