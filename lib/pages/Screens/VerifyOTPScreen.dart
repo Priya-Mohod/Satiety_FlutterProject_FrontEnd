@@ -9,6 +9,7 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
@@ -17,11 +18,13 @@ class VerifyOTPScreen extends StatefulWidget {
   final String mobileNumber;
   final String verifyOTP;
   final bool isUserExist;
+  final String authToken;
   const VerifyOTPScreen(
       {super.key,
       required this.mobileNumber,
       required this.verifyOTP,
-      required this.isUserExist});
+      required this.isUserExist,
+      required this.authToken});
 
   @override
   State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
@@ -171,15 +174,22 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   }
 
   void verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
-      BuildContext context, String otpCode) {
+      BuildContext context, String otpCode) async {
     if (widget.verifyOTP == otpCode) {
+      // Save user token
+      await UserStorageService.saveUserAuthToken(widget.authToken);
+
       if (widget.isUserExist == true) {
-        SnackbarHelper.showSnackBar(context, 'Phone number verified');
+        SnackbarHelper.showSnackBar(context, 'Welcome back!');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RootScreen()));
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Register()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Register(
+                      mobileNumber: widget.mobileNumber,
+                    )));
       }
     } else {
       SnackbarHelper.showSnackBar(context, 'Please enter correct OTP');

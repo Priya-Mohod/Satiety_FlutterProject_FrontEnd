@@ -14,6 +14,16 @@ class UserStorageService {
     await pref.setString(_keyUser, jsonEncode(userJson));
   }
 
+  static Future<void> saveUserAuthToken(String authToken) async {
+    final pref = await SharedPreferences.getInstance();
+    // remove existing auth token
+    if (pref.containsKey('authToken')) {
+      await pref.remove('authToken');
+    }
+    // add new auth token
+    await pref.setString('authToken', authToken);
+  }
+
   static Future<void> removeUserFromSharedPreferances() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('authToken');

@@ -177,7 +177,9 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Register(),
+                            builder: (context) => Register(
+                              mobileNumber: "",
+                            ),
                           ),
                         );
                       },

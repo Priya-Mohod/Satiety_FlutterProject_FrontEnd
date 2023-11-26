@@ -199,9 +199,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => VerifyOTPScreen(
-                                      mobileNumber: "mobileNumber",
-                                      verifyOTP: "7783",
-                                      isUserExist: false)));
+                                        mobileNumber: "9029413588",
+                                        verifyOTP: "7783",
+                                        isUserExist: true,
+                                        authToken: "",
+                                      )));
                         } else {
                           _getOTPandDisplayVerifyScreen(
                               phoneNumberController.text);
@@ -228,15 +230,17 @@ class _LoginScreenState extends State<LoginScreen> {
       print("OTP received");
       print(data.keys.first);
       print(data.values.first);
-      String otpReceived = data.keys.first;
-      bool isUserExist = data.values.first;
+      String otpReceived = data["otp"];
+      bool isUserExist = data["isExistingUser"];
+      String authToken = data["token"];
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => VerifyOTPScreen(
                   mobileNumber: mobileNumber,
                   verifyOTP: otpReceived,
-                  isUserExist: isUserExist)));
+                  isUserExist: isUserExist,
+                  authToken: authToken)));
     } else {
       // Display alert of response is false
     }
