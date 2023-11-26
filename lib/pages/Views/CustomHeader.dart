@@ -58,13 +58,17 @@ class _CustomHeaderState extends State<CustomHeader> {
               ),
             ),
           ),
-          IconButton(
-            icon: Icon(CupertinoIcons.person_crop_circle_fill),
-            onPressed: () {
-              // Add functionality for user account icon here
-              _showAccountScreen();
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(CupertinoIcons.location_fill, color: Colors.orange),
+          //   // icon: Icon(
+          //   //   CupertinoIcons.person_crop_circle_fill,
+          //   //   color: Colors.white,
+          //   // ),
+          //   onPressed: () {
+          //     // Add functionality for user account icon here
+          //     _showAccountScreen();
+          //   },
+          // ),
         ],
       ),
     );
@@ -132,14 +136,20 @@ class _AddressInfoState extends State<AddressInfo> {
                 child: Text(
                   addressHeading,
                   overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              Icon(Icons.arrow_drop_down)
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white,
+              ),
             ],
           ),
           Text(
             addressSubHeading,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
         ],
@@ -186,7 +196,10 @@ class AccountIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(CupertinoIcons.person_crop_circle_fill),
+      icon: Icon(
+        CupertinoIcons.person_crop_circle_fill,
+        color: Colors.white,
+      ),
       onPressed: () async {
         User? localUser =
             await UserStorageService.getUserFromSharedPreferances();

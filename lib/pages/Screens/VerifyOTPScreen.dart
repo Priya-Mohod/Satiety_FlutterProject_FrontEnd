@@ -1,11 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
+import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
@@ -27,6 +31,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   String otpCode = "";
   final int otpLength = 4;
   Service service = Service();
+  bool isButtonDisabled = false;
+  int countdown = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +74,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             const Text(
-              'Enter the received OTP on phone and email',
+              'Enter the received OTP on phone',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
             ),
             const SizedBox(height: 20),
@@ -128,17 +134,33 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                   ),
                   const SizedBox(height: 10),
                   GestureDetector(
-                    onTap: () {
-                      // *** Resend the code
-                    },
-                    child: const Text(
-                      "Resend",
+                    onTap: isButtonDisabled
+                        ? null
+                        : () async {
+                            bool otpSent =
+                                await _resendOTP(widget.mobileNumber);
+                            if (otpSent) {
+                              SnackbarHelper.showSnackBar(
+                                  context, 'OTP Re-sent Successfully');
+                            } else {
+                              SnackbarHelper.showSnackBar(
+                                  context, 'Error in resending the OTP');
+                            }
+                          },
+                    child: Text(
+                      "Resend OTP",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 6, 17, 17)),
+                          color: isButtonDisabled
+                              ? Colors.grey
+                              : Color.fromARGB(255, 6, 17, 17)),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  isButtonDisabled
+                      ? Text('Button disabled for $countdown seconds')
+                      : SizedBox.shrink(),
                 ],
               ),
             ),
@@ -151,11 +173,64 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   void verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
       BuildContext context, String otpCode) {
     if (widget.verifyOTP == otpCode) {
-      SnackbarHelper.showSnackBar(context, 'Phone number verified');
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => RootScreen()));
+      if (widget.isUserExist == true) {
+        SnackbarHelper.showSnackBar(context, 'Phone number verified');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RootScreen()));
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Register()));
+      }
     } else {
       SnackbarHelper.showSnackBar(context, 'Please enter correct OTP');
     }
+  }
+
+  Future<bool> _resendOTP(String mobileNumber) async {
+    if (DevelopementConfig.loginUsingDummyOTP == true) {
+      setState(() {
+        isButtonDisabled = true;
+        countdown = 30;
+      });
+      // Start the countdown timer
+      startTimer();
+      return true;
+    } else {
+      var response = await service.getOTPForMobileNumber(mobileNumber);
+      if (response != null) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        print("OTP received");
+        print(data.keys.first);
+        print(data.values.first);
+        String otpReceived = data.keys.first;
+        bool isUserExist = data.values.first;
+        setState(() {
+          isButtonDisabled = true;
+          countdown = 30;
+        });
+        // Start the countdown timer
+        startTimer();
+        return true;
+      } else {
+        // Display alert of response is false
+        return false;
+      }
+    }
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    Timer.periodic(oneSec, (Timer timer) {
+      if (countdown == 0) {
+        setState(() {
+          isButtonDisabled = false;
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          countdown--;
+        });
+      }
+    });
   }
 }
