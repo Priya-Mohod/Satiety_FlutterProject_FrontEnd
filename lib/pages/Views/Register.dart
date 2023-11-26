@@ -27,7 +27,8 @@ import 'SupplierLocationMap.dart';
 
 //create stateful widget called Register
 class Register extends StatefulWidget {
-  const Register({super.key});
+  final String mobileNumber;
+  const Register({super.key, required this.mobileNumber});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -109,6 +110,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    phoneController.text = widget.mobileNumber;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -228,47 +230,16 @@ class _RegisterState extends State<Register> {
                 // -- Phone --
                 TextFormField(
                   keyboardType: TextInputType.phone,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 18),
                   controller: phoneController,
                   key: _phoneField,
                   maxLength: 10,
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
-                  decoration: const InputDecoration(
-                    labelText: "Phone",
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: "Mobile Number",
                     prefixIcon: Icon(CupertinoIcons.phone),
                   ),
-                  validator: (value) {
-                    if (isPhoneExists) {
-                      return StringConstants.register_phone_exists_message;
-                    }
-                    if (value == null || value.isEmpty) {
-                      return StringConstants.register_phone_number_empty;
-                    } else if (value.length != 10) {
-                      return StringConstants.register_phone_number_invalid;
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (value) async {
-                    if (value.length == 10) {
-                      if (await _isPhoneExists(phoneController.text)) {
-                        isPhoneExists = true;
-                        setState(() {
-                          _phoneField.currentState!.validate();
-                        });
-                      } else {
-                        isPhoneExists = false;
-                        setState(() {
-                          _phoneField.currentState!.validate();
-                        });
-                      }
-                    } else {
-                      isPhoneExists = false;
-                      setState(() {
-                        _phoneField.currentState!.validate();
-                      });
-                    }
-                  },
                 ),
                 const SizedBox(height: 20),
                 // -- Terms & condition --
@@ -376,14 +347,14 @@ class _RegisterState extends State<Register> {
       var response = await service.registerUser(
           userImage,
           firstNameController.text,
-          lastNameController.text,
-          passwordController.text,
-          phoneController.text,
-          emailController.text,
-          pincodeController.text,
-          addressController.text,
-          userCoordinates.latitude,
-          userCoordinates.longitude,
+          "", // last name
+          "", // password
+          phoneController.text, // phone number
+          emailController.text, // email
+          pincodeController.text, // pin code
+          addressController.text, // address
+          userCoordinates.latitude, // user's lat
+          userCoordinates.longitude, // user's long
           true);
 
       // show alert dialog on condition
@@ -402,6 +373,7 @@ class _RegisterState extends State<Register> {
             actions: [
               TextButton(
                 onPressed: () {
+                  // *** Display validate OTP for email
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -410,6 +382,8 @@ class _RegisterState extends State<Register> {
                       ));
                   // TODO:- clear the form fields
                   // TODO:- clear the image
+
+                  // **** For now just show home screen
                 },
                 child: const Text('OK'),
               ),

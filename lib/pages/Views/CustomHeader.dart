@@ -201,11 +201,10 @@ class AccountIcon extends StatelessWidget {
         color: Colors.white,
       ),
       onPressed: () async {
-        User? localUser =
-            await UserStorageService.getUserFromSharedPreferances();
+        bool isUserLoggedIn = await UserStorageService.isUserLoggedIn();
         // Add functionality for user account icon here
         // *** display user account information if logged in else show window to Login
-        if (localUser == null) {
+        if (!isUserLoggedIn) {
           // display login
           Navigator.push(
               context,

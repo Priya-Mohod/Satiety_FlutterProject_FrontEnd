@@ -61,8 +61,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
       bottomNavigationBar: CustomBottomBar(
         currentIndex: selectedPage.index,
         onTap: (index) async {
-          User? localUser =
-              await UserStorageService.getUserFromSharedPreferances();
+          bool isUserLoggedIn = await UserStorageService.isUserLoggedIn();
           if (index == Pages.Home.index) {
             // Set selected page as Home
             //selectedPageProvider.setSelectedPage(StringConstants.Home);
@@ -70,7 +69,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
             setState(() {
               selectedPage = Pages.Home;
             });
-          } else if (localUser != null) {
+          } else if (isUserLoggedIn) {
             if (index == Pages.MyListings.index &&
                 selectedPage != Pages.MyListings) {
               // Set selected page as MyListings
@@ -94,7 +93,6 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
                 selectedPage != Pages.Messages) {
               // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
               // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
-
               setState(() {
                 selectedPage = Pages.Messages;
               });

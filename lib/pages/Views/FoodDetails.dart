@@ -395,10 +395,9 @@ class _FoodDetailsState extends State<FoodDetails> {
                 minimumSize: const Size(250, 50),
               ),
               onPressed: () async {
-                User? localUser =
-                    await UserStorageService.getUserFromSharedPreferances();
+                bool isUserLoggedIn = await UserStorageService.isUserLoggedIn();
 
-                if (localUser == null) {
+                if (!isUserLoggedIn) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
