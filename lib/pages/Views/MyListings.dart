@@ -38,19 +38,19 @@ class _MyListingsState extends State<MyListings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(StringConstants.my_listings_screen_title),
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: Colors.black, size: 30),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text(StringConstants.my_listings_screen_title),
+      //   actions: [
+      //     Builder(
+      //       builder: (context) => IconButton(
+      //         icon: Icon(Icons.menu, color: Colors.black, size: 30),
+      //         onPressed: () {
+      //           Scaffold.of(context).openEndDrawer();
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: FutureBuilder(
         future: dataListFuture,
         builder: (context, snapshot) {
@@ -59,6 +59,10 @@ class _MyListingsState extends State<MyListings> {
           } else if (snapshot.hasError) {
             return Center(
                 child: Text('Error loading data', textScaleFactor: 1.5));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+                child: Text(StringConstants.my_listings_screen_no_listings,
+                    textScaleFactor: 1.5));
           } else {
             final List<MyListingsDTO>? dataList = snapshot.data;
             if (dataList == null || dataList.isEmpty) {
