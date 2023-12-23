@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/TermsAndCondition.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
@@ -28,7 +30,8 @@ import 'SupplierLocationMap.dart';
 //create stateful widget called Register
 class Register extends StatefulWidget {
   final String mobileNumber;
-  const Register({super.key, required this.mobileNumber});
+  final String email;
+  const Register({super.key, required this.mobileNumber, required this.email});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -111,6 +114,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     phoneController.text = widget.mobileNumber;
+    emailController.text = widget.email;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -179,13 +183,9 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(fontSize: 16),
                   key: _emailField,
                   controller: emailController,
+                  enabled: false,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    // suffixText: '@gmail.com',
-                    // suffixStyle: const TextStyle(
-                    //     color: Colors.black,
-                    //     //fontWeight: FontWeight.bold,
-                    //     fontSize: 20),
                     prefixIcon: const Icon(
                       CupertinoIcons.mail,
                       size: 30,
@@ -233,7 +233,6 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(fontSize: 18),
                   controller: phoneController,
                   key: _phoneField,
-                  maxLength: 10,
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
                   enabled: false,
                   decoration: InputDecoration(
@@ -295,10 +294,12 @@ class _RegisterState extends State<Register> {
                         )),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => LoginPhoneOTPScreen(
+                              showSkipButton: true,
+                            ),
                           ),
                         );
                       },
@@ -377,8 +378,7 @@ class _RegisterState extends State<Register> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ValidateOTP(userEmail: emailController.text),
+                        builder: (context) => RootScreen(),
                       ));
                   // TODO:- clear the form fields
                   // TODO:- clear the image

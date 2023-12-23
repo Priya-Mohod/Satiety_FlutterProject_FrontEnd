@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
-import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
+import 'package:satietyfrontend/pages/Screens/verify_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -63,7 +63,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginScreen(
+                          builder: (context) => const LoginPhoneOTPScreen(
                             showSkipButton: true,
                           ),
                         ));

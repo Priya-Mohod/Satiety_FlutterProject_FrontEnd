@@ -7,10 +7,10 @@ import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/LaunchScreen.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
-import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
+import 'package:satietyfrontend/pages/Screens/verify_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
@@ -115,10 +115,10 @@ class MyApp extends StatelessWidget {
             '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
             '/UserAccountScreen': (context) => UserAccountScreen(),
             '/HomeScreen': (context) => HomeScreen(),
-            '/LoginScreen': (context) => LoginScreen(
+            '/LoginScreen': (context) => LoginPhoneOTPScreen(
                   showSkipButton: false,
                 ),
-            '/VerifyOTPScreen': (context) => VerifyOTPScreen(
+            '/VerifyOTPScreen': (context) => VerifyPhoneOTPScreen(
                   mobileNumber: "",
                   verifyOTP: "",
                   isUserExist: false,
@@ -130,6 +130,7 @@ class MyApp extends StatelessWidget {
             '/MessagePage': (context) => MessagePage(),
             '/Register': (context) => Register(
                   mobileNumber: "",
+                  email: "",
                 ),
             '/Login': (context) => LoginPage(),
             '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),

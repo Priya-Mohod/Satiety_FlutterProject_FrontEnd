@@ -76,6 +76,34 @@ class Service {
     return null;
   }
 
+  // -- on click of get email OTP, send email otp
+  Future<Response?> getOTPForEmail(String email) async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      url = customURL;
+    }
+    var request =
+        http.MultipartRequest('GET', Uri.parse('$url/sendOtpOnEmail'));
+    // User Firstname -
+    request.fields['email'] = email;
+
+    print(request);
+    var response = await makeServerRequest(request);
+
+    // Handle the response
+    if (response != null && response.statusCode == 200) {
+      // File upload successful
+      print('OTP sent successfully');
+      return convertStreamedResponseToResponse(response);
+      // send response back to caller function
+    } else if (response != null) {
+      // File upload failed
+      print('Error in OTP generation ${response.statusCode}');
+      return null;
+    }
+    return null;
+  }
+
   Future<bool> verifyOTPForMobileNumber(String mobileNumber, String OTP) async {
     String? customURL = await UserStorageService.getCustomURL();
     if (customURL != null) {
@@ -421,7 +449,7 @@ class Service {
     }
   }
 
-  // Accept Requests
+  // Accept Request
   Future<bool> acceptRequest(int requestId) async {
     try {
       var request =
@@ -441,6 +469,7 @@ class Service {
     }
   }
 
+  // Decline Request
   Future<bool> declineRequest(int requestId) async {
     try {
       var request =

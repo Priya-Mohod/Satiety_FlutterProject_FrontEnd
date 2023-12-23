@@ -9,7 +9,7 @@ import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
@@ -401,7 +401,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LoginScreen(
+                        builder: (context) => const LoginPhoneOTPScreen(
                           showSkipButton: false,
                         ),
                       ));

@@ -8,19 +8,19 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
-import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
+import 'package:satietyfrontend/pages/Screens/verify_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginPhoneOTPScreen extends StatefulWidget {
   final bool showSkipButton;
-  const LoginScreen({super.key, required this.showSkipButton});
+  const LoginPhoneOTPScreen({super.key, required this.showSkipButton});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPhoneOTPScreen> createState() => _LoginPhoneOTPScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
 
   Country selectedCountry = Country(
@@ -198,10 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => VerifyOTPScreen(
-                                        mobileNumber: "9029413588",
+                                  builder: (context) => VerifyPhoneOTPScreen(
+                                        mobileNumber:
+                                            "+${selectedCountry.phoneCode} 9029413588",
                                         verifyOTP: "7783",
-                                        isUserExist: true,
+                                        isUserExist: false,
                                         authToken: "",
                                       )));
                         } else {
@@ -233,11 +234,12 @@ class _LoginScreenState extends State<LoginScreen> {
       String otpReceived = data["otp"];
       bool isUserExist = data["isExistingUser"];
       String authToken = data["token"];
+      String numberWithCode = "+${selectedCountry.phoneCode} $mobileNumber";
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => VerifyOTPScreen(
-                  mobileNumber: mobileNumber,
+              builder: (context) => VerifyPhoneOTPScreen(
+                  mobileNumber: numberWithCode,
                   verifyOTP: otpReceived,
                   isUserExist: isUserExist,
                   authToken: authToken)));

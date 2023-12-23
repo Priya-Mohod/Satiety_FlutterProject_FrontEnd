@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,36 +8,38 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
+import 'package:satietyfrontend/pages/Screens/register_email_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
-class VerifyOTPScreen extends StatefulWidget {
+class VerifyEmailOTPScreen extends StatefulWidget {
+  final String userEmail;
+  final String emailOTP;
   final String mobileNumber;
-  final String verifyOTP;
-  final bool isUserExist;
-  final String authToken;
-  const VerifyOTPScreen(
-      {super.key,
-      required this.mobileNumber,
-      required this.verifyOTP,
-      required this.isUserExist,
-      required this.authToken});
+  VerifyEmailOTPScreen(
+      {Key? key,
+      required this.userEmail,
+      required this.emailOTP,
+      required this.mobileNumber})
+      : super(key: key);
 
   @override
-  State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
+  _VerifyEmailOTPScreenState createState() => _VerifyEmailOTPScreenState();
 }
 
-class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
+class _VerifyEmailOTPScreenState extends State<VerifyEmailOTPScreen> {
   String otpCode = "";
-  final int otpLength = 4;
+  final int otpLength = 6;
   Service service = Service();
   bool isButtonDisabled = false;
   int countdown = 30;
+  String otpReceived = "";
 
   @override
   Widget build(BuildContext context) {
+    otpReceived = widget.emailOTP;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -73,18 +74,20 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 ),
               ],
             ),
-            const Text('Verification',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            const Text(
-              'Enter the received OTP on phone',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-            ),
-            const SizedBox(height: 20),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: Column(
                 children: [
+                  const Text('Verification',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                  Text(
+                    'Enter the received OTP on Email ${widget.userEmail}',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                  ),
+                  SizedBox(height: 10),
                   Pinput(
                     length: otpLength,
                     showCursor: true,
@@ -119,7 +122,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         onPressed: () {
                           print(otpCode);
                           if (otpCode.length == otpLength) {
-                            verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
+                            verfiyOTP_and_RedirectUserToHomeScreen(
                                 context, otpCode);
                           } else {
                             SnackbarHelper.showSnackBar(
@@ -141,7 +144,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         ? null
                         : () async {
                             bool otpSent =
-                                await _resendOTP(widget.mobileNumber);
+                                await _resendEmailOTP(widget.userEmail);
                             if (otpSent) {
                               SnackbarHelper.showSnackBar(
                                   context, 'OTP Re-sent Successfully');
@@ -173,31 +176,31 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     );
   }
 
-  void verfiyOTP_and_RedirectUserToRegisterorHomeScreen(
+  void verfiyOTP_and_RedirectUserToHomeScreen(
       BuildContext context, String otpCode) async {
-    if (widget.verifyOTP == otpCode) {
-      // Save user token
-      await UserStorageService.saveUserAuthToken(widget.authToken);
-
-      if (widget.isUserExist == true) {
-        SnackbarHelper.showSnackBar(context, 'Welcome back!');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RootScreen()));
-      } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Register(
-                      mobileNumber: widget.mobileNumber,
-                    )));
-      }
+    if (otpReceived == otpCode) {
+      SnackbarHelper.showSnackBar(context, 'Welcome to Satiety family!');
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Register(
+                    mobileNumber: widget.mobileNumber,
+                    email: widget.userEmail,
+                  )));
     } else {
       SnackbarHelper.showSnackBar(context, 'Please enter correct OTP');
     }
   }
 
-  Future<bool> _resendOTP(String mobileNumber) async {
-    if (DevelopementConfig.loginUsingDummyOTP == true) {
+  Future<bool> _resendEmailOTP(String email) async {
+    var response = await service.getOTPForEmail(email);
+    if (response != null) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      print("OTP received");
+      print(data.keys.first);
+      print(data.values.first);
+      String newOTP = data["emailOtp"];
+      otpReceived = newOTP;
       setState(() {
         isButtonDisabled = true;
         countdown = 30;
@@ -206,25 +209,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
       startTimer();
       return true;
     } else {
-      var response = await service.getOTPForMobileNumber(mobileNumber);
-      if (response != null) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        print("OTP received");
-        print(data.keys.first);
-        print(data.values.first);
-        String otpReceived = data.keys.first;
-        bool isUserExist = data.values.first;
-        setState(() {
-          isButtonDisabled = true;
-          countdown = 30;
-        });
-        // Start the countdown timer
-        startTimer();
-        return true;
-      } else {
-        // Display alert of response is false
-        return false;
-      }
+      // Display alert of response is false
+      return false;
     }
   }
 
