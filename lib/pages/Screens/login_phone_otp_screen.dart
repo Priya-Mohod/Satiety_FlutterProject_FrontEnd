@@ -195,7 +195,7 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
                         // Make server call to get otp for phone number
                         _phoneNumberError = false;
                         // ***
-                        if (DevelopementConfig.loginUsingDummyOTP) {
+                        if (DevelopmentConfig.loginUsingDummyOTP) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -239,17 +239,33 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
       bool isUserExist =
           data.containsKey("isExistingUser") ? data["isExistingUser"] : false;
       String jwtToken = data.containsKey("token") ? data["token"] : "";
-      String numberWithCode = "+${selectedCountry.phoneCode} $mobileNumber";
+      //String numberWithCode = "+${selectedCountry.phoneCode} $mobileNumber";
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => VerifyPhoneOTPScreen(
-                  mobileNumber: numberWithCode,
+                  mobileNumber: mobileNumber,
                   verifyOTP: otpReceived,
                   isUserExist: isUserExist,
                   jwtToken: jwtToken)));
     } else {
       // Display alert of response is false
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Phone OTP'),
+          content: const Text('There was an error, please try again!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // hide the alert dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 }

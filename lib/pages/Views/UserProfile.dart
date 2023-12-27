@@ -80,18 +80,7 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(StringConstants.user_profile_screen_title),
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: Colors.black, size: 30),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
-          ),
-        ],
       ),
-      endDrawer: SideDrawer(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -111,7 +100,7 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                         )
                       : Image.network(
-                          _user!.imageSignedUrl!,
+                          "",
                           width: 150,
                           height: 150,
                           fit: BoxFit.cover,

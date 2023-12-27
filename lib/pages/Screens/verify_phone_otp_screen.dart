@@ -201,7 +201,7 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
   }
 
   Future<bool> _resendOTP(String mobileNumber) async {
-    if (DevelopementConfig.loginUsingDummyOTP == true) {
+    if (DevelopmentConfig.loginUsingDummyOTP == true) {
       setState(() {
         isButtonDisabled = true;
         countdown = 30;

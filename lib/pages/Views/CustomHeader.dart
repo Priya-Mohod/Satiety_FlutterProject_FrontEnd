@@ -8,6 +8,7 @@ import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 
 class CustomHeader extends StatefulWidget {
   @override
@@ -215,6 +216,11 @@ class AccountIcon extends StatelessWidget {
               ));
         } else {
           // display account info screen
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserProfile(),
+              ));
         }
       },
     );

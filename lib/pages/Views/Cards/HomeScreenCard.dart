@@ -158,7 +158,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                                   size: 20, color: Colors.grey[700]),
                               SizedBox(width: 3),
                               Text(
-                                  DevelopementConfig().getShowInKM
+                                  DevelopmentConfig().getShowInKM
                                       ? (widget.foodItem.distanceInKm ?? '') +
                                           ' km'
                                       : (ParsingUtils.convertKmToMiles(
