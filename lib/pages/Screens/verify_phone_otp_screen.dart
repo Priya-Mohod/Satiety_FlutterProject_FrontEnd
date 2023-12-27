@@ -19,13 +19,13 @@ class VerifyPhoneOTPScreen extends StatefulWidget {
   final String mobileNumber;
   String verifyOTP;
   final bool isUserExist;
-  final String authToken;
+  final String jwtToken;
   VerifyPhoneOTPScreen(
       {super.key,
       required this.mobileNumber,
       required this.verifyOTP,
       required this.isUserExist,
-      required this.authToken});
+      required this.jwtToken});
 
   @override
   State<VerifyPhoneOTPScreen> createState() => _VerifyPhoneOTPScreen();
@@ -183,7 +183,7 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
     if (widget.verifyOTP == otpCode) {
       if (widget.isUserExist == true) {
         // Save user token
-        await UserStorageService.saveUserAuthToken(widget.authToken);
+        await UserStorageService.saveUserJwtToken(widget.jwtToken);
         SnackbarHelper.showSnackBar(context, 'Welcome back!');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RootScreen()));

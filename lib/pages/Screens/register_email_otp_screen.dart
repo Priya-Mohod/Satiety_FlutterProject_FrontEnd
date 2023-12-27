@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Screens/verify_email_otp_screen.dart';
@@ -141,10 +142,11 @@ class _RegisterEmailOTPScreen extends State<RegisterEmailOTPScreen> {
   }
 
   void _getEmailOTPandDisplayVerifyScreen(String email) async {
+    LoadingIndicator.show(context);
     var response = await service.getOTPForEmail(
       emailController.text, // email
     );
-
+    LoadingIndicator.hide(context);
     // show alert dialog on condition
     if (response != null) {
       final Map<String, dynamic> data = jsonDecode(response.body);

@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
+import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Constants/StringConstants.dart';
@@ -132,7 +133,7 @@ class Service {
     return false;
   }
 
-  Future<bool> registerUser(
+  Future<Response?> registerUser(
       File? userImage,
       String firstName,
       String lastName,
@@ -188,17 +189,14 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null) {
       // File upload successful
       print('User data uploaded successfully');
-      return true;
+      return convertStreamedResponseToResponse(response);
       // send response back to caller function
-    } else if (response != null) {
-      // File upload failed
-      print('User data failed with status code ${response.statusCode}');
-      return false;
+    } else {
+      return null;
     }
-    return false;
   }
 
   Future<Response?> fetchFoodData(Map<String, String> filterDict) async {

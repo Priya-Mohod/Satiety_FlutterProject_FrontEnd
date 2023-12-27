@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
@@ -203,7 +204,7 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
                                             "+${selectedCountry.phoneCode} 9029413588",
                                         verifyOTP: "7783",
                                         isUserExist: false,
-                                        authToken: "",
+                                        jwtToken: "",
                                       )));
                         } else {
                           _getOTPandDisplayVerifyScreen(
@@ -225,15 +226,19 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
   }
 
   void _getOTPandDisplayVerifyScreen(String mobileNumber) async {
+    LoadingIndicator.show(context);
     var response = await service.getOTPForMobileNumber(mobileNumber);
+    LoadingIndicator.hide(context);
     if (response != null) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       print("OTP received");
       print(data.keys.first);
       print(data.values.first);
-      String otpReceived = data["otp"];
-      bool isUserExist = data["isExistingUser"];
-      String authToken = data["token"];
+      String otpReceived =
+          data.containsKey("otp") ? data["otp"].toString() : "";
+      bool isUserExist =
+          data.containsKey("isExistingUser") ? data["isExistingUser"] : false;
+      String jwtToken = data.containsKey("token") ? data["token"] : "";
       String numberWithCode = "+${selectedCountry.phoneCode} $mobileNumber";
       Navigator.push(
           context,
@@ -242,7 +247,7 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
                   mobileNumber: numberWithCode,
                   verifyOTP: otpReceived,
                   isUserExist: isUserExist,
-                  authToken: authToken)));
+                  jwtToken: jwtToken)));
     } else {
       // Display alert of response is false
     }

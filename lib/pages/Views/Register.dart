@@ -10,8 +10,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
+import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/TermsAndCondition.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ValidateOTP.dart';
@@ -344,7 +347,7 @@ class _RegisterState extends State<Register> {
         );
         return;
       }
-
+      LoadingIndicator.show(context);
       var response = await service.registerUser(
           userImage,
           firstNameController.text,
@@ -357,9 +360,23 @@ class _RegisterState extends State<Register> {
           userCoordinates.latitude, // user's lat
           userCoordinates.longitude, // user's long
           true);
-
+      LoadingIndicator.hide(context);
       // show alert dialog on condition
-      if (response) {
+      if (response != null && response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        RegisterUserResponseModel registerResponse =
+            RegisterUserResponseModel.fromJson(jsonResponse);
+
+        // Access the user and jwtToken properties
+        print('User ID: ${registerResponse.user.userId}');
+        print('JWT Token: ${registerResponse.jwtToken}');
+
+        if (registerResponse.jwtToken.isNotEmpty) {
+          await UserStorageService.saveUserJwtToken(registerResponse.jwtToken);
+          await UserStorageService.saveUserToSharedPreferences(
+              registerResponse.user);
+        }
+
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,

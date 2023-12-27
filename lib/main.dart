@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
                   mobileNumber: "",
                   verifyOTP: "",
                   isUserExist: false,
-                  authToken: "",
+                  jwtToken: "",
                 ),
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFreeFood(),
