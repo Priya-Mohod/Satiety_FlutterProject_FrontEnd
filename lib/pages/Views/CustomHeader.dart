@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
+import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
@@ -92,11 +94,47 @@ class LocationIcon extends StatelessWidget {
     return IconButton(
       icon: Icon(CupertinoIcons.location_fill, color: Colors.orange),
       onPressed: () {
-        // Add functionality for location icon here
-        //_showAddresScreen();
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => AddressSelectionScreen()));
       },
+    );
+  }
+}
+
+class PageHeader extends StatefulWidget {
+  String pageHeading = "";
+  PageHeader({super.key, required this.pageHeading});
+
+  @override
+  State<PageHeader> createState() => _PageHeaderState();
+}
+
+class _PageHeaderState extends State<PageHeader> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String getPageHeader() {
+    String pageHeadingLabel = "";
+    if (widget.pageHeading == Pages.MyListings.name) {
+      pageHeadingLabel = StringConstants.MyListings_title;
+    } else if (widget.pageHeading == Pages.Add.name) {
+      pageHeadingLabel = StringConstants.AddFood_title;
+    } else if (widget.pageHeading == Pages.MyRequests.name) {
+      pageHeadingLabel = StringConstants.MyRequests_title;
+    } else if (widget.pageHeading == Pages.Messages.name) {
+      pageHeadingLabel = StringConstants.Messages_title;
+    }
+    return pageHeadingLabel;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      getPageHeader(),
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 }
@@ -124,7 +162,6 @@ class _AddressInfoState extends State<AddressInfo> {
     return GestureDetector(
       onTap: () {
         print("Address tapped!");
-        // _showAddresScreen();
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => AddressSelectionScreen()));
       },
@@ -203,8 +240,6 @@ class AccountIcon extends StatelessWidget {
       ),
       onPressed: () async {
         bool isUserLoggedIn = await UserStorageService.isUserLoggedIn();
-        // Add functionality for user account icon here
-        // *** display user account information if logged in else show window to Login
         if (!isUserLoggedIn) {
           // display login
           Navigator.push(

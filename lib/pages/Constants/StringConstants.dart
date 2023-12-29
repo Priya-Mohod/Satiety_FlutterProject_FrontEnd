@@ -25,7 +25,9 @@ class StringConstants {
   static String Forum_title = 'Forum';
   static String MyListings_title = 'MyListings';
   static String MyRequests_title = 'MyRequests';
+  static String AddFood_title = 'Add Food';
   static String Profile_title = 'Profile';
+  static String Messages_title = 'Messages';
   static String Notifications_title = 'Notifications';
   static String UsersNearMe_title = 'Users Near Me';
   static String HelpCenter_title = 'Help Center';
@@ -124,4 +126,7 @@ class StringConstants {
       'This food is vegetarian and non-vegetarian both type of Food';
   static String info_guide_price_red = 'This listed food is Chargeable';
   static String info_guide_price_green = 'This listed food is Free of Cost';
+
+  // -- Messages
+  static String messages_screen_title = 'Messages';
 }

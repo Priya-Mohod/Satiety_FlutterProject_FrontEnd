@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
+import 'package:satietyfrontend/pages/Constants/Drawers.dart';
 import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
@@ -10,6 +12,8 @@ import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/CustomHeader.dart';
+import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
 import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
@@ -52,8 +56,14 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            LocationIcon(),
-            Expanded(child: AddressInfo()),
+            if (selectedPage == Pages.Home) LocationIcon(),
+            if (selectedPage == Pages.Home) Expanded(child: AddressInfo()),
+            if (selectedPage != Pages.Home)
+              Expanded(
+                child: PageHeader(
+                  pageHeading: selectedPage.name,
+                ),
+              ),
             AccountIcon(),
           ],
         ),
@@ -80,7 +90,10 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
                 selectedPage = Pages.MyListings;
               });
             } else if (index == Pages.Add.index) {
-              // BottomDrawer.showBottomDrawer(context);
+              //BottomDrawer.showBottomDrawer(context);
+              setState(() {
+                selectedPage = Pages.Add;
+              });
             } else if (index == Pages.MyRequests.index &&
                 selectedPage != Pages.MyRequests) {
               // selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
@@ -89,7 +102,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
               setState(() {
                 selectedPage = Pages.MyRequests;
               });
-            } else if (index == Pages.MyRequests.index &&
+            } else if (index == Pages.Messages.index &&
                 selectedPage != Pages.Messages) {
               // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
               // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
@@ -113,7 +126,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
         children: [
           HomeScreen(),
           MyListings(),
-          FoodListPage(),
+          ListViewPage(),
           MyRequests(),
           MessagePage(),
         ],
