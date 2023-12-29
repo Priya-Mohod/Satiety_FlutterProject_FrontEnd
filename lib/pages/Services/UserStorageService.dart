@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
 
 import '../Models/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserStorageService {
   static const _keyUser = 'user';
+  CustomLogger logger = CustomLogger.instance;
 
   static Future<void> saveUserToSharedPreferences(User user) async {
     final pref = await SharedPreferences.getInstance();
@@ -69,7 +71,7 @@ class UserStorageService {
 // Save the user's location to shared preferences
   static Future<void> saveLocationToPreferences(Position location) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    print("saveLocationToPreferences -  ${location.latitude}");
     prefs.setDouble('userLatitude', location.latitude);
     prefs.setDouble('userLongitude', location.longitude);
     prefs.setDouble('userAltitude', location.altitude);
@@ -81,14 +83,13 @@ class UserStorageService {
 // Retrieve user's location from shared preferences
   static Future<Position?> retrieveLocationFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     double? latitude = prefs.getDouble('userLatitude');
     double? longitude = prefs.getDouble('userLongitude');
     double? altitude = prefs.getDouble('userAltitude');
     double? accuracy = prefs.getDouble('userAccuracy');
     double? heading = prefs.getDouble('userHeading');
     int? timestampMillis = prefs.getInt('userTimestamp');
-
+    print("retrieveLocationFromPreferences -  $latitude");
     if (latitude != null &&
         longitude != null &&
         altitude != null &&
@@ -106,7 +107,7 @@ class UserStorageService {
         speedAccuracy: 0, // speedAccuracy is set to 0 as it's not stored
         timestamp: timestamp, altitudeAccuracy: 0, headingAccuracy: 0,
       );
-    }
+    } else {}
 
     return null;
   }

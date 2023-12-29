@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
 import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
@@ -70,6 +71,7 @@ class _RegisterState extends State<Register> {
   LatLng userCoordinates = LatLng(0.0, 0.0);
 
   Service service = Service();
+  CustomLogger logger = CustomLogger.instance;
 
   final picker = ImagePicker();
   @override
@@ -361,8 +363,11 @@ class _RegisterState extends State<Register> {
           userCoordinates.longitude, // user's long
           true);
       LoadingIndicator.hide(context);
+
       // show alert dialog on condition
       if (response != null && response.statusCode == 200) {
+        // show registration log
+        logger.debug('Register user server response: ${response.body}');
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         RegisterUserResponseModel registerResponse =
             RegisterUserResponseModel.fromJson(jsonResponse);
@@ -408,6 +413,8 @@ class _RegisterState extends State<Register> {
           ),
         );
       } else {
+        // show registration log
+        logger.debug('Register user server response is null');
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,

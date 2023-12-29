@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
+import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
 import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -14,6 +15,7 @@ import '../Views/SnackbarHelper.dart';
 
 class Service {
   String url = URLConstants.url;
+  CustomLogger logger = CustomLogger.instance;
 
   Future<http.Response> convertStreamedResponse(
       StreamedResponse streamedResponse) async {
@@ -515,11 +517,13 @@ class Service {
     if (isConnected) {
       Map<String, String> headers = await getRequestHeader();
       request.headers.addAll(headers);
+      logger.debug('Server request: ${request.fields}');
       var response = await request.send();
       return response;
     } else {
       // Show snack bar with no internet connection
       SnackbarHelper(StringConstants.internet_error);
+      logger.debug('Internet is not connected');
       return null;
     }
   }
