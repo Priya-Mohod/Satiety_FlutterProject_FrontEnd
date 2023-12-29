@@ -5,9 +5,10 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LocationManager.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/Views/UserProfile.dart';
 
 class CustomHeader extends StatefulWidget {
   @override
@@ -209,12 +210,17 @@ class AccountIcon extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const LoginScreen(
+                builder: (context) => const LoginPhoneOTPScreen(
                   showSkipButton: false,
                 ),
               ));
         } else {
           // display account info screen
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserProfile(),
+              ));
         }
       },
     );

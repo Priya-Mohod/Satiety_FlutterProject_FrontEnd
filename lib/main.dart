@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:logger/logger.dart';
 import 'package:satietyfrontend/pages/AdvertisePage.dart';
 import 'package:satietyfrontend/pages/Constants/SelectedPageProvider.dart';
+import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
 import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/AddressSelectionScreen.dart';
 import 'package:satietyfrontend/pages/Screens/LaunchScreen.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/UserAccountScreen.dart';
-import 'package:satietyfrontend/pages/Screens/VerifyOTPScreen.dart';
+import 'package:satietyfrontend/pages/Screens/verify_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
@@ -43,11 +45,12 @@ void main() async {
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
   // Check App running for first time
+  CustomLogger logger = CustomLogger.instance;
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-  bool isOTPVerified = prefs.getBool('isOTPVerified') ?? false;
   if (isFirstTime) await UserStorageService.removeUserFromSharedPreferances();
+  logger.debug('Is first time installed $isFirstTime');
 
   runApp(
     MultiProvider(
@@ -60,7 +63,6 @@ void main() async {
       ],
       child: MyApp(
         isFirstTime: isFirstTime,
-        isOTPVerified: isOTPVerified,
       ),
     ),
   );
@@ -69,15 +71,15 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final bool isFirstTime;
-  final bool isOTPVerified;
-  MyApp({super.key, required this.isFirstTime, required this.isOTPVerified});
+  MyApp({super.key, required this.isFirstTime});
   final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
   // This widget is the root of your application.
   bool isLoggedIn = true;
 
   @override
   Widget build(BuildContext context) {
-    if (isFirstTime || !isOTPVerified) {
+    // If it is first time
+    if (isFirstTime) {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setBool('isFirstTime', false);
       });
@@ -112,17 +114,18 @@ class MyApp extends StatelessWidget {
           ),
           //home: ListViewPage(),
           routes: {
+            '/RootScreen': (context) => RootScreen(),
             '/AddressSelectionScreen': (context) => AddressSelectionScreen(),
             '/UserAccountScreen': (context) => UserAccountScreen(),
             '/HomeScreen': (context) => HomeScreen(),
-            '/LoginScreen': (context) => LoginScreen(
+            '/LoginScreen': (context) => LoginPhoneOTPScreen(
                   showSkipButton: false,
                 ),
-            '/VerifyOTPScreen': (context) => VerifyOTPScreen(
+            '/VerifyOTPScreen': (context) => VerifyPhoneOTPScreen(
                   mobileNumber: "",
                   verifyOTP: "",
                   isUserExist: false,
-                  authToken: "",
+                  jwtToken: "",
                 ),
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFreeFood(),
@@ -130,6 +133,7 @@ class MyApp extends StatelessWidget {
             '/MessagePage': (context) => MessagePage(),
             '/Register': (context) => Register(
                   mobileNumber: "",
+                  email: "",
                 ),
             '/Login': (context) => LoginPage(),
             '/ValidateOTP': (context) => ValidateOTP(userEmail: 'abc@d.com'),

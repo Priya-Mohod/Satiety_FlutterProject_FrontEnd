@@ -2,38 +2,44 @@ import 'dart:core';
 import 'dart:io';
 
 class User {
-  final int userId;
-  final String firstName;
-  //final String lastName;
-  final String email;
-  final String? password;
-  final String mobile;
-  //final String pincode;
-  final String address;
-  final String? imageSignedUrl;
+  late int userId;
+  late String firstName;
+  late String lastName;
+  late String email;
+  late String password;
+  late String mobile;
+  late String pincode;
+  late String address;
+  late String imageSignedUrl;
+  late bool? emailVerified;
 
-  User(
-      {required this.userId,
-      required this.firstName,
-      //required this.lastName,
-      required this.email,
-      this.password,
-      required this.mobile,
-      //required this.pincode,
-      required this.address,
-      this.imageSignedUrl});
+  User({
+    required this.userId,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.password,
+    required this.mobile,
+    required this.pincode,
+    required this.address,
+    required this.imageSignedUrl,
+    this.emailVerified,
+  });
 
+  // Factory method to create an instance of User from a Map
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        userId: json['userId'],
-        firstName: json['firstName'],
-        //lastName: json['lastName'],
-        email: json['email'],
-        password: json['password'],
-        mobile: json['mobile'],
-        //pincode: json['pincode'],
-        address: json['address'],
-        imageSignedUrl: json['imageSignedUrl']);
+      userId: json['userId'] ?? 0,
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
+      email: json['email'] ?? '',
+      password: json['password'] ?? '',
+      mobile: json['mobile'] ?? '',
+      pincode: json['pincode'] ?? '',
+      address: json['address'] ?? '',
+      imageSignedUrl: json['imageSignedUrl'] ?? '',
+      emailVerified: json['emailVerified'] ?? false,
+    );
   }
 
   Map<String, dynamic> toJson() {

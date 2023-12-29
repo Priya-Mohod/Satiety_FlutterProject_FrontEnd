@@ -74,6 +74,7 @@ class UserProfileViewModel {
   ) async {
     var response = await service.registerUser(userImage, firstName, lastName,
         password, mobile, email, pincode, address, latitude, longitude, false);
-    return response;
+    // *** Get register user response
+    return true; //response;
   }
 }

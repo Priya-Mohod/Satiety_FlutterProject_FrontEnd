@@ -6,7 +6,7 @@ import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Screens/HomeScreen.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/CustomBottomBar.dart';
 import 'package:satietyfrontend/pages/Views/CustomHeader.dart';
@@ -101,7 +101,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const LoginScreen(
+                  builder: (context) => const LoginPhoneOTPScreen(
                     showSkipButton: false,
                   ),
                 ));

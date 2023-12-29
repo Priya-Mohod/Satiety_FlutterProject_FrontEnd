@@ -22,7 +22,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   String searchTitle = "Recent locations";
   // *** assign array from system preferences
   List<dynamic> suggestions = [];
-  final apiKey = DevelopementConfig().GOOGLE_MAP_KEY;
+  final apiKey = DevelopmentConfig().GOOGLE_MAP_KEY;
 
   @override
   void initState() {

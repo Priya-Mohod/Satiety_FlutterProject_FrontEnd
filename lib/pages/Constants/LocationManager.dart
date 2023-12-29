@@ -72,7 +72,7 @@ class LocationManager {
   static Future<List<dynamic>> fetchSuggestions(String input) async {
     final url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
         '?input=$input'
-        '&key=${DevelopementConfig().GOOGLE_MAP_KEY}';
+        '&key=${DevelopmentConfig().GOOGLE_MAP_KEY}';
 
     final response = await http.get(Uri.parse(url));
     final data = json.decode(response.body);
@@ -87,7 +87,7 @@ class LocationManager {
   static Future<Map<String, dynamic>> getPlaceDetails(String placeId) async {
     final url = 'https://maps.googleapis.com/maps/api/place/details/json'
         '?place_id=$placeId'
-        '&key=${DevelopementConfig().GOOGLE_MAP_KEY}';
+        '&key=${DevelopmentConfig().GOOGLE_MAP_KEY}';
 
     final response = await http.get(Uri.parse(url));
     final data = json.decode(response.body);

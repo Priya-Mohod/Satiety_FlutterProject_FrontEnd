@@ -397,7 +397,8 @@ class _ListViewPageState extends State<ListViewPage> {
                                                       color: Colors.grey[700]),
                                                   SizedBox(width: 3),
                                                   Text(
-                                                      DevelopementConfig().getShowInKM
+                                                      DevelopmentConfig()
+                                                              .getShowInKM
                                                           ? (foodItem.distanceInKm ??
                                                                   '') +
                                                               ' km'

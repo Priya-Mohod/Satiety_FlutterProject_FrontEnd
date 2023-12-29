@@ -4,6 +4,8 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:path/path.dart' as path;
+import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
+import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Constants/StringConstants.dart';
@@ -13,6 +15,7 @@ import '../Views/SnackbarHelper.dart';
 
 class Service {
   String url = URLConstants.url;
+  CustomLogger logger = CustomLogger.instance;
 
   Future<http.Response> convertStreamedResponse(
       StreamedResponse streamedResponse) async {
@@ -76,6 +79,34 @@ class Service {
     return null;
   }
 
+  // -- on click of get email OTP, send email otp
+  Future<Response?> getOTPForEmail(String email) async {
+    String? customURL = await UserStorageService.getCustomURL();
+    if (customURL != null) {
+      url = customURL;
+    }
+    var request =
+        http.MultipartRequest('GET', Uri.parse('$url/sendOtpOnEmail'));
+    // User Firstname -
+    request.fields['email'] = email;
+
+    print(request);
+    var response = await makeServerRequest(request);
+
+    // Handle the response
+    if (response != null && response.statusCode == 200) {
+      // File upload successful
+      print('OTP sent successfully');
+      return convertStreamedResponseToResponse(response);
+      // send response back to caller function
+    } else if (response != null) {
+      // File upload failed
+      print('Error in OTP generation ${response.statusCode}');
+      return null;
+    }
+    return null;
+  }
+
   Future<bool> verifyOTPForMobileNumber(String mobileNumber, String OTP) async {
     String? customURL = await UserStorageService.getCustomURL();
     if (customURL != null) {
@@ -104,7 +135,7 @@ class Service {
     return false;
   }
 
-  Future<bool> registerUser(
+  Future<Response?> registerUser(
       File? userImage,
       String firstName,
       String lastName,
@@ -160,17 +191,14 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null) {
       // File upload successful
       print('User data uploaded successfully');
-      return true;
+      return convertStreamedResponseToResponse(response);
       // send response back to caller function
-    } else if (response != null) {
-      // File upload failed
-      print('User data failed with status code ${response.statusCode}');
-      return false;
+    } else {
+      return null;
     }
-    return false;
   }
 
   Future<Response?> fetchFoodData(Map<String, String> filterDict) async {
@@ -421,7 +449,7 @@ class Service {
     }
   }
 
-  // Accept Requests
+  // Accept Request
   Future<bool> acceptRequest(int requestId) async {
     try {
       var request =
@@ -441,6 +469,7 @@ class Service {
     }
   }
 
+  // Decline Request
   Future<bool> declineRequest(int requestId) async {
     try {
       var request =
@@ -488,11 +517,13 @@ class Service {
     if (isConnected) {
       Map<String, String> headers = await getRequestHeader();
       request.headers.addAll(headers);
+      logger.debug('Server request: ${request.fields}');
       var response = await request.send();
       return response;
     } else {
       // Show snack bar with no internet connection
       SnackbarHelper(StringConstants.internet_error);
+      logger.debug('Internet is not connected');
       return null;
     }
   }

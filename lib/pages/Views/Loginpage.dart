@@ -179,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                             builder: (context) => Register(
                               mobileNumber: "",
+                              email: "",
                             ),
                           ),
                         );

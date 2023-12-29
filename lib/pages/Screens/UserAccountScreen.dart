@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:satietyfrontend/pages/Screens/LoginScreen.dart';
+import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class UserAccountScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen(
+                              builder: (context) => LoginPhoneOTPScreen(
                                     showSkipButton: true,
                                   )));
                     })),

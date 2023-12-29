@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:satietyfrontend/pages/Constants/StringConstants.dart';
+import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/PublicProfile.dart';
 
 import '../Constants/Drawers.dart';
@@ -80,18 +81,7 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(StringConstants.user_profile_screen_title),
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: Colors.black, size: 30),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
-          ),
-        ],
       ),
-      endDrawer: SideDrawer(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -111,7 +101,7 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                         )
                       : Image.network(
-                          _user!.imageSignedUrl!,
+                          "",
                           width: 150,
                           height: 150,
                           fit: BoxFit.cover,
@@ -426,6 +416,51 @@ class _UserProfileState extends State<UserProfile> {
                   )),
             ),
             SizedBox(height: 20),
+            // -- Logout
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.cyan,
+                foregroundColor: Colors.black,
+                shadowColor: Colors.red,
+                elevation: 15,
+                minimumSize: const Size(200, 50),
+              ),
+              onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Logout Confirmation'),
+                      content: Text('Are you sure you want to log out?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          child: Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            UserStorageService
+                                .removeUserFromSharedPreferances();
+                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.pushReplacementNamed(
+                                context, '/RootScreen');
+                          },
+                          child: Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Text('Logout',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  )),
+            ),
           ],
         ),
       ),
