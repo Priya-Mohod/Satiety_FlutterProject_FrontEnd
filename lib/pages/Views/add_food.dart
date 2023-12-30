@@ -20,14 +20,14 @@ import '../Constants/LocationManager.dart';
 import '../Constants/StringConstants.dart';
 import 'SnackbarHelper.dart';
 
-class AddFreeFood extends StatefulWidget {
-  const AddFreeFood({super.key});
+class AddFood extends StatefulWidget {
+  const AddFood({super.key});
 
   @override
-  State<AddFreeFood> createState() => _AddFreeFoodState();
+  State<AddFood> createState() => _AddFoodState();
 }
 
-class _AddFreeFoodState extends State<AddFreeFood> {
+class _AddFoodState extends State<AddFood> {
   final _free_food_formfield = GlobalKey<FormState>();
   final foodNameController = TextEditingController();
   final foodDescriptionController = TextEditingController();

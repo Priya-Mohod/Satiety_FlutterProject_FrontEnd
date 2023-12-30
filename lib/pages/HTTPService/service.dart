@@ -517,7 +517,7 @@ class Service {
     if (isConnected) {
       Map<String, String> headers = await getRequestHeader();
       request.headers.addAll(headers);
-      logger.debug('Server request: ${request.fields}');
+      logger.debug('Server request: ${request.url}');
       var response = await request.send();
       return response;
     } else {

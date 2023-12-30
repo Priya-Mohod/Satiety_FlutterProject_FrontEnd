@@ -23,8 +23,8 @@ class StringConstants {
   static String Register_title = 'Register';
   static String OTPValidation_title = 'OTP Validation';
   static String Forum_title = 'Forum';
-  static String MyListings_title = 'MyListings';
-  static String MyRequests_title = 'MyRequests';
+  static String MyListings_title = 'My Listings';
+  static String MyRequests_title = 'My Requests';
   static String AddFood_title = 'Add Food';
   static String Profile_title = 'Profile';
   static String Messages_title = 'Messages';

@@ -46,19 +46,6 @@ class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(StringConstants.my_requests_screen_title),
-      //   actions: [
-      //     Builder(
-      //       builder: (context) => IconButton(
-      //         icon: Icon(Icons.menu, color: Colors.black, size: 30),
-      //         onPressed: () {
-      //           Scaffold.of(context).openEndDrawer();
-      //         },
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: FutureBuilder<List<FoodRequest>>(
         future: dataListFuture,
         builder: (context, snapshot) {
