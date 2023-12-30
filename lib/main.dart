@@ -17,7 +17,7 @@ import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/ViewModels/ChatViewModel.dart';
 import 'package:satietyfrontend/pages/ViewModels/LoginViewModel.dart';
 import 'package:satietyfrontend/pages/Views/ChatPage.dart';
-import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/add_food.dart';
 import 'package:satietyfrontend/pages/Views/Loginpage.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
@@ -127,7 +127,7 @@ class MyApp extends StatelessWidget {
                   jwtToken: "",
                 ),
             '/ListViewPage': (context) => ListViewPage(),
-            '/AddFreeFood': (context) => AddFreeFood(),
+            '/AddFreeFood': (context) => AddFood(),
             '/ForumPage': (context) => ForumPage(),
             '/MessagePage': (context) => MessagePage(),
             '/Register': (context) => Register(

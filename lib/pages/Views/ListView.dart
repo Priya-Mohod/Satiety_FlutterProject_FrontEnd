@@ -19,7 +19,7 @@ import 'package:satietyfrontend/pages/ViewModels/FoodListViewModel.dart';
 import 'package:satietyfrontend/pages/Views/ChatPage.dart';
 import 'package:satietyfrontend/pages/Views/ChatPageFirebase.dart';
 import 'package:satietyfrontend/pages/Views/FoodDetails.dart';
-import 'package:satietyfrontend/pages/Views/FreeFood.dart';
+import 'package:satietyfrontend/pages/Views/add_food.dart';
 import 'package:satietyfrontend/pages/Views/InfoGuide.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/allergyPage.dart';
