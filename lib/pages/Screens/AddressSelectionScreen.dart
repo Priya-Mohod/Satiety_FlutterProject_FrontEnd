@@ -269,9 +269,23 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
         context, MaterialPageRoute(builder: (context) => RootScreen()));
   }
 
-  void _getUserCurrentLocationAndDisplayRootScreen() {
+  void _getUserCurrentLocationAndDisplayRootScreen() async {
     // Add functionality for location icon here
     LoadingIndicator.show(context);
-    LocationManager.getLocation(context);
+    LocationStatus isLocationPermissionAvailable =
+        await LocationManager.getLocation(context);
+    LoadingIndicator.hide(context);
+
+    switch (isLocationPermissionAvailable) {
+      case LocationStatus.deviceLocationNotON:
+        LocationManager().showLocationServiceAlertDialog(context);
+        break;
+      case LocationStatus.locationPermissionDenied:
+        LocationManager().showLocationPermissionAlertDialog(context);
+        break;
+      default:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => RootScreen()));
+    }
   }
 }

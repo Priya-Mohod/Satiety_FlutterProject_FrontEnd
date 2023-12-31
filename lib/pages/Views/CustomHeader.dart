@@ -224,7 +224,28 @@ class _AddressInfoState extends State<AddressInfo> {
     } else {
       setState(() {
         // Handle the case where there is no stored location
+        // *** Display pop up saying I don't find any stored location
+        // display location selection screen to get location
         addressHeading = "No location stored";
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Get user location'),
+            content: const Text(
+                'There is no stored location detected, please select location'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddressSelectionScreen()));
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
       });
     }
   }

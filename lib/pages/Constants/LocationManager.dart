@@ -45,6 +45,7 @@ class LocationManager {
     }
 
     final locationData = await Geolocator.getCurrentPosition();
+    await saveCurrentPositionToPreferences(locationData);
     return locationData;
   }
 
@@ -109,12 +110,18 @@ class LocationManager {
     if (locationStatus.isGranted) {
       print("Location permission already granted");
       Position? currentPosition = await Geolocator.getCurrentPosition();
-      await UserStorageService.saveLocationToPreferences(currentPosition);
-      // Update the location array of user, to set it in recent used locations
-      await UserStorageService.saveRecentLocationToPreferences(currentPosition);
+      await saveCurrentPositionToPreferences(currentPosition);
       return LocationStatus.bothGranted;
     }
     return LocationStatus.locationPermissionDenied;
+  }
+
+  static Future<void> saveCurrentPositionToPreferences(
+      Position? currentPosition) async {
+    if (currentPosition != null) {
+      await UserStorageService.saveLocationToPreferences(currentPosition);
+      await UserStorageService.saveRecentLocationToPreferences(currentPosition);
+    }
   }
 
   static Future<bool> isLocationEnabled() async {
@@ -127,5 +134,69 @@ class LocationManager {
 
   static void requestForUserPermission() async {
     await Permission.location.request();
+  }
+
+  void showLocationServiceAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Location Service Disabled'),
+          content: Text('Please enable location services to use this feature.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showLocationPermissionAlertDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Location permission is disabled!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Please provide location permission to continue.',
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Open device settings to enable location
+                        openAppSettings();
+                      },
+                      child: Text('Enable Location Permission'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

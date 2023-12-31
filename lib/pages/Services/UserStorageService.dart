@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
-
 import '../Models/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserStorageService {
   static const _keyUser = 'user';
-  CustomLogger logger = CustomLogger.instance;
 
   static Future<void> saveUserToSharedPreferences(User user) async {
     final pref = await SharedPreferences.getInstance();
