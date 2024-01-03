@@ -16,7 +16,7 @@ import '../ViewModels/MyRequestsViewModel.dart';
 import 'SnackbarHelper.dart';
 
 class MyRequests extends StatefulWidget {
-  const MyRequests({super.key});
+  MyRequests({super.key});
 
   @override
   State<MyRequests> createState() => _MyRequestsState();
@@ -47,7 +47,7 @@ class _MyRequestsState extends State<MyRequests> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<FoodRequest>>(
-        future: dataListFuture,
+        future: viewModel.fetchRequests(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

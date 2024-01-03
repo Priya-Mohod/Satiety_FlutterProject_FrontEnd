@@ -215,6 +215,7 @@ class _UserProfileState extends State<UserProfile> {
               keyboardType: TextInputType.phone,
               style: TextStyle(fontSize: 16),
               controller: _phoneController,
+              readOnly: true,
               key: _phoneField,
               maxLength: 10,
               inputFormatters: [LengthLimitingTextInputFormatter(10)],
@@ -260,65 +261,6 @@ class _UserProfileState extends State<UserProfile> {
                   });
                 }
               },
-            ),
-
-            // Non-editable fields
-            TextField(
-              controller: _addressController,
-              decoration: InputDecoration(
-                labelText: 'Your approximate address',
-                floatingLabelStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 19,
-                  //fontWeight: FontWeight.bold,
-                ),
-                prefixIcon: Icon(Icons.location_on),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    // Handle map icon tap
-                    // ...
-                  },
-                  icon: Icon(Icons.map),
-                ),
-              ),
-              enabled: false, // Make the text field non-editable
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 200,
-              child: GoogleMap(
-                onMapCreated: (GoogleMapController controller) {
-                  // Show snackbar while getting location
-                  SnackbarHelper.showSnackBar(
-                      context, StringConstants.location_update);
-                  _mapController = controller;
-                  setState(() {
-                    markers.clear();
-                    markers.add(Marker(
-                      markerId: MarkerId(userCoordinates.toString()),
-                      position: userCoordinates,
-                      infoWindow: InfoWindow(
-                        title: "Selected Location",
-                      ),
-                    ));
-                  });
-                },
-                initialCameraPosition: CameraPosition(
-                  target: userCoordinates,
-                  zoom: 15,
-                ),
-                markers: markers,
-                onTap: (LatLng location) async {
-                  userCoordinates = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SupplierLocationMap(
-                          selectedLocation: userCoordinates),
-                    ),
-                  );
-                  setMarker_AnimateCamera_userLocation(userCoordinates);
-                },
-              ),
             ),
 
             // Add a map widget to show location
@@ -441,11 +383,11 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            UserStorageService
+                            await UserStorageService
                                 .removeUserFromSharedPreferances();
                             Navigator.of(context).pop(); // Close the dialog
                             Navigator.pushReplacementNamed(
-                                context, '/RootScreen');
+                                context, StringConstants.RootScreen);
                           },
                           child: Text('Yes'),
                         ),

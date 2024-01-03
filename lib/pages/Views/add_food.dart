@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
 import 'package:satietyfrontend/pages/getData.dart';
@@ -134,575 +135,550 @@ class _AddFoodState extends State<AddFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          //add back button
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.red),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/ListViewPage');
-            },
-          ),
-          title: const Text(
-            'Add Food',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-        ),
         body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            // Handle tap outside the allergy options area
-            setState(() {
-              _hideAllergyOptions();
-            });
-          },
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Form(
-                key: _free_food_formfield,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        // Handle tap outside the allergy options area
+        setState(() {
+          _hideAllergyOptions();
+        });
+      },
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Form(
+            key: _free_food_formfield,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        SizedBox(height: 10),
-                        if (image != null)
-                          Image.file(File(image!.path).absolute,
-                              width: 100, height: 100),
-                        // SizedBox(height: 10),
-                        IconButton(
-                          color: Colors.cyan,
-                          onPressed: _showImagePickerOptions,
-                          icon: const Icon(Icons.add_a_photo, size: 50),
-                        )
-                      ],
-                    ),
-                    const Divider(
-                      color: Colors.black, // Color of the line
-                      height: 30, // Thickness of the line
-                    ),
-                    //SizedBox(height: 10),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 20),
-                      controller: foodNameController,
-                      decoration: const InputDecoration(
-                        labelText: "Food Name",
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.cyan),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.food_bank,
-                          size: 30,
-                          color: Colors.cyan,
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 10),
-                    TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      style: TextStyle(fontSize: 20),
-                      controller: foodDescriptionController,
-                      decoration: const InputDecoration(
-                        labelText: "Food Description",
-                        prefixIcon: Icon(
-                          Icons.description_outlined,
-                          size: 30,
-                          color: Colors.cyan,
-                        ),
-                      ),
+                    if (image != null)
+                      Image.file(File(image!.path).absolute,
+                          width: 100, height: 100),
+                    // SizedBox(height: 10),
+                    IconButton(
+                      color: Colors.cyan,
+                      onPressed: _showImagePickerOptions,
+                      icon: const Icon(Icons.add_a_photo, size: 50),
+                    )
+                  ],
+                ),
+                const Divider(
+                  color: Colors.black, // Color of the line
+                  height: 30, // Thickness of the line
+                ),
+                //SizedBox(height: 10),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(fontSize: 20),
+                  controller: foodNameController,
+                  decoration: const InputDecoration(
+                    labelText: "Food Name",
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.cyan),
                     ),
-                    SizedBox(height: 20),
+                    prefixIcon: Icon(
+                      Icons.food_bank,
+                      size: 30,
+                      color: Colors.cyan,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(fontSize: 20),
+                  controller: foodDescriptionController,
+                  decoration: const InputDecoration(
+                    labelText: "Food Description",
+                    prefixIcon: Icon(
+                      Icons.description_outlined,
+                      size: 30,
+                      color: Colors.cyan,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
 
-                    // show drop down here
+                // show drop down here
 
-                    Text.rich(TextSpan(
-                      text: 'Select Serving Quantity : ',
+                Text.rich(TextSpan(
+                  text: 'Select Serving Quantity : ',
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text:
+                          '${selectedFoodQuantity != 0 ? selectedFoodQuantity : "None"}',
                       style: const TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              '${selectedFoodQuantity != 0 ? selectedFoodQuantity : "None"}',
-                          style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Color.fromARGB(255, 28, 145, 181),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0,
-                          ),
-                        ),
-                      ],
-                    )),
-                    SizedBox(height: 10),
-                    // Text(
-                    //   'Select Serving Quantity : ${selectedQuantity != 0 ? selectedQuantity : "None"}',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
-                    Wrap(
-                      spacing: 8.0,
-                      children: List.generate(
-                        6,
-                        (index) => ChoiceChip(
-                          label: Text('${index + 1}'),
-                          selected: selectedFoodQuantity == index + 1,
-                          onSelected: (isSelected) {
-                            setState(() {
-                              selectedFoodQuantity =
-                                  isSelected ? index + 1 : selectedFoodQuantity;
-                            });
-                          },
-                          backgroundColor: Color.fromARGB(255, 84, 222, 241),
-                        ),
+                        fontStyle: FontStyle.italic,
+                        color: Color.fromARGB(255, 28, 145, 181),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
                       ),
                     ),
-
-                    SizedBox(height: 20),
-                    Text.rich(TextSpan(children: <TextSpan>[
-                      const TextSpan(
-                        text: 'Selected Food Type:  ',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '$selectedFoodType',
-                        style: const TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 24.0,
-                          color: Color.fromARGB(255, 33, 160, 172),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ])),
-
-                    SizedBox(height: 10),
-
-                    Wrap(
-                      spacing: 8.0,
-                      children: [
-                        buildChoiceChip('Veg'),
-                        buildChoiceChip('Non-Veg'),
-                        buildChoiceChip('Both'),
-                      ],
+                  ],
+                )),
+                SizedBox(height: 10),
+                // Text(
+                //   'Select Serving Quantity : ${selectedQuantity != 0 ? selectedQuantity : "None"}',
+                //   style: TextStyle(fontSize: 18),
+                // ),
+                Wrap(
+                  spacing: 8.0,
+                  children: List.generate(
+                    6,
+                    (index) => ChoiceChip(
+                      label: Text('${index + 1}'),
+                      selected: selectedFoodQuantity == index + 1,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          selectedFoodQuantity =
+                              isSelected ? index + 1 : selectedFoodQuantity;
+                        });
+                      },
+                      backgroundColor: Color.fromARGB(255, 84, 222, 241),
                     ),
+                  ),
+                ),
 
-                    SizedBox(height: 10),
+                SizedBox(height: 20),
+                Text.rich(TextSpan(children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Selected Food Type:  ',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '$selectedFoodType',
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 24.0,
+                      color: Color.fromARGB(255, 33, 160, 172),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ])),
 
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [
+                SizedBox(height: 10),
+
+                Wrap(
+                  spacing: 8.0,
+                  children: [
+                    buildChoiceChip('Veg'),
+                    buildChoiceChip('Non-Veg'),
+                    buildChoiceChip('Both'),
+                  ],
+                ),
+
+                SizedBox(height: 10),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                Text(
+                  'Sleect Food Availability Date and Time :',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                ),
+                //   ],
+                // ),
+
+                SizedBox(height: 10),
+
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      child: Text(
+                          DateFormat('dd-MM-yyyy').format(foodAvailableDate)),
+                    ),
+                    SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () => _selectStartTime(context),
+                      child: Text(foodAvailableFromTime.format(context)),
+                    ),
+                    SizedBox(width: 10),
                     Text(
-                      'Sleect Food Availability Date and Time :',
+                      '-',
                       style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.black,
                       ),
                     ),
-                    //   ],
-                    // ),
-
-                    SizedBox(height: 10),
-
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => _selectDate(context),
-                          child: Text(DateFormat('dd-MM-yyyy')
-                              .format(foodAvailableDate)),
-                        ),
-                        SizedBox(width: 20),
-                        ElevatedButton(
-                          onPressed: () => _selectStartTime(context),
-                          child: Text(foodAvailableFromTime.format(context)),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          '-',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () => _selectEndTime(context),
-                          child: Text(foodAvailableToTime.format(context)),
-                        ),
-                      ],
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () => _selectEndTime(context),
+                      child: Text(foodAvailableToTime.format(context)),
                     ),
+                  ],
+                ),
 
-                    SizedBox(height: 10),
+                SizedBox(height: 10),
 
-                    // Show Allergy option here - Yes/No
-                    // TODO :- devide this into a separate widget
-                    Row(
-                      children: [
-                        const Text(
-                          'Has Allergy Content?',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        DropdownButton<bool>(
-                          value: hasAllergyContent,
-                          onChanged: (value) {
-                            setState(() {
-                              hasAllergyContent = value!;
-                              if (!hasAllergyContent) {
-                                selectedAllergies
-                                    .clear(); // Clear selected allergies if user selects 'No'
-                                customAllergyText =
-                                    ''; // Clear custom allergy text
-                              } else {
-                                // Show allergy options when user selects 'Yes'
-                                _allergyOptionsKey;
-                              }
-                            });
-                          },
-                          items: const [
-                            DropdownMenuItem<bool>(
-                              value: true,
-                              child: Text('Yes'),
-                            ),
-                            DropdownMenuItem<bool>(
-                              value: false,
-                              child: Text('No'),
-                            ),
-                          ],
-                        ),
-                      ],
+                // Show Allergy option here - Yes/No
+                // TODO :- devide this into a separate widget
+                Row(
+                  children: [
+                    const Text(
+                      'Has Allergy Content?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
                     ),
-
-                    // Checkboxes for selecting allergy content
-                    if (hasAllergyContent) // Show only if user selected 'Yes'
-                      Column(
-                        key: _allergyOptionsKey,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: allergyOptions.map((allergy) {
-                          if (allergy == 'Others') {
-                            return Column(
-                              children: [
-                                CheckboxListTile(
-                                  title: Text(allergy),
-                                  value: selectedAllergies.contains(allergy),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value == true) {
-                                        selectedAllergies.add(allergy);
-                                        selectedAllergies
-                                            .remove(customAllergyText);
-                                      } else {
-                                        selectedAllergies.remove(allergy);
-                                        if (customAllergyText.isNotEmpty) {
-                                          selectedAllergies
-                                              .add(customAllergyText);
-                                        }
-                                      }
-                                    });
-                                  },
-                                ),
-                                if (selectedAllergies.contains(allergy))
-                                  // Show text box only when "Others" is selected
-                                  TextFormField(
-                                    controller: customAllergyController,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Enter Custom Allergy'),
-                                    onChanged: (newText) {
-                                      setState(() {
-                                        customAllergyText = newText;
-                                      });
-                                    },
-                                    onEditingComplete: () {
-                                      setState(() {
-                                        selectedAllergies
-                                            .add(customAllergyText);
-                                      });
-                                      FocusScope.of(context).unfocus();
-                                    },
-                                  ),
-                              ],
-                            );
+                    SizedBox(width: 10),
+                    DropdownButton<bool>(
+                      value: hasAllergyContent,
+                      onChanged: (value) {
+                        setState(() {
+                          hasAllergyContent = value!;
+                          if (!hasAllergyContent) {
+                            selectedAllergies
+                                .clear(); // Clear selected allergies if user selects 'No'
+                            customAllergyText = ''; // Clear custom allergy text
                           } else {
-                            return CheckboxListTile(
+                            // Show allergy options when user selects 'Yes'
+                            _allergyOptionsKey;
+                          }
+                        });
+                      },
+                      items: const [
+                        DropdownMenuItem<bool>(
+                          value: true,
+                          child: Text('Yes'),
+                        ),
+                        DropdownMenuItem<bool>(
+                          value: false,
+                          child: Text('No'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                // Checkboxes for selecting allergy content
+                if (hasAllergyContent) // Show only if user selected 'Yes'
+                  Column(
+                    key: _allergyOptionsKey,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: allergyOptions.map((allergy) {
+                      if (allergy == 'Others') {
+                        return Column(
+                          children: [
+                            CheckboxListTile(
                               title: Text(allergy),
                               value: selectedAllergies.contains(allergy),
                               onChanged: (value) {
                                 setState(() {
                                   if (value == true) {
                                     selectedAllergies.add(allergy);
+                                    selectedAllergies.remove(customAllergyText);
                                   } else {
                                     selectedAllergies.remove(allergy);
+                                    if (customAllergyText.isNotEmpty) {
+                                      selectedAllergies.add(customAllergyText);
+                                    }
                                   }
                                 });
                               },
-                            );
-                          }
-                        }).toList(),
-                      ),
-
-                    // Show Food Cost - Free of Cost / Chargeable
-                    // TODO :- devide this into a separate widget
-                    Row(
-                      children: [
-                        const Text(
-                          'Do you want to charge for the food?',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        DropdownButton<bool>(
-                          value: applyChargesOnFood,
+                            ),
+                            if (selectedAllergies.contains(allergy))
+                              // Show text box only when "Others" is selected
+                              TextFormField(
+                                controller: customAllergyController,
+                                decoration: const InputDecoration(
+                                    labelText: 'Enter Custom Allergy'),
+                                onChanged: (newText) {
+                                  setState(() {
+                                    customAllergyText = newText;
+                                  });
+                                },
+                                onEditingComplete: () {
+                                  setState(() {
+                                    selectedAllergies.add(customAllergyText);
+                                  });
+                                  FocusScope.of(context).unfocus();
+                                },
+                              ),
+                          ],
+                        );
+                      } else {
+                        return CheckboxListTile(
+                          title: Text(allergy),
+                          value: selectedAllergies.contains(allergy),
                           onChanged: (value) {
                             setState(() {
-                              applyChargesOnFood = value!;
+                              if (value == true) {
+                                selectedAllergies.add(allergy);
+                              } else {
+                                selectedAllergies.remove(allergy);
+                              }
                             });
                           },
-                          items: const [
-                            DropdownMenuItem<bool>(
-                              value: true,
-                              child: Text('Yes'),
-                            ),
-                            DropdownMenuItem<bool>(
-                              value: false,
-                              child: Text('No'),
-                            ),
-                          ],
+                        );
+                      }
+                    }).toList(),
+                  ),
+
+                // Show Food Cost - Free of Cost / Chargeable
+                // TODO :- devide this into a separate widget
+                Row(
+                  children: [
+                    const Text(
+                      'Do you want to charge for the food?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    DropdownButton<bool>(
+                      value: applyChargesOnFood,
+                      onChanged: (value) {
+                        setState(() {
+                          applyChargesOnFood = value!;
+                        });
+                      },
+                      items: const [
+                        DropdownMenuItem<bool>(
+                          value: true,
+                          child: Text('Yes'),
+                        ),
+                        DropdownMenuItem<bool>(
+                          value: false,
+                          child: Text('No'),
                         ),
                       ],
                     ),
-
-                    if (applyChargesOnFood == true)
-                      TextFormField(
-                        controller: foodAmountController,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(fontSize: 20),
-                        decoration: const InputDecoration(
-                          labelText: "Food Amount",
-                          prefixIcon: Icon(
-                            Icons.attach_money,
-                            size: 30,
-                            color: Colors.cyan,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the food amount';
-                          }
-
-                          return null;
-                        },
-                      ),
-
-                    SizedBox(height: 10),
-                    // show map here to select address
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 20),
-                      controller: foodAddressController,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        labelText: StringConstants.post_ad_user_address,
-                        prefixIcon: Icon(Icons.add_location),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    // Ask user to turn on location if not turned on
-
-                    // Add Apple Maps here
-                    SizedBox(
-                      height: 200,
-                      child: GoogleMap(
-                        onMapCreated: (GoogleMapController controller) {
-                          _mapController = controller;
-                          setState(() {
-                            markers.clear();
-                            markers.add(Marker(
-                              markerId: MarkerId(userCoordinates.toString()),
-                              position: userCoordinates,
-                              infoWindow: InfoWindow(
-                                title: "Selected Location",
-                              ),
-                            ));
-                          });
-                        },
-                        initialCameraPosition: CameraPosition(
-                          target: userCoordinates,
-                          zoom: 15,
-                        ),
-                        markers: markers,
-                        onTap: (LatLng location) async {
-                          userCoordinates = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupplierLocationMap(
-                                  selectedLocation: userCoordinates),
-                            ),
-                          );
-                          setMarker_AnimateCamera_userLocation(userCoordinates);
-                        },
-                      ),
-                    ),
-
-                    SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.cyan,
-                          foregroundColor: Colors.black,
-                          shadowColor: Colors.red,
-                          elevation: 15,
-                          minimumSize: const Size(200, 50),
-                        ),
-                        onPressed: () async {
-                          // Check if user has selected an image
-                          if (image == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text(StringConstants.post_ad_image_select),
-                              ),
-                            );
-                            return;
-                          }
-
-                          // Check if user has entered food name
-                          if (foodNameController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    StringConstants.post_ad_enter_food_name),
-                              ),
-                            );
-                            return;
-                          }
-
-                          // Check if user has entered food description
-                          if (foodDescriptionController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter food description'),
-                              ),
-                            );
-                            return;
-                          }
-
-                          // Check if user has selected food amount
-                          if (applyChargesOnFood == true &&
-                              foodAmountController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter food amount'),
-                              ),
-                            );
-                            return;
-                          }
-
-                          allergyContentString = selectedAllergies.join(', ');
-                          if (selectedAllergies.contains('Others')) {
-                            // Add custom allergy text to the string if it is not empty
-                            print(customAllergyController.text);
-                            String customAllergyText_inController =
-                                customAllergyController.text;
-                            selectedAllergies.remove('Others');
-                            allergyContentString +=
-                                " : " + customAllergyText_inController;
-                            print(allergyContentString);
-                          }
-                          print(allergyContentString);
-
-                          Map<String, String> foodTime =
-                              getFoodAvailableDateTime();
-
-                          var response = await service.sendFoodDetailsWithFile(
-                            foodNameController.text,
-                            foodDescriptionController.text,
-                            selectedFoodQuantity,
-                            foodAddressController.text,
-                            foodImageUriController.text,
-                            selectedFoodType,
-                            image,
-                            userCoordinates.latitude,
-                            userCoordinates.longitude,
-                            allergyContentString,
-                            foodAmountController.text,
-                            foodTime['fromTime']!,
-                            foodTime['toTime']!,
-                          );
-
-                          // log event add food
-                          await logAddFoodEvent(foodNameController.text);
-
-                          // show alert dialog on condition
-                          if (response) {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Add Food'),
-                                content: const Text('Food added successfully'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ListViewPage(),
-                                          ));
-                                      // TODO:- clear the form fields
-                                      // TODO:- clear the image
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Add Food'),
-                                content: const Text(
-                                    'Food not added, there was an error, please try again'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      // hide the alert dialog
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text('Add Food',
-                            style: TextStyle(fontSize: 30)),
-                      ),
-                    ),
-                    SizedBox(height: 40),
                   ],
                 ),
-              ),
+
+                if (applyChargesOnFood == true)
+                  TextFormField(
+                    controller: foodAmountController,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(fontSize: 20),
+                    decoration: const InputDecoration(
+                      labelText: "Food Amount",
+                      prefixIcon: Icon(
+                        Icons.attach_money,
+                        size: 30,
+                        color: Colors.cyan,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the food amount';
+                      }
+
+                      return null;
+                    },
+                  ),
+
+                SizedBox(height: 10),
+                // show map here to select address
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(fontSize: 20),
+                  controller: foodAddressController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    labelText: StringConstants.post_ad_user_address,
+                    prefixIcon: Icon(Icons.add_location),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // Ask user to turn on location if not turned on
+
+                // Add Apple Maps here
+                SizedBox(
+                  height: 200,
+                  child: GoogleMap(
+                    onMapCreated: (GoogleMapController controller) {
+                      _mapController = controller;
+                      setState(() {
+                        markers.clear();
+                        markers.add(Marker(
+                          markerId: MarkerId(userCoordinates.toString()),
+                          position: userCoordinates,
+                          infoWindow: InfoWindow(
+                            title: "Selected Location",
+                          ),
+                        ));
+                      });
+                    },
+                    initialCameraPosition: CameraPosition(
+                      target: userCoordinates,
+                      zoom: 15,
+                    ),
+                    markers: markers,
+                    onTap: (LatLng location) async {
+                      userCoordinates = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SupplierLocationMap(
+                              selectedLocation: userCoordinates),
+                        ),
+                      );
+                      setMarker_AnimateCamera_userLocation(userCoordinates);
+                    },
+                  ),
+                ),
+
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.cyan,
+                      foregroundColor: Colors.black,
+                      shadowColor: Colors.red,
+                      elevation: 15,
+                      minimumSize: const Size(200, 50),
+                    ),
+                    onPressed: () async {
+                      // Check if user has selected an image
+                      if (image == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(StringConstants.post_ad_image_select),
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Check if user has entered food name
+                      if (foodNameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text(StringConstants.post_ad_enter_food_name),
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Check if user has entered food description
+                      if (foodDescriptionController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter food description'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Check if user has selected food amount
+                      if (applyChargesOnFood == true &&
+                          foodAmountController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter food amount'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      allergyContentString = selectedAllergies.join(', ');
+                      if (selectedAllergies.contains('Others')) {
+                        // Add custom allergy text to the string if it is not empty
+                        print(customAllergyController.text);
+                        String customAllergyText_inController =
+                            customAllergyController.text;
+                        selectedAllergies.remove('Others');
+                        allergyContentString +=
+                            " : " + customAllergyText_inController;
+                        print(allergyContentString);
+                      }
+                      print(allergyContentString);
+
+                      Map<String, String> foodTime = getFoodAvailableDateTime();
+
+                      var response = await service.sendFoodDetailsWithFile(
+                        foodNameController.text,
+                        foodDescriptionController.text,
+                        selectedFoodQuantity,
+                        foodAddressController.text,
+                        foodImageUriController.text,
+                        selectedFoodType,
+                        image,
+                        userCoordinates.latitude,
+                        userCoordinates.longitude,
+                        allergyContentString,
+                        foodAmountController.text,
+                        foodTime['fromTime']!,
+                        foodTime['toTime']!,
+                      );
+
+                      // log event add food
+                      await logAddFoodEvent(foodNameController.text);
+
+                      // show alert dialog on condition
+                      if (response) {
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Add Food'),
+                            content: const Text('Food added successfully'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RootScreen(),
+                                      ));
+                                  // TODO:- clear the form fields
+                                  // TODO:- clear the image
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Add Food'),
+                            content: const Text(
+                                'Food not added, there was an error, please try again'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // hide the alert dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child:
+                        const Text('Add Food', style: TextStyle(fontSize: 30)),
+                  ),
+                ),
+                SizedBox(height: 40),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    ));
     // Function to add a marker on the map and animate the camera to the marker's position
   }
 

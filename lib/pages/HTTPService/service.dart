@@ -370,6 +370,24 @@ class Service {
     }
   }
 
+  Future<Response?> getUserByMobile(String phone) async {
+    try {
+      var request =
+          http.MultipartRequest('GET', Uri.parse('$url/getUserByMobile'));
+      request.fields['mobile'] = phone;
+      var response = await makeServerRequest(request);
+      if (response != null && response.statusCode == 200) {
+        return convertStreamedResponseToResponse(response);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Exception: $e');
+      return null;
+    }
+  }
+
   // Verify User OTP using Email
   Future<bool> verifyUserOTP(String email, int otp) async {
     try {

@@ -15,6 +15,7 @@ import 'package:satietyfrontend/pages/Views/CustomHeader.dart';
 import 'package:satietyfrontend/pages/Views/add_food.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/MyListings.dart';
+import 'package:satietyfrontend/pages/Views/chatPage.dart';
 import 'package:satietyfrontend/pages/Views/myRequests.dart';
 import 'package:satietyfrontend/pages/Views/sample.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -80,8 +81,7 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
               selectedPage = Pages.Home;
             });
           } else if (isUserLoggedIn) {
-            if (index == Pages.MyListings.index &&
-                selectedPage != Pages.MyListings) {
+            if (index == Pages.MyListings.index) {
               // Set selected page as MyListings
               // selectedPageProvider.setSelectedPage(StringConstants.MyListings);
               // Navigator.pushReplacementNamed(context, StringConstants.MyListings);
@@ -94,16 +94,14 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
               setState(() {
                 selectedPage = Pages.Add;
               });
-            } else if (index == Pages.MyRequests.index &&
-                selectedPage != Pages.MyRequests) {
+            } else if (index == Pages.MyRequests.index) {
               // selectedPageProvider.setSelectedPage(StringConstants.AdsPage);
               // Navigator.pushReplacementNamed(context, StringConstants.AdsPage);
 
               setState(() {
                 selectedPage = Pages.MyRequests;
               });
-            } else if (index == Pages.Messages.index &&
-                selectedPage != Pages.Messages) {
+            } else if (index == Pages.Messages.index) {
               // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
               // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
               setState(() {
@@ -124,11 +122,19 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
       body: IndexedStack(
         index: selectedPage.index,
         children: [
-          HomeScreen(),
-          MyListings(),
-          AddFood(),
-          MyRequests(),
-          MessagePage(),
+          selectedPage.index == Pages.Home.index
+              ? HomeScreen()
+              : ChatPage(), // Using chat page temporary
+          selectedPage.index == Pages.MyListings.index
+              ? MyListings()
+              : ChatPage(),
+          selectedPage.index == Pages.Add.index ? AddFood() : ChatPage(),
+          selectedPage.index == Pages.MyRequests.index
+              ? MyRequests()
+              : ChatPage(),
+          selectedPage.index == Pages.Messages.index
+              ? MessagePage()
+              : ChatPage(),
         ],
       ),
     );

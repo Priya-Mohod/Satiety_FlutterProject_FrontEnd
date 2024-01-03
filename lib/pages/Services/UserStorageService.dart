@@ -199,4 +199,20 @@ class UserStorageService {
 
     return [];
   }
+
+  static Future<void> saveNumberUsedForLogin(String mobile) async {
+    final pref = await SharedPreferences.getInstance();
+    // remove existing auth token
+    if (pref.containsKey('numberUsedForLogin')) {
+      await pref.remove('numberUsedForLogin');
+    }
+    // add new auth token
+    await pref.setString('numberUsedForLogin', mobile);
+  }
+
+  static Future<String?> getNumberUsedForLogin() async {
+    final pref = await SharedPreferences.getInstance();
+    final number = pref.getString("numberUsedForLogin");
+    return number;
+  }
 }

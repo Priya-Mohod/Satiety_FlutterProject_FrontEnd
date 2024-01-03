@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DevelopmentConfig.dart';
@@ -184,6 +185,7 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
       if (widget.isUserExist == true) {
         // Save user token
         await UserStorageService.saveUserJwtToken(widget.jwtToken);
+        await UserStorageService.saveNumberUsedForLogin(widget.mobileNumber);
         SnackbarHelper.showSnackBar(context, 'Welcome back!');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RootScreen()));
@@ -211,13 +213,11 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
       return true;
     } else {
       var response = await service.getOTPForMobileNumber(mobileNumber);
-      if (response != null) {
+      if (response != null && response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         print("OTP received");
-        print(data.keys.first);
-        print(data.values.first);
-        String otpReceived = data.keys.first;
-        bool isUserExist = data.values.first;
+        String otpReceived =
+            data.containsKey("otp") ? data["otp"].toString() : "";
         widget.verifyOTP = otpReceived;
         setState(() {
           isButtonDisabled = true;

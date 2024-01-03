@@ -16,12 +16,12 @@ import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
 
 class VerifyEmailOTPScreen extends StatefulWidget {
   final String userEmail;
-  final String emailOTP;
+  String verifyEmailOTP;
   final String mobileNumber;
   VerifyEmailOTPScreen(
       {Key? key,
       required this.userEmail,
-      required this.emailOTP,
+      required this.verifyEmailOTP,
       required this.mobileNumber})
       : super(key: key);
 
@@ -35,11 +35,9 @@ class _VerifyEmailOTPScreenState extends State<VerifyEmailOTPScreen> {
   Service service = Service();
   bool isButtonDisabled = false;
   int countdown = 30;
-  String otpReceived = "";
 
   @override
   Widget build(BuildContext context) {
-    otpReceived = widget.emailOTP;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -178,7 +176,7 @@ class _VerifyEmailOTPScreenState extends State<VerifyEmailOTPScreen> {
 
   void verfiyOTP_and_RedirectUserToHomeScreen(
       BuildContext context, String otpCode) async {
-    if (otpReceived == otpCode) {
+    if (widget.verifyEmailOTP == otpCode) {
       SnackbarHelper.showSnackBar(context, 'Welcome to Satiety family!');
       Navigator.push(
           context,
@@ -194,13 +192,12 @@ class _VerifyEmailOTPScreenState extends State<VerifyEmailOTPScreen> {
 
   Future<bool> _resendEmailOTP(String email) async {
     var response = await service.getOTPForEmail(email);
-    if (response != null) {
+    if (response != null && response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       print("OTP received");
-      print(data.keys.first);
-      print(data.values.first);
-      String newOTP = data["emailOtp"];
-      otpReceived = newOTP;
+      String newOTP =
+          data.containsKey("emailOtp") ? data["emailOtp"].toString() : "";
+      widget.verifyEmailOTP = newOTP;
       setState(() {
         isButtonDisabled = true;
         countdown = 30;
