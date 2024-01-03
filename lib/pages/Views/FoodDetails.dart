@@ -9,6 +9,7 @@ import 'package:satietyfrontend/pages/Forumpage.dart';
 import 'package:satietyfrontend/pages/Messagepage.dart';
 import 'package:satietyfrontend/pages/Models/FoodItemModel.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
+import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
 import 'package:satietyfrontend/pages/Views/GoogleMapWidget.dart';
@@ -394,26 +395,26 @@ class _FoodDetailsState extends State<FoodDetails> {
                 elevation: 15,
                 minimumSize: const Size(250, 50),
               ),
-              onPressed: () async {
-                bool isUserLoggedIn = await UserStorageService.isUserLoggedIn();
+              onPressed: (widget.foodItem.isRequestedByLoggedInUser == null ||
+                      widget.foodItem.isRequestedByLoggedInUser == "N")
+                  ? () async {
+                      bool isUserLoggedIn =
+                          await UserStorageService.isUserLoggedIn();
 
-                if (!isUserLoggedIn) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPhoneOTPScreen(
-                          showSkipButton: false,
-                        ),
-                      ));
-                } else {
-                  widget.foodItem.isRequestedByLoggedInUser == "N"
-                      ? () async {
-                          // Explicitly pass the context to the async function
-                          await _handleFoodRequest(context);
-                        }
-                      : null;
-                }
-              },
+                      if (!isUserLoggedIn) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPhoneOTPScreen(
+                                showSkipButton: false,
+                              ),
+                            ));
+                      } else {
+                        // Explicitly pass the context to the async function
+                        await _handleFoodRequest(context);
+                      }
+                    }
+                  : null,
               child: const Text('Request This',
                   style: TextStyle(
                     fontSize: 30,
@@ -448,11 +449,8 @@ class _FoodDetailsState extends State<FoodDetails> {
             TextButton(
               onPressed: () {
                 // Clear form fields
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/myRequests',
-                  (route) => false,
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RootScreen()));
               },
               child: const Text('OK'),
             ),

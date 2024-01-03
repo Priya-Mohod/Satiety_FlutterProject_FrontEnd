@@ -170,7 +170,7 @@ class _RegisterEmailOTPScreen extends State<RegisterEmailOTPScreen> {
                     MaterialPageRoute(
                       builder: (context) => VerifyEmailOTPScreen(
                         userEmail: emailController.text,
-                        emailOTP: otpReceived,
+                        verifyEmailOTP: otpReceived,
                         mobileNumber: widget.mobileNumber,
                       ),
                     ));

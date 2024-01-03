@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -36,8 +37,23 @@ class UserProfileViewModel {
   }
 
   Future<User> fetchUserProfile() async {
+    // -- check if user data is null in defaults, if not show login screen
     if (currentUser == null) {
       currentUser = await UserStorageService.getUserFromSharedPreferances();
+
+      if (currentUser == null) {
+        // get current mobile used for login
+        String? mobile = await UserStorageService.getNumberUsedForLogin();
+        var response = await service.getUserByMobile(mobile!);
+        if (response != null) {
+          Map<String, dynamic> responseData = jsonDecode(response.body);
+          currentUser = parseUserData(responseData);
+          if (currentUser != null) {
+            await UserStorageService.saveUserToSharedPreferences(currentUser!);
+          }
+        }
+        print(response);
+      }
     }
     return currentUser!;
   }
