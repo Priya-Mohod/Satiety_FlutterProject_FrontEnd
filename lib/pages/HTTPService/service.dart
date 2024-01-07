@@ -16,6 +16,8 @@ import '../Views/SnackbarHelper.dart';
 class Service {
   String url = URLConstants.url;
   CustomLogger logger = CustomLogger.instance;
+  static const int SERVICE_RESPONSE_OK = 200;
+  static const int SERVICE_RESPONSE_DUPLICATE = 409;
 
   Future<http.Response> convertStreamedResponse(
       StreamedResponse streamedResponse) async {
@@ -66,7 +68,7 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
       // File upload successful
       print('OTP sent successfully');
       return convertStreamedResponseToResponse(response);
@@ -94,7 +96,9 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null &&
+        (response.statusCode == SERVICE_RESPONSE_OK ||
+            response.statusCode == SERVICE_RESPONSE_DUPLICATE)) {
       // File upload successful
       print('OTP sent successfully');
       return convertStreamedResponseToResponse(response);
@@ -122,7 +126,7 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
       // File upload successful
       print('OTP verified successfully');
       return true;
@@ -237,7 +241,7 @@ class Service {
       request.fields['availabilityFilter'] = foodAvailability;
 
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return convertStreamedResponseToResponse(response);
       } else {
         return null;
@@ -310,7 +314,7 @@ class Service {
     var response = await makeServerRequest(request);
 
     // Handle the response
-    if (response != null && response.statusCode == 200) {
+    if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
       // File upload successful
       print('Food data uploaded successfully');
       return true;
@@ -358,7 +362,7 @@ class Service {
           http.MultipartRequest('POST', Uri.parse('$url/getUserByMobile'));
       request.fields['mobile'] = phone;
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return true;
       } else {
         return false;
@@ -376,7 +380,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/getUserByMobile'));
       request.fields['mobile'] = phone;
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return convertStreamedResponseToResponse(response);
       } else {
         return null;
@@ -396,7 +400,7 @@ class Service {
       request.fields['email'] = email;
       request.fields['emailOtp'] = otp.toString();
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return true;
       } else {
         return false;
@@ -416,7 +420,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/requestForFood'));
       request.fields['foodId'] = '$foodId';
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return true;
       } else {
         return false;
@@ -435,7 +439,7 @@ class Service {
       var request =
           http.MultipartRequest('GET', Uri.parse('$url/getMyListings'));
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return convertStreamedResponseToResponse(response);
       } else {
         return null;
@@ -454,7 +458,7 @@ class Service {
       var request =
           http.MultipartRequest('GET', Uri.parse('$url/getMyRequests'));
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return convertStreamedResponseToResponse(response);
       } else {
         return null;
@@ -474,7 +478,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/acceptFoodRequest'));
       request.fields['foodRequestId'] = '$requestId';
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return true;
       } else {
         return false;
@@ -494,7 +498,7 @@ class Service {
           http.MultipartRequest('GET', Uri.parse('$url/deleteFoodRequest'));
       request.fields['foodRequestId'] = '$requestId';
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         return true;
       } else {
         return false;
@@ -514,7 +518,7 @@ class Service {
           'GET', Uri.parse('$url/getConversationsForFoodRequest'));
       request.fields['foodRequestId'] = '$foodRequestId';
       var response = await makeServerRequest(request);
-      if (response != null && response.statusCode == 200) {
+      if (response != null && response.statusCode == SERVICE_RESPONSE_OK) {
         final streamedResponse = await http.Response.fromStream(response);
         return streamedResponse;
       } else {

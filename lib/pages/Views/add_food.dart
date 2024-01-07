@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Views/ListView.dart';
 import 'package:satietyfrontend/pages/Views/SupplierLocationMap.dart';
@@ -603,7 +604,7 @@ class _AddFoodState extends State<AddFood> {
                       print(allergyContentString);
 
                       Map<String, String> foodTime = getFoodAvailableDateTime();
-
+                      LoadingIndicator.show(context);
                       var response = await service.sendFoodDetailsWithFile(
                         foodNameController.text,
                         foodDescriptionController.text,
@@ -622,6 +623,7 @@ class _AddFoodState extends State<AddFood> {
 
                       // log event add food
                       await logAddFoodEvent(foodNameController.text);
+                      LoadingIndicator.hide(context);
 
                       // show alert dialog on condition
                       if (response) {
