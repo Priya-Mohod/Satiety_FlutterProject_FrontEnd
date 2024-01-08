@@ -148,7 +148,8 @@ class _RegisterEmailOTPScreen extends State<RegisterEmailOTPScreen> {
     );
     LoadingIndicator.hide(context);
     // show alert dialog on condition
-    if (response != null) {
+    if (response != null &&
+        response.statusCode == Service.SERVICE_RESPONSE_OK) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       String otpReceived = data["emailOtp"];
       // ignore: use_build_context_synchronously
@@ -174,6 +175,25 @@ class _RegisterEmailOTPScreen extends State<RegisterEmailOTPScreen> {
                         mobileNumber: widget.mobileNumber,
                       ),
                     ));
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else if (response != null &&
+        response.statusCode == Service.SERVICE_RESPONSE_DUPLICATE) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Register Email'),
+          content: const Text(
+              'This email is already in use, please choose different one.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // hide the alert dialog
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
