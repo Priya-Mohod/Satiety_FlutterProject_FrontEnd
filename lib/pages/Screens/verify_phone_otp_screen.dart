@@ -12,6 +12,7 @@ import 'package:satietyfrontend/pages/HTTPService/service.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/register_email_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
+import 'package:satietyfrontend/pages/ViewModels/UserProfileViewModel.dart';
 import 'package:satietyfrontend/pages/Views/Register.dart';
 import 'package:satietyfrontend/pages/Views/SnackbarHelper.dart';
 import 'package:satietyfrontend/pages/Views/Widgets/CustomButton.dart';
@@ -39,6 +40,7 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
   bool isButtonDisabled = false;
   int countdown = 30;
   String mobileNum = "";
+  final userProfileViewModel = UserProfileViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -183,9 +185,10 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
       BuildContext context, String otpCode) async {
     if (widget.verifyOTP == otpCode) {
       if (widget.isUserExist == true) {
-        // Save user token
         await UserStorageService.saveUserJwtToken(widget.jwtToken);
         await UserStorageService.saveNumberUsedForLogin(widget.mobileNumber);
+        await userProfileViewModel.fetchUserProfile();
+        // Save user token
         SnackbarHelper.showSnackBar(context, 'Welcome back!');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RootScreen()));
