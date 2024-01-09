@@ -13,6 +13,7 @@ import 'package:satietyfrontend/pages/Constants/ColorConstants.dart';
 import 'package:satietyfrontend/pages/Constants/LoadingIndicator.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/custom_logger.dart';
 import 'package:satietyfrontend/pages/Models/register_user_response_model.dart';
+import 'package:satietyfrontend/pages/Screens/GetUserLocationScreen.dart';
 import 'package:satietyfrontend/pages/Screens/RootScreen.dart';
 import 'package:satietyfrontend/pages/Screens/login_phone_otp_screen.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
@@ -400,7 +401,7 @@ class _RegisterState extends State<Register> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RootScreen(),
+                        builder: (context) => GetUserLocationScreen(),
                       ));
                   // TODO:- clear the form fields
                   // TODO:- clear the image
