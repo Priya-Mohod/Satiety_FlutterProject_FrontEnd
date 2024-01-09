@@ -98,6 +98,8 @@ class StringConstants {
   static String food_details_request_button = 'Request Food';
   static String food_details_allergy_String =
       'View Food Allergen Information Here';
+  static String food_details_self_request_failed =
+      'You cannot request for food added by you';
 
   // -- My Listings
   static String my_listings_screen_title = 'My Listings';

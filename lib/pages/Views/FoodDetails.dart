@@ -411,7 +411,19 @@ class _FoodDetailsState extends State<FoodDetails> {
                             ));
                       } else {
                         // Explicitly pass the context to the async function
-                        await _handleFoodRequest(context);
+                        User? user = await UserStorageService
+                            .getUserFromSharedPreferances();
+                        if (user != null) {
+                          if (user.userId == widget.foodItem.addedByUserId) {
+                            //  Display alert
+                            SnackbarHelper.showSnackBar(
+                              context,
+                              StringConstants.food_details_self_request_failed,
+                            );
+                          } else {
+                            await _handleFoodRequest(context);
+                          }
+                        }
                       }
                     }
                   : null,
