@@ -107,7 +107,7 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
             ),
             Container(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: TextFormField(
                 cursorColor: ThemeColors.primaryColor,
                 controller: phoneNumberController,
@@ -138,7 +138,7 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
                     borderSide: const BorderSide(color: Colors.black12),
                   ),
                   prefixIcon: Container(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(14.5),
                     child: InkWell(
                       onTap: () {
                         showCountryPicker(

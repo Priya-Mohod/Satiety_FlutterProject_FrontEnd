@@ -36,7 +36,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        //height: 800, // Set a fixed height for the bottom drawer
+        height: 450, // Set a fixed height for the bottom drawer
         decoration: BoxDecoration(
           color: Colors.cyan[50],
           borderRadius: BorderRadius.only(
@@ -61,7 +61,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                             Text(
                               'Maximum Distance:',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 17, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -107,7 +107,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_five km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -133,7 +133,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_seven km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -159,7 +159,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_nine km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -185,7 +185,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_twelve km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -211,7 +211,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_fifteen km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -237,7 +237,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_twenty km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -263,7 +263,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                           child: Text(
                                             '$distanceFilter_thirty km',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -294,11 +294,11 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                       Text(
                                         'Free or Chargeable:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(4.0),
                                           child: Row(children: [
                                             // -- All button --
                                             // ElevatedButton(
@@ -376,13 +376,13 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     Icon(
                                                       Icons
                                                           .check_circle_outline,
-                                                      size: 20,
+                                                      size: 15,
                                                       color: Colors.green[900],
                                                     ),
                                                     SizedBox(width: 10),
                                                     Text('Free',
                                                         style: TextStyle(
-                                                          fontSize: 20,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         )),
@@ -416,13 +416,13 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   Icon(
                                                     Icons
                                                         .currency_rupee_rounded,
-                                                    size: 20,
+                                                    size: 15,
                                                     color: Colors.red[900],
                                                   ),
                                                   SizedBox(width: 10),
                                                   Text('Chargeable',
                                                       style: TextStyle(
-                                                        fontSize: 20,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       )),
@@ -432,13 +432,13 @@ class _BottomDrawerState extends State<BottomDrawer> {
                           ]),
                     ),
                     Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(2.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding: const EdgeInsets.all(2.0),
                                   child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -448,7 +448,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                         Text(
                                           'Tiffin Availability',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Padding(
@@ -539,7 +539,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                       // SizedBox(width: 10),
                                                       Text('Available',
                                                           style: TextStyle(
-                                                            fontSize: 20,
+                                                            fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           )),
@@ -581,7 +581,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     // SizedBox(width: 10),
                                                     Text('Just Gone',
                                                         style: TextStyle(
-                                                          fontSize: 20,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         )),
@@ -606,7 +606,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                         Text(
                                           'Food Type',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Padding(
@@ -692,14 +692,14 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                     children: [
                                                       Icon(
                                                         Icons.fastfood_rounded,
-                                                        size: 20,
+                                                        size: 15,
                                                         color:
                                                             Colors.green[900],
                                                       ),
                                                       SizedBox(width: 10),
                                                       Text('Veg',
                                                           style: TextStyle(
-                                                            fontSize: 20,
+                                                            fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           )),
@@ -735,13 +735,13 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                                   child: Row(children: [
                                                     Icon(
                                                       Icons.fastfood_rounded,
-                                                      size: 20,
+                                                      size: 15,
                                                       color: Colors.red[900],
                                                     ),
                                                     SizedBox(width: 10),
                                                     Text('Non-Veg',
                                                         style: TextStyle(
-                                                          fontSize: 20,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         )),
@@ -755,7 +755,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 TextButton(
@@ -770,11 +770,11 @@ class _BottomDrawerState extends State<BottomDrawer> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
+                          vertical: 8, horizontal: 25),
                       child: Text('Apply Filter',
                           style: TextStyle(
                             color: Colors.black87,
-                            fontSize: 20,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'times new roman',
                           )),

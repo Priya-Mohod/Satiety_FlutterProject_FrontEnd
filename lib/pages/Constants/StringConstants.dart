@@ -37,6 +37,7 @@ class StringConstants {
   static String exception_error = 'Error connecting server, please try again';
   static String internet_error = 'Please check your internet connection!';
   static String server_error = 'Error connecting server, please try again';
+  static String success = 'Succes';
   static String location_update = 'Updating your location...';
   static String location_update_error =
       'Error updating your location, please select your location manually';

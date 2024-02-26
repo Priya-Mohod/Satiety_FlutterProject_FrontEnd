@@ -107,9 +107,9 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                              'assets/account.png',
-                              height: 150,
-                              width: 150,
+                              'assets/image_icon.png',
+                              height: 100,
+                              width: 100,
                             );
                           },
                         )),
@@ -139,7 +139,7 @@ class _UserProfileState extends State<UserProfile> {
                     'View Public Profile',
                     style: TextStyle(
                         color: Color.fromARGB(255, 36, 113, 123),
-                        fontSize: 18.0),
+                        fontSize: 16.0),
                   ),
                 ),
               ),
@@ -270,8 +270,8 @@ class _UserProfileState extends State<UserProfile> {
                 backgroundColor: Colors.cyan,
                 foregroundColor: Colors.black,
                 shadowColor: Colors.red,
-                elevation: 15,
-                minimumSize: const Size(200, 50),
+                elevation: 10,
+                minimumSize: const Size(150, 40),
               ),
               onPressed: () async {
                 // Update user profile logic here
@@ -323,6 +323,8 @@ class _UserProfileState extends State<UserProfile> {
                             // TODO:- clear the form fields
                             // TODO:- clear the image
                             Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, StringConstants.RootScreen);
                           },
                           child: const Text('OK'),
                         ),
@@ -350,22 +352,22 @@ class _UserProfileState extends State<UserProfile> {
                   );
                 }
               },
-              child: const Text('Update Profile',
+              child: const Text('Update',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 16,
                   )),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             // -- Logout
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.cyan,
                 foregroundColor: Colors.black,
                 shadowColor: Colors.red,
-                elevation: 15,
-                minimumSize: const Size(200, 50),
+                elevation: 10,
+                minimumSize: const Size(150, 40),
               ),
               onPressed: () async {
                 showDialog(
@@ -400,7 +402,7 @@ class _UserProfileState extends State<UserProfile> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 16,
                   )),
             ),
           ],

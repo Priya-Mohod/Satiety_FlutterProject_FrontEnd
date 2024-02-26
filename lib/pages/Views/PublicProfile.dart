@@ -84,7 +84,7 @@ class _PublicProfileState extends State<PublicProfile> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                              'assets/account.png',
+                              'assets/image_icon.png',
                               height: 100,
                               width: 100,
                             );

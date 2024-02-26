@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, "Fetch food response failure");
       SnackbarHelper.showSnackBar(context, StringConstants.server_error);
     }
   }

@@ -45,6 +45,7 @@ class _ListViewPageState extends State<ListViewPage> {
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously
+      SnackbarHelper.showSnackBar(context, "Fetch food response failure");
       SnackbarHelper.showSnackBar(context, StringConstants.server_error);
     }
   }
@@ -267,7 +268,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                 errorBuilder: (context, error,
                                                     stackTrace) {
                                                   return Image.asset(
-                                                    'assets/account.png',
+                                                    'assets/image_icon.png',
                                                     height: 120,
                                                     width: 130,
                                                     fit: BoxFit.cover,
@@ -327,7 +328,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                                       errorBuilder: (context,
                                                           error, stackTrace) {
                                                         return Image.asset(
-                                                          'assets/account.png',
+                                                          'assets/image_icon.png',
                                                           height: 30,
                                                           width: 30,
                                                         );

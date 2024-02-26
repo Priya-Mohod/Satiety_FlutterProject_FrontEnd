@@ -34,7 +34,11 @@ class _ChatPageState extends State<ChatPage> {
     print(result);
     if (result == false) {
       // ignore: use_build_context_synchronously
-      SnackbarHelper.showSnackBar(context, StringConstants.server_error);
+      // ****===****
+      // TODO: WORK ON CHAT FAILURE RESPONSE
+      // TO SHOW IT ON APPROPRIATE TIME
+      //SnackbarHelper.showSnackBar(context, "Fetch Chat data failure");
+      //SnackbarHelper.showSnackBar(context, StringConstants.server_error);
     }
   }
 
