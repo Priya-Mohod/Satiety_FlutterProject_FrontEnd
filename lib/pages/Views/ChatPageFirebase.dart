@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:satietyfrontend/pages/Constants/Utilities/DateTimeUtils.dart';
 import 'package:satietyfrontend/pages/Models/UserModel.dart';
 import 'package:satietyfrontend/pages/Services/UserStorageService.dart';
-
 import '../Constants/FirebaseSetup.dart';
 
 class ChatPageFirebase extends StatefulWidget {

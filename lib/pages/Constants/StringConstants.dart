@@ -29,6 +29,7 @@ class StringConstants {
   static String AddFood_title = 'Add Food';
   static String Profile_title = 'Profile';
   static String Messages_title = 'Messages';
+  static String MyChats_title = 'MyChats';
   static String Notifications_title = 'Notifications';
   static String UsersNearMe_title = 'Users Near Me';
   static String HelpCenter_title = 'Help Center';

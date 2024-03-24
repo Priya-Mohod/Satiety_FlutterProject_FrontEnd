@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
             '/ListViewPage': (context) => ListViewPage(),
             '/AddFreeFood': (context) => AddFood(),
             '/ForumPage': (context) => ForumPage(),
-            '/MessagePage': (context) => MessagePage(),
+            '/MessagePage': (context) => MessagePage(currentUserEmail: ""),
             '/Register': (context) => Register(
                   mobileNumber: "",
                   email: "",

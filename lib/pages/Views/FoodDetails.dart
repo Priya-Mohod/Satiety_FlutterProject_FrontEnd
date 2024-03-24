@@ -38,6 +38,14 @@ class _FoodDetailsState extends State<FoodDetails> {
   var displayAllergyText = false;
   Service service = Service();
 
+  bool isFavorited = false;
+
+  void _toggleFavorite() {
+    setState(() {
+      isFavorited = !isFavorited;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String? dateTimeString = widget.foodItem.addedTime;
@@ -61,7 +69,11 @@ class _FoodDetailsState extends State<FoodDetails> {
       appBar: AppBar(
         //add back button
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 20,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -70,8 +82,8 @@ class _FoodDetailsState extends State<FoodDetails> {
           widget.foodItem.foodName,
           style: TextStyle(
             color: Colors.grey[900],
-            fontSize: 25,
-            //fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
         // centerTitle: true,
@@ -96,13 +108,26 @@ class _FoodDetailsState extends State<FoodDetails> {
             ),
             Container(
                 color: Color.fromARGB(255, 192, 209, 212),
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(right: 4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Icon(Icons.share, size: 35),
-                    SizedBox(width: 10),
-                    Icon(Icons.favorite_border, size: 35),
+                  children: [
+                    Icon(Icons.share, size: 20),
+                    SizedBox(width: 4),
+                    //Icon(Icons.favorite_border, size: 35),
+                    IconButton(
+                      icon: isFavorited
+                          ? Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                              // size: 20,
+                            )
+                          : Icon(
+                              Icons.favorite_border,
+                              //size: 20,
+                            ),
+                      onPressed: _toggleFavorite,
+                    ),
                   ],
                 )),
             Padding(
@@ -180,14 +205,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 19,
                                     fontWeight: FontWeight.bold,
                                   )),
                               Row(
+                                //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(
                                     Icons.watch_later_outlined,
-                                    size: 20,
+                                    size: 16,
                                     //color: Colors.grey[600],
                                   ),
                                   SizedBox(width: 5),
@@ -195,7 +221,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                                       0)
                                     Container(
                                       width: 250,
-                                      color: Colors.black38,
+                                      //color: Colors.black38,
                                       child: Text(
                                           'Added today, at ${dateTimeComponents['hour']}:${dateTimeComponents['minute']} ${dateTimeComponents['amPm']}',
                                           overflow: TextOverflow.ellipsis,
@@ -302,15 +328,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                           fontSize: 16,
                           color: Colors.black54,
                         )),
-                    SizedBox(height: 25),
+                    SizedBox(height: 16),
                     Container(
                       color: Color.fromARGB(255, 215, 233, 235),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Text.rich(TextSpan(
-                          text: 'Today ${widget.foodItem.addedByUserName} is ',
+                          text: ' ${widget.foodItem.addedByUserName} is ',
                           style: const TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 16.0,
                             color: Colors.black,
                           ),
                           children: <TextSpan>[
@@ -324,13 +350,13 @@ class _FoodDetailsState extends State<FoodDetails> {
                                     ? Color.fromARGB(255, 40, 125, 43)
                                     : Colors.red[900],
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
+                                fontSize: 16.0,
                               ),
                             ),
                             TextSpan(
                               text: ' for ',
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                               ),
                             ),
@@ -338,15 +364,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                               TextSpan(
                                 text: ' non-veg',
                                 style: TextStyle(
-                                  fontSize: 23,
+                                  fontSize: 16,
                                   color: Colors.red[900],
                                 ),
                               ),
                             if (widget.foodItem.foodType == 'Veg')
                               TextSpan(
-                                text: ' veg ',
+                                text: 'veg',
                                 style: TextStyle(
-                                  fontSize: 23,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green[900],
                                 ),
@@ -355,14 +381,14 @@ class _FoodDetailsState extends State<FoodDetails> {
                               TextSpan(
                                 text: ' veg and non-veg both',
                                 style: TextStyle(
-                                  fontSize: 23,
+                                  fontSize: 16,
                                   color: Colors.orange[900],
                                 ),
                               ),
                             TextSpan(
                               text: ' meal.',
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                               ),
                             ),
@@ -370,22 +396,22 @@ class _FoodDetailsState extends State<FoodDetails> {
                         )),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 1),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            //const SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 18),
               enabled: false,
               decoration: InputDecoration(
                 labelText: widget.foodItem.foodAddress,
                 prefixIcon: Icon(Icons.add_location),
               ),
             ),
-            const SizedBox(height: 10),
+            //const SizedBox(height: 10),
             SizedBox(
               height: 200,
               child: GoogleMapWidget(
@@ -399,8 +425,8 @@ class _FoodDetailsState extends State<FoodDetails> {
                 backgroundColor: Colors.cyan,
                 foregroundColor: Colors.black,
                 shadowColor: Colors.red,
-                elevation: 15,
-                minimumSize: const Size(250, 50),
+                elevation: 9,
+                minimumSize: const Size(200, 40),
               ),
               onPressed: (widget.foodItem.isRequestedByLoggedInUser == null ||
                       widget.foodItem.isRequestedByLoggedInUser == "N")
@@ -436,7 +462,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                   : null,
               child: const Text('Request This',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 20,
                   )),
             )),
             SizedBox(height: 50),

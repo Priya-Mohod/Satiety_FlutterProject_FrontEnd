@@ -38,7 +38,13 @@ class ChatService extends ChangeNotifier {
 
   Stream<QuerySnapshot> getMessages(
       String currentEmail, String receiverEmail, String foodId) {
-    List<String> users = [currentEmail, receiverEmail, foodId];
+    List<String> users = [currentEmail];
+    if (receiverEmail.isNotEmpty) {
+      users.add(receiverEmail);
+    }
+    if (foodId.isNotEmpty) {
+      users.add(foodId);
+    }
     users.sort();
     String chatId = users.join("_");
 
@@ -48,6 +54,13 @@ class ChatService extends ChangeNotifier {
         .collection('messages')
         .orderBy('timestamp', descending: false)
         .snapshots();
+  }
+
+  final chatsCollection = FirebaseFirestore.instance.collection('chats');
+
+  // Within _chatService
+  Stream<QuerySnapshot> getAllChats() {
+    return chatsCollection.snapshots();
   }
 }
 

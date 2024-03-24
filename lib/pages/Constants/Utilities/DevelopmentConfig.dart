@@ -7,7 +7,7 @@ class DevelopmentConfig {
   static final bool loginUsingDummyOTP = false;
 }
 
-enum Pages { Home, MyListings, Add, MyRequests, Messages, Unknown }
+enum Pages { Home, MyListings, Add, MyRequests, MyChat, Unknown }
 
 enum DistanceFilter { five, seven, nine, twelve, fifteen, twenty, thirty, none }
 

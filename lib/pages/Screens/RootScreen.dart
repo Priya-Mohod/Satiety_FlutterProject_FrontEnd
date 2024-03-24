@@ -101,11 +101,11 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
               setState(() {
                 selectedPage = Pages.MyRequests;
               });
-            } else if (index == Pages.Messages.index) {
+            } else if (index == Pages.MyChat.index) {
               // selectedPageProvider.setSelectedPage(StringConstants.MessagePage);
               // Navigator.pushReplacementNamed(context, StringConstants.MessagePage);
               setState(() {
-                selectedPage = Pages.Messages;
+                selectedPage = Pages.MyChat;
               });
             }
           } else {
@@ -132,8 +132,8 @@ class _RootScreenState extends State<RootScreen> with WidgetsBindingObserver {
           selectedPage.index == Pages.MyRequests.index
               ? MyRequests()
               : ChatPage(),
-          selectedPage.index == Pages.Messages.index
-              ? MessagePage()
+          selectedPage.index == Pages.MyChat.index
+              ? MessagePage(currentUserEmail: "shivam1131@gmail.com")
               : ChatPage(),
         ],
       ),

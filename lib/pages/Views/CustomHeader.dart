@@ -123,8 +123,8 @@ class _PageHeaderState extends State<PageHeader> {
       pageHeadingLabel = StringConstants.AddFood_title;
     } else if (widget.pageHeading == Pages.MyRequests.name) {
       pageHeadingLabel = StringConstants.MyRequests_title;
-    } else if (widget.pageHeading == Pages.Messages.name) {
-      pageHeadingLabel = StringConstants.Messages_title;
+    } else if (widget.pageHeading == Pages.MyChat.name) {
+      pageHeadingLabel = StringConstants.MyChats_title;
     }
     return pageHeadingLabel;
   }
@@ -175,7 +175,9 @@ class _AddressInfoState extends State<AddressInfo> {
                   addressHeading,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Icon(
