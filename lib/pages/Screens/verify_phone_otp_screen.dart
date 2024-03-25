@@ -172,6 +172,11 @@ class _VerifyPhoneOTPScreen extends State<VerifyPhoneOTPScreen> {
                   isButtonDisabled
                       ? Text('Button disabled for $countdown seconds')
                       : SizedBox.shrink(),
+                  Text(
+                    "Please enter this OTP to proceed: ${widget.verifyOTP}",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                  ),
                 ],
               ),
             ),

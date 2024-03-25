@@ -178,6 +178,13 @@ class _LoginPhoneOTPScreenState extends State<LoginPhoneOTPScreen> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: const Text(
+                '* This is a Test build. After entering mobile number you will see OTP on next screen to proceed. \n (Please use same mobile number to login every time)  ',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(20.0),
               child: SizedBox(
                 width: double.infinity,
